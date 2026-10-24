@@ -6,6 +6,7 @@ import { record, pickMime } from '../videomaker/recorder.js'
 import { generateCopy, syncFromDescription } from '../videomaker/copywriter.js'
 import { LIMITS } from '../videomaker/copyRules.js'
 import CutEditor from '../videomaker/CutEditor.jsx'
+import { saveBlob, safeFileName } from '../videomaker/saveFile.js'
 import { asset } from '../lib/asset.js'
 import { ls } from '../lib/safeStorage.js'
 
@@ -44,7 +45,7 @@ export default function VideoMaker() {
   const [docs, setDocs] = useState([])
   const [frame, setFrame] = useState(0)
   const [playing, setPlaying] = useState(true)
-  const [rec, setRec] = useState({ state: 'idle', progress: 0, url: '', ext: '', error: '' })
+  const [rec, setRec] = useState({ state: 'idle', progress: 0, blob: null, ext: '', error: '' })
   const [imgError, setImgError] = useState('')
   const [gen, setGen] = useState({ state: 'idle', source: '', msg: '', step: '' })
   const canvasRef = useRef(null)
@@ -161,25 +162,32 @@ export default function VideoMaker() {
     setRawImg(null); setImg(null); setDocs([]); setAutoColor(null)
     setForm((s) => ({ ...EMPTY, size: s.size, duration: s.duration, music: s.music }))
     setGen({ state: 'idle', source: '', msg: '', step: '' })
-    if (rec.url) URL.revokeObjectURL(rec.url)
-    setRec({ state: 'idle', progress: 0, url: '', ext: '', error: '' })
+    setRec({ state: 'idle', progress: 0, blob: null, ext: '', error: '' })
   }
 
   const makeVideo = async () => {
-    if (rec.url) URL.revokeObjectURL(rec.url)
     setPlaying(false)
-    setRec({ state: 'recording', progress: 0, url: '', ext: '', error: '' })
+    setRec({ state: 'recording', progress: 0, blob: null, ext: '', error: '' })
     try {
       const { blob, ext } = await record(canvasRef.current, { ...opts, musicUrl: form.music ? asset(`video-maker/bgm-ad-${form.duration}s.mp3`) : '' }, (p) => setRec((r) => ({ ...r, progress: p })))
-      setRec({ state: 'done', progress: 1, url: URL.createObjectURL(blob), ext, error: '' })
+      setRec({ state: 'done', progress: 1, blob, ext, error: '', saved: '' })
     } catch (err) {
-      setRec({ state: 'idle', progress: 0, url: '', ext: '', error: err.message || '영상을 만들지 못했습니다. 다시 시도해 주세요.' })
+      setRec({ state: 'idle', progress: 0, blob: null, ext: '', error: err.message || '영상을 만들지 못했습니다. 다시 시도해 주세요.' })
     }
     frameRef.current = 0
     setPlaying(true)
   }
 
-  const fileName = `${(form.productName || form.copyR || '홍보영상').replace(/[\\/:*?"<>|\s]+/g, '')}_${form.duration}초_${form.size === 'tall' ? '세로' : '가로'}.${rec.ext || 'mp4'}`
+  const fileName = `${safeFileName(form.productName || form.copyR || '홍보영상')}_${form.duration}초_${form.size === 'tall' ? '세로' : '가로'}.${rec.ext || 'mp4'}`
+  const onSave = async () => {
+    if (!rec.blob) return
+    try {
+      const r = await saveBlob(rec.blob, fileName)
+      setRec((x) => ({ ...x, saved: r, error: '' }))
+    } catch (err) {
+      setRec((x) => ({ ...x, error: '저장하지 못했어요. 한 번 더 눌러 주세요. (' + (err?.message || err) + ')' }))
+    }
+  }
   const recording = rec.state === 'recording'
   const scalePct = Math.round((form.productScale || 1) * 100)
 
@@ -228,13 +236,15 @@ export default function VideoMaker() {
                   <button type="button" className="btn btn--primary" onClick={makeVideo} disabled={recording || !img || cutBusy}>
                     {recording ? `만드는 중… ${Math.round(rec.progress * 100)}%` : '영상 만들기'}
                   </button>
-                  {rec.state === 'done' && <a className="btn btn--line" href={rec.url} download={fileName}>영상 저장하기 ({rec.ext.toUpperCase()})</a>}
+                  {rec.state === 'done' && <button type="button" className="btn btn--line" onClick={onSave}>영상 저장하기 ({rec.ext.toUpperCase()} · {(rec.blob.size / 1048576).toFixed(1)}MB)</button>}
                 </div>
                 <p className="vm__hint">
                   {recording ? '영상이 실제 시간으로 녹화됩니다. 끝날 때까지 이 탭을 보이는 상태로 두세요.'
                     : mime ? `${form.duration}초 동안 녹화한 뒤 ${mime.ext.toUpperCase()} 파일로 저장할 수 있어요.${mime.ext === 'webm' ? ' 이 브라우저는 MP4를 지원하지 않아 WebM으로 저장됩니다.' : ''}`
                       : '이 브라우저는 영상 저장을 지원하지 않습니다. 크롬·엣지·사파리 최신 버전에서 열어 주세요.'}
                 </p>
+                {rec.saved === 'saved' && <p className="vm__hint" role="status">저장했어요. 고른 폴더에서 '{fileName}' 파일을 확인하세요.</p>}
+                {rec.saved === 'downloaded' && <p className="vm__hint" role="status">다운로드를 시작했어요. 브라우저 다운로드 목록에서 '{fileName}'을 확인하세요.</p>}
                 {rec.error && <p className="err" role="alert">{rec.error}</p>}
               </>
             )}
