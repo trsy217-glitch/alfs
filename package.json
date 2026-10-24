@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@remotion/paths": "^4.0.538",
+    "@remotion/svg-3d-engine": "^4.0.538",
     "@supabase/supabase-js": "^2.118.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",

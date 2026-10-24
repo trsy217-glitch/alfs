@@ -17,6 +17,7 @@
 - 로그인·저장: `src/lib/auth.jsx`(Supabase 또는 체험 모드), `src/lib/store.js`(진단 저장), `supabase/schema.sql`(RLS: 본인만 조회)
 - 보호 화면: `RequireAuth`로 감싼 `/diagnosis/new`, `/diagnosis/result/:id`, `/my`. 나머지 페이지는 공개
 - 제품: `/products`(오륜미네랄) · `/products/enzyme`(효소세상, 준비 중). 탭 목록은 `src/components/ProductTabs.jsx`
+- 첫 화면 3D 'ALFS': `src/components/Alfs3D.jsx` (@remotion/svg-3d-engine 으로 글자에 두께를 주고 회전, 브라우저 애니메이션·동작 줄이기 설정 시 정지)
 - 로고·OG: `public/brand/*`, `public/og-image.jpg`, 주소는 `vite.config.js`의 `__SITE_URL__` 치환
 - 홍보 영상: `video/`(Remotion 별도 프로젝트) → 결과물 `public/video/*` → `src/components/PromoVideo.jsx`가 오륜미네랄 첫 화면에 재생
 - 영상 만들기: `/video-maker` → 첫 화면은 오륜미네랄 샘플 영상 파일(`public/video/*`) 그대로. 새 상품은 `src/videomaker/adScene.js`(참고 코드 제품 광고 템플릿을 캔버스로 옮김), `CutEditor.jsx`+`cutout.js`(누끼), `ocr.js`(설명서 사진 글자), `recorder.js`, `copywriter.js`(기본 도우미) + `api/generate-copy.js`(Claude, `ANTHROPIC_API_KEY`) + `copyRules.js`(금지어·글자수·AI 지시문). 템플릿 타이밍을 바꾸면 `video/scripts/make-ad-bgm.py`로 음악도 다시 만든다
