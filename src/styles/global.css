@@ -841,3 +841,15 @@ ol.howto { padding: 0; }
 .vm__copyrow { display: grid; grid-template-columns: 0.8fr 1fr 1fr; gap: 10px; }
 .vm__opts { display: flex; flex-wrap: wrap; gap: 6px; }
 @media (max-width: 480px) { .vm__copyrow { grid-template-columns: 1fr 1fr; } .vm__copyrow > :first-child { grid-column: 1 / -1; } }
+
+/* ─── 첫 화면 3D ALFS (로고 이미지 대신 · 배경 없이 글자만) ─── */
+.hero__visual { position: relative; display: flex; justify-content: flex-end; min-width: 0; }
+.hero .hero__logo { background: none; box-shadow: none; border-radius: 0; overflow: visible; aspect-ratio: auto;
+  width: min(560px, 44vw); max-width: none; margin: 0; flex: none; }
+.alfs3d { width: 100%; background: none; }
+.alfs3d svg { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 24px 30px rgba(22, 32, 26, 0.22)); }
+@media (max-width: 1240px) and (min-width: 861px) { .hero .hero__logo { width: calc(100% + 40px); } }
+@media (max-width: 860px) {
+  .hero__visual { justify-content: center; }
+  .hero .hero__logo { width: min(100%, 520px); }
+}
