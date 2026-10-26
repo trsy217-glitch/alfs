@@ -92,8 +92,8 @@ export default function Home() {
             <ol className="engine__steps">
               {engineSteps.map((s, i) => (
                 <li key={s.t}>
-                  <span className="n">{String(i + 1).padStart(2, '0')}</span>
-                  <span><b>{s.t}</b><span className="d">{s.d}</span></span>
+                  <img className="engine__img" src={asset(s.img)} alt={s.alt} width="480" height="360" loading="lazy" />
+                  <span><span className="n">{String(i + 1).padStart(2, '0')}</span><b>{s.t}</b><span className="d">{s.d}</span></span>
                 </li>
               ))}
             </ol>
