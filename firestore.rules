@@ -1,0 +1,17 @@
+rules_version = '2';
+// 알프스 우리가게 진단 — 진단 결과는 로그인한 본인만 읽고 쓰고 지울 수 있습니다.
+// Firebase 콘솔 → Firestore Database → 규칙 탭에 이 내용을 붙여 넣고 '게시'하세요.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/diagnoses/{id} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create: if request.auth != null && request.auth.uid == uid
+                    && request.resource.size() < 900000;
+      allow update: if false;
+    }
+    // 그 밖의 모든 경로는 막음
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

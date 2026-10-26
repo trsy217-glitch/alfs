@@ -37,19 +37,13 @@ npm run build    # dist/ 폴더에 배포용 파일 생성
 - 사이트 전체는 누구나 볼 수 있고, **진단하기·결과·내 기록만 로그인**이 필요합니다.
 - 업종 11개(카페, 건강식품·웰니스샵, 피부·에스테틱, 헬스·필라테스, 식당, 미용실, 스파·찜질, 약국·건강원, 식품 소매, 온라인 셀러, 클래스·공방) 중 하나를 고르면 업종 맞춤 문항 2개가 더해집니다.
 - 8단계: 기본 정보 → 시장 상황 → 매출 추이 → 온라인 홍보 → 오프라인 홍보 → 고객 상황 → 상품군 → 내 가게 조건. 대부분 버튼 선택, 일부만 단답.
-- 결과: 7개 영역 점수(방사형 차트), 강점 · 없는 것 · 부족해서 보완할 것, 이번 주/한 달/석 달 실행 계획, 시장·매출 요약, 상품군 분석(입문 상품·재구매율·가격대·타깃 + 상품 단계), 미네랄 샵인샵 적합도, 알프스 연결 제안.
+- 결과: 7개 영역 점수(방사형 차트), 강점 · 없는 것 · 부족해서 보완할 것, 이번 주/한 달/석 달 실행 계획, 시장·매출 요약, 구조 점수, 상품군 분석(입문 상품·재구매·원가 구조·경쟁 + 상품 단계), 미네랄 샵인샵 적합도, 알프스 연결 제안.
 - 문항과 점수, 진단 문구는 `src/diagnosis/questions.js`, 분석 규칙은 `src/diagnosis/engine.js`에서 고칩니다.
 - 작성 중인 답변은 기기에 자동 임시 저장되고, 결과는 PDF(A4)와 PNG로 내려받을 수 있습니다.
 
-### 로그인·저장 연결 (Supabase)
+### 로그인·저장 연결
 
-`.env`가 없으면 **체험 모드**로 동작합니다. 계정과 결과가 그 브라우저에만 저장돼서 다른 기기에서는 보이지 않습니다. 실제 운영은 Supabase를 연결하세요.
-
-1. supabase.com 에서 프로젝트를 만듭니다.
-2. SQL Editor 에 `supabase/schema.sql` 을 붙여넣고 실행합니다. 진단 테이블과 **본인만 조회·저장·삭제** 가능한 보안 정책(RLS)이 만들어집니다.
-3. Settings → API 의 URL과 anon key를 `.env.example`을 복사한 `.env`에 넣습니다. Vercel에도 같은 이름의 환경 변수를 넣으세요.
-4. Authentication → URL Configuration 의 Site URL에 실제 도메인을 넣습니다.
-5. (선택) 카카오 로그인: Authentication → Providers 에서 Kakao를 켜고, `src/config/site.js`의 `authProviders.kakao`를 `true`로 바꿉니다.
+Firebase(Google 계정 로그인 + Firestore)를 씁니다. 설정 방법은 아래 '로그인 · 진단 저장 (Firebase · Google 계정)'을 보세요.
 
 ## 오륜미네랄 홍보 영상 (10초 · 5초)
 
@@ -136,5 +130,35 @@ npm run poster        # 첫 화면 이미지
 이 폴더에서 `claude`를 실행하면 `CLAUDE.md`를 읽고 프로젝트 구조를 이해한 상태로 시작합니다. 예:
 
 - "제품 페이지에 미네랄카페 레시피 섹션을 3개 카드로 추가해줘"
-- "상담 신청을 Supabase 테이블에 저장하도록 바꿔줘"
+- "상담 신청을 Firestore 에 저장하도록 바꿔줘"
 - "효소 제품 페이지를 /product/enzyme 으로 하나 더 만들어줘"
+
+
+## 로그인 · 진단 저장 (Firebase · Google 계정)
+
+로그인과 회원가입은 **Google 계정 하나로** 합니다. 처음 로그인이 곧 회원가입입니다. 진단 결과는 Firestore `users/{uid}/diagnoses` 에 저장되고, `firestore.rules` 로 본인만 읽고 지울 수 있습니다. Firebase 값이 없으면 '체험 모드'(이 브라우저에만 저장)로 동작합니다.
+
+1. https://console.firebase.google.com 에서 **프로젝트 만들기** (이름 예: alfs)
+2. **Authentication → 시작하기 → 로그인 방법 → Google → 사용 설정**, 지원 이메일 선택 → 저장
+3. **Authentication → 설정 → 승인된 도메인**에 사이트 주소 추가 (예: `alfs-xxxx.vercel.app`, 나중에 붙일 도메인)
+4. **Firestore Database → 데이터베이스 만들기** (위치 `asia-northeast3` 서울, 프로덕션 모드) → **규칙** 탭에 `firestore.rules` 내용을 붙여 넣고 **게시**
+5. **프로젝트 설정(톱니) → 내 앱 → 웹(</>) 앱 추가** → 나오는 `firebaseConfig` 값을 Vercel **Settings → Environment Variables** 에 넣기
+   - `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_APP_ID` (필수)
+   - `VITE_FIREBASE_STORAGE_BUCKET`, `VITE_FIREBASE_MESSAGING_SENDER_ID` (선택)
+6. Vercel 에서 **Redeploy**
+
+카카오톡 안 브라우저에서는 Google 이 로그인을 막기 때문에, 로그인 화면이 '기본 브라우저로 열기' 버튼을 보여 줍니다.
+
+## 우리가게 진단 — 구조 점수
+
+문항은 24개(업종 맞춤 1개 포함)입니다. 핵심은 "팔수록 남는 사업인가?"를 보는 7문항입니다.
+
+VScore = (품질향상×2.5 + 재구매율×4.5 + 확장성×3.5) ÷ (원가×2.5 + 재고×1 + 유통비×2 + (6−시장성)×4)
+
+- 각 항목은 1~5점입니다. 1.8 이상이면 팔수록 남는 구조, 1.2~1.8은 남는 구조, 0.9~1.2는 본전 구조, 0.9 미만은 팔수록 힘든 구조입니다.
+- 리포트에 항목별 점수, 계산식, '한 단계만 바꿨을 때 점수가 가장 많이 오르는 항목 3개'를 보여 줍니다.
+- 코드: `src/diagnosis/questions.js`(`VALUE_FACTORS`, 문항), `src/diagnosis/engine.js`(`valueScore`), `src/components/Report.jsx`(`ValueScore`)
+
+## 첫 화면
+
+사이트를 새로 열면 PC·모바일 모두 홈 화면부터 보여 줍니다(`src/components/HomeFirst.jsx`). 특정 페이지로 바로 보내는 홍보 링크는 주소 끝에 `?stay`를 붙이세요. 예: `/video-maker?stay`

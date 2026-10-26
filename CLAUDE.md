@@ -13,14 +13,15 @@
 - `src/styles/global.css` — 디자인 토큰과 전체 스타일 (CSS 변수, 프레임워크 없음)
 - `src/lib/asset.js` — public 파일 경로는 반드시 `asset('images/x.webp')`로 (미리보기 빌드의 상대 경로 대응)
 - 이미지: `public/images/*.webp`
-- 우리가게 진단: `src/diagnosis/questions.js`(업종·문항·선택지 점수와 진단 문구), `src/diagnosis/engine.js`(점수·강점·없는 것·보완·실행 계획·상품군·미네랄 적합도)
-- 로그인·저장: `src/lib/auth.jsx`(Supabase 또는 체험 모드), `src/lib/store.js`(진단 저장), `supabase/schema.sql`(RLS: 본인만 조회)
+- 우리가게 진단: `src/diagnosis/questions.js`(24문항 · 구조 점수 7요소 `VALUE_FACTORS` · 업종별 맞춤 1문항), `src/diagnosis/engine.js`(구조 점수 `valueScore` = (품질향상×2.5+재구매율×4.5+확장성×3.5)÷(원가×2.5+재고×1+유통비×2+(6−시장성)×4), 영역 점수·강점·없는 것·보완·실행 계획·상품군·미네랄 적합도)
+- 로그인·저장: Firebase. `src/lib/firebase.js`(설정, `VITE_FIREBASE_*`), `src/lib/auth.jsx`(Google 로그인 · 값이 없으면 체험 모드), `src/lib/store.js`(Firestore `users/{uid}/diagnoses`), `firestore.rules`(본인만 접근)
+- 첫 화면: 새로 열면 항상 홈(`src/components/HomeFirst.jsx`, `?stay`로 예외)
 - 보호 화면: `RequireAuth`로 감싼 `/diagnosis/new`, `/diagnosis/result/:id`, `/my`. 나머지 페이지는 공개
 - 제품: `/products`(오륜미네랄) · `/products/enzyme`(효소세상, 준비 중). 탭 목록은 `src/components/ProductTabs.jsx`
 - 첫 화면 3D 'ALFS': `src/components/Alfs3D.jsx` (@remotion/svg-3d-engine 으로 글자에 두께를 주고 회전, 브라우저 애니메이션·동작 줄이기 설정 시 정지)
 - 로고·OG: `public/brand/*`, `public/og-image.jpg`, 주소는 `vite.config.js`의 `__SITE_URL__` 치환
 - 홍보 영상: `video/`(Remotion 별도 프로젝트) → 결과물 `public/video/*` → `src/components/PromoVideo.jsx`가 오륜미네랄 첫 화면에 재생
-- 영상 만들기: `/video-maker` → 첫 화면은 오륜미네랄 샘플 영상 파일(`public/video/*`) 그대로. 새 상품은 `src/videomaker/adScene.js`(참고 코드 제품 광고 템플릿을 캔버스로 옮김), `CutEditor.jsx`+`cutout.js`(누끼), `ocr.js`(설명서 사진 글자), `recorder.js`, `copywriter.js`(기본 도우미) + `api/generate-copy.js`(Claude, `ANTHROPIC_API_KEY`) + `copyRules.js`(금지어·글자수·AI 지시문). 템플릿 타이밍을 바꾸면 `video/scripts/make-ad-bgm.py`로 음악도 다시 만든다
+- 영상 만들기: `/video-maker` → 첫 화면은 오륜미네랄 샘플 영상 파일(`public/video/*`) 그대로. 새 상품은 `src/videomaker/adScene.js`(참고 코드 제품 광고 템플릿을 캔버스로 옮김), `CutResult.jsx`+`cutout.js`(자동 누끼, 결과만 표시), `ocr.js`(설명서 사진 글자), `recorder.js`, `saveFile.js`(PC 다른 이름으로 저장 · 휴대폰 공유 창 저장), `copywriter.js`(기본 도우미) + `api/generate-copy.js`(Claude, `ANTHROPIC_API_KEY`) + `copyRules.js`(금지어·글자수·AI 지시문). 템플릿 타이밍을 바꾸면 `video/scripts/make-ad-bgm.py`로 음악도 다시 만든다
 - 다운로드: `src/lib/download.js` (html2canvas + jsPDF, 버튼을 누를 때만 불러옴)
 
 ## 규칙
