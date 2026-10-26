@@ -23,8 +23,8 @@ export const channels = [
     id: 'kakao',
     label: '카카오톡 채널 상담',
     desc: '가장 빠른 답변 · 평일 1시간 이내',
-    // 예: 'https://pf.kakao.com/_xxxxxx/chat'
-    url: 'https://pf.kakao.com/_alfs/chat',
+    // 알프스 카카오톡 채널 (채널 홈 → '채팅' 버튼으로 상담)
+    url: 'https://pf.kakao.com/_JdTPX',
     primary: true,
   },
   {
@@ -71,8 +71,4 @@ export const commerce = {
   coupang: '',
 }
 
-// 로그인 방식. Supabase 대시보드 → Authentication → Providers 에서 켠 것만 true 로 바꾸세요.
-// 이메일 로그인은 항상 켜져 있습니다.
-export const authProviders = {
-  kakao: false,
-}
+// 로그인은 Firebase Google 계정 로그인 하나만 씁니다 (src/lib/firebase.js · README 참고).

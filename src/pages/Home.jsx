@@ -11,26 +11,29 @@ const lanes = [
     title: '총판·유통',
     text: '제조사에서 매장까지, 제품이 흘러가는 길을 직접 설계하고 운영합니다. 체험 카페·파트너샵·공동구매·온라인 네 채널이 서로 고객을 넘겨줍니다.',
     more: '유통 구조 보기',
+    img: 'images/icons/lane-distribution.webp',
   },
   {
     to: '/partner',
     title: '파트너샵 입점',
     text: '건강샵·웰니스샵·카페가 샵인샵으로 제품을 들이고, 진열 가이드와 판매 교육, 정착 지원까지 함께 받습니다.',
     more: '입점 조건 보기',
+    img: 'images/icons/lane-partner.webp',
   },
   {
     to: '/ai-marketing',
     title: 'AI 마케팅 컨설팅',
     text: '사장님 혼자서도 SNS가 굴러가도록, 콘텐츠·응대·재구매 알림을 AI 에이전트로 자동화해 드립니다.',
     more: 'AI 마케팅 보기',
+    img: 'images/icons/lane-ai.webp',
   },
 ]
 
 const channels = [
-  { en: 'Cafe · Party', t: '체험 카페·홈파티', d: '호스트가 하루 카페를 열고 체험 키트를 나눕니다. 새 고객이 처음 들어오는 문입니다.' },
-  { en: 'Partner shop', t: '오프라인 파트너샵', d: '지역 건강샵이 상시 체험·판매 거점이 됩니다. 교육과 판매 자료는 알프스가 지원합니다.' },
-  { en: 'Group buy', t: '인플루언서 공동구매', d: '검증된 콘텐츠로 공동구매를 열고, 주문과 정산은 시스템이 처리합니다.' },
-  { en: 'Online', t: '온라인 스토어', d: '네이버·쿠팡에서 재구매를 받는 상시 창구. 오프라인 고객이 여기로 돌아옵니다.' },
+  { icon: 'ch-cafe', en: 'Cafe · Party', t: '체험 카페·홈파티', d: '호스트가 하루 카페를 열고 체험 키트를 나눕니다. 새 고객이 처음 들어오는 문입니다.' },
+  { icon: 'ch-partner', en: 'Partner shop', t: '오프라인 파트너샵', d: '지역 건강샵이 상시 체험·판매 거점이 됩니다. 교육과 판매 자료는 알프스가 지원합니다.' },
+  { icon: 'ch-groupbuy', en: 'Group buy', t: '인플루언서 공동구매', d: '검증된 콘텐츠로 공동구매를 열고, 주문과 정산은 시스템이 처리합니다.' },
+  { icon: 'ch-online', en: 'Online', t: '온라인 스토어', d: '네이버·쿠팡에서 재구매를 받는 상시 창구. 오프라인 고객이 여기로 돌아옵니다.' },
 ]
 
 export default function Home() {
@@ -69,7 +72,10 @@ export default function Home() {
           <div className="lanes mt-l">
             {lanes.map((l) => (
               <Link key={l.to} to={l.to} className="lane">
-                <h3>{l.title}</h3>
+                <div className="lane__head">
+                  <img className="lane__icon" src={asset(l.img)} alt="" width="480" height="320" loading="lazy" />
+                  <h3>{l.title}</h3>
+                </div>
                 <p>{l.text}</p>
                 <span className="more">{l.more}</span>
               </Link>
@@ -119,8 +125,10 @@ export default function Home() {
           <div className="channels">
             {channels.map((c) => (
               <div key={c.t} className="channel">
-                <span className="en">{c.en}</span>
-                <h3>{c.t}</h3>
+                <div className="channel__head">
+                  <img className="channel__icon" src={asset(`images/icons/${c.icon}.webp`)} alt="" width="192" height="192" loading="lazy" />
+                  <div><span className="en">{c.en}</span><h3>{c.t}</h3></div>
+                </div>
                 <p>{c.d}</p>
               </div>
             ))}

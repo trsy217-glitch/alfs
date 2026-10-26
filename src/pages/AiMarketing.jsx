@@ -1,20 +1,21 @@
 import CtaBand from '../components/CtaBand.jsx'
 import { useConsult } from '../components/consult.js'
 import { Link } from 'react-router-dom'
+import { asset } from '../lib/asset.js'
 
 const pains = [
-  { t: '올릴 게 없어요', d: '매일 무엇을 찍고 뭐라고 써야 할지 몰라 계정이 멈춥니다.' },
-  { t: '답장할 시간이 없어요', d: '손님을 받는 중에 DM과 카톡 문의가 쌓여 놓칩니다.' },
-  { t: '한 번 온 손님이 끝이에요', d: '다시 올 때를 알 방법이 없어 재방문 안내를 못 합니다.' },
+  { img: 'images/pain-nothing.webp', alt: '빈 게시물 화면을 띄운 휴대폰과 "뭘 올리지?" 말풍선', t: '올릴 게 없어요', d: '매일 무엇을 찍고 뭐라고 써야 할지 몰라 계정이 멈춥니다.' },
+  { img: 'images/pain-reply.webp', alt: '포장하느라 바쁜 사이 휴대폰에 문의 알림이 쌓이는 카페 카운터', t: '답장할 시간이 없어요', d: '손님을 받는 중에 DM과 카톡 문의가 쌓여 놓칩니다.' },
+  { img: 'images/pain-revisit.webp', alt: '손님이 떠난 테이블에 도장 하나만 찍힌 스탬프 카드', t: '한 번 온 손님이 끝이에요', d: '다시 올 때를 알 방법이 없어 재방문 안내를 못 합니다.' },
 ]
 
 const agents = [
-  { tag: '콘텐츠', t: '콘텐츠 에이전트', d: '매장 사진과 메뉴만 주면 인스타 게시물, 릴스 대본, 캡션을 주 단위로 준비합니다.' },
-  { tag: '콘텐츠', t: '블로그 자동 포스팅', d: '사장님 코멘트 한 줄과 사진으로 2,000~3,000자 블로그 글을 만들고 예약 발행합니다.' },
-  { tag: '응대', t: '상담 응대 에이전트', d: '카카오톡 채널의 자주 묻는 질문에 1차로 답하고, 예약과 문의를 정리해 넘깁니다.' },
-  { tag: '재구매', t: '고객 DB · 재방문 알림', d: '구매·방문 주기에 맞춰 재구매와 이벤트 안내 메시지를 보낼 시점을 알려줍니다.' },
-  { tag: '관리', t: '리뷰 관리', d: '새 리뷰를 모아 보여주고, 사장님 말투로 답글 초안을 써 둡니다.' },
-  { tag: '관리', t: '광고 문구 검수', d: '건강식품·뷰티 매장은 올리기 전에 표시·광고 기준에 걸리는 표현을 걸러냅니다.' },
+  { tag: '콘텐츠', t: '콘텐츠 에이전트', img: 'images/agents/agent-content.webp', d: '매장 사진과 메뉴만 주면 인스타 게시물, 릴스 대본, 캡션을 주 단위로 준비합니다.' },
+  { tag: '콘텐츠', t: '블로그 자동 포스팅', img: 'images/agents/agent-blog.webp', d: '사장님 코멘트 한 줄과 사진으로 2,000~3,000자 블로그 글을 만들고 예약 발행합니다.' },
+  { tag: '응대', t: '상담 응대 에이전트', img: 'images/agents/agent-reply.webp', d: '카카오톡 채널의 자주 묻는 질문에 1차로 답하고, 예약과 문의를 정리해 넘깁니다.' },
+  { tag: '재구매', t: '고객 DB · 재방문 알림', img: 'images/agents/agent-db.webp', d: '구매·방문 주기에 맞춰 재구매와 이벤트 안내 메시지를 보낼 시점을 알려줍니다.' },
+  { tag: '관리', t: '리뷰 관리', img: 'images/agents/agent-review.webp', d: '새 리뷰를 모아 보여주고, 사장님 말투로 답글 초안을 써 둡니다.' },
+  { tag: '관리', t: '광고 문구 검수', img: 'images/agents/agent-check.webp', d: '건강식품·뷰티 매장은 올리기 전에 표시·광고 기준에 걸리는 표현을 걸러냅니다.' },
 ]
 
 const process = [
@@ -48,8 +49,13 @@ export default function AiMarketing() {
       <section className="section">
         <div className="wrap">
           <h2 className="h-section">마케팅이 멈추는 건 의지가 아니라 시간 때문입니다</h2>
-          <div className="hooks">
-            {pains.map((p) => <div className="hook" key={p.t}><h3>{p.t}</h3><p>{p.d}</p></div>)}
+          <div className="pains">
+            {pains.map((p) => (
+              <figure className="pain" key={p.t}>
+                <div className="pain__img"><img src={asset(p.img)} alt={p.alt} width="1024" height="683" loading="lazy" /></div>
+                <figcaption><h3>{p.t}</h3><p>{p.d}</p></figcaption>
+              </figure>
+            ))}
           </div>
         </div>
       </section>
@@ -60,7 +66,13 @@ export default function AiMarketing() {
           <p className="lead muted mt-s">에이전트가 초안을 만들고 사장님은 확인만. 매장의 말투와 금지 표현을 배워 쓸수록 정확해집니다.</p>
           <div className="agents">
             {agents.map((a) => (
-              <div className="agent" key={a.t}><span className="tag">{a.tag}</span><h3>{a.t}</h3><p>{a.d}</p></div>
+              <div className="agent" key={a.t}>
+                <div className="agent__head">
+                  <div><span className="tag">{a.tag}</span><h3>{a.t}</h3></div>
+                  <img className="agent__icon" src={asset(a.img)} alt="" width="312" height="320" loading="lazy" />
+                </div>
+                <p>{a.d}</p>
+              </div>
             ))}
           </div>
         </div>

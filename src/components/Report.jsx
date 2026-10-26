@@ -24,11 +24,14 @@ export default function Report({ r, createdAt, delta }) {
         <div className="report__score">
           <span className="report__total">{r.total}<small>점</small></span>
           <b>{r.grade}</b>
+          {r.value && <span className="report__vs">구조 점수 {r.value.value.toFixed(2)}</span>}
           {typeof delta === 'number' && <span className={`delta ${delta >= 0 ? 'up' : 'down'}`}>지난 진단보다 {delta >= 0 ? '+' : ''}{delta}점</span>}
         </div>
       </header>
 
       <p className="report__summary">{r.summary}</p>
+
+      {r.value && <ValueScore v={r.value} />}
 
       <section className="report__block report__areas" data-break>
         <RadarChart areas={r.areas} />
@@ -154,5 +157,53 @@ function PlanCol({ title, items }) {
         <ul>{items.map((f) => <li key={f.fix}><span className="chk" aria-hidden="true" />{f.fix}</li>)}</ul>
       )}
     </div>
+  )
+}
+
+// 구조 점수: 팔수록 남는 사업인가?
+function ValueScore({ v }) {
+  const ups = v.factors.filter((f) => f.side === 'up')
+  const downs = v.factors.filter((f) => f.side === 'down')
+  const Row = ({ f }) => (
+    <li>
+      <span className="vs__k">{f.k} <small>{f.invert ? `(6−${f.shown})×${f.w}` : `×${f.w}`}</small></span>
+      <span className="vs__dots" aria-label={`${f.k} 5점 중 ${f.shown}점`}>{[1, 2, 3, 4, 5].map((n) => <i key={n} className={n <= f.shown ? 'on' : ''} />)}</span>
+      <b>{f.weighted}</b>
+    </li>
+  )
+  return (
+    <section className="report__block vs" data-break>
+      <h3>구조 점수 <span className={`vs__badge vs__badge--${v.tone}`}>{v.level}</span></h3>
+      <div className="vs__top">
+        <b className={`vs__num vs__num--${v.tone}`}>{v.value.toFixed(2)}</b>
+        <p>팔수록 남는 사업인지, 한 번 팔고 끝나는 사업인지를 봅니다. <b>1.0보다 크면 남는 구조</b>, 작으면 팔수록 힘든 구조이고 높을수록 구조적으로 돈을 벌 수 있는 가게입니다.</p>
+      </div>
+      <div className="vs__frac">
+        <div className="vs__part vs__part--up">
+          <h4>더하는 힘 <small>클수록 좋음 · 합계 {v.numerator}</small></h4>
+          <ul>{ups.map((f) => <Row key={f.id} f={f} />)}</ul>
+        </div>
+        <div className="vs__div" aria-hidden="true">÷</div>
+        <div className="vs__part vs__part--down">
+          <h4>깎는 부담 <small>작을수록 좋음 · 합계 {v.denominator}</small></h4>
+          <ul>{downs.map((f) => <Row key={f.id} f={f} />)}</ul>
+        </div>
+      </div>
+      <p className="muted report__note">계산식: (품질향상×2.5 + 재구매율×4.5 + 확장성×3.5) ÷ (원가×2.5 + 재고×1 + 유통비×2 + (6−시장성)×4) = {v.numerator} ÷ {v.denominator} · 1.8 이상 팔수록 남는 구조 · 1.2~1.8 남는 구조 · 0.9~1.2 본전 구조 · 0.9 미만 팔수록 힘든 구조</p>
+      {v.levers.length > 0 && (
+        <>
+          <h4 className="vs__lh">구조 점수를 가장 크게 올리는 것</h4>
+          <ol className="vs__levers">
+            {v.levers.map((l) => (
+              <li key={l.id}>
+                <b>{l.k} 한 단계 {l.side === 'up' || l.invert ? '높이기' : '낮추기'}</b>
+                <span className="vs__gain">{v.value.toFixed(2)} → {l.after.toFixed(2)}</span>
+                <p>{l.tip}</p>
+              </li>
+            ))}
+          </ol>
+        </>
+      )}
+    </section>
   )
 }

@@ -139,7 +139,8 @@ function Question({ q, value, onChange, invalid }) {
     return (
       <fieldset className={`q ${invalid ? 'q--invalid' : ''}`} id={id}>
         <legend>{label}{multi && <span className="q__hint">여러 개 선택</span>}</legend>
-        <div className="chips">
+        {q.hint && <p className="q__ex">{q.hint}</p>}
+        <div className={`chips ${q.vs ? 'chips--col' : ''}`}>
           {q.o.map((o) => {
             const checked = multi ? sel.includes(o.v) : sel === o.v
             return (

@@ -1,4 +1,5 @@
 import CtaBand from '../components/CtaBand.jsx'
+import LoopCycle from '../components/LoopCycle.jsx'
 
 const problems = [
   { t: '팔고 나면 끝', d: '광고비를 써서 한 번 팔아도 재구매로 이어지지 않습니다.' },
@@ -8,10 +9,10 @@ const problems = [
 ]
 
 const solution = [
-  { en: 'Sell', t: '판매 채널 구축', d: '체험 카페·파트너샵·공동구매·온라인까지 채널을 직접 열고 운영합니다.' },
-  { en: 'Content', t: '팔리는 콘텐츠', d: '영상·SNS·상세페이지·세미나 자료를 표준화해 누구나 같은 품질로 설명합니다.' },
-  { en: 'Data', t: '고객 데이터 축적', d: '체험·구매·재구매 데이터를 쌓아 다음 판매와 공급량을 예측합니다.' },
-  { en: 'Scale', t: '검증 후 확장', d: '숫자로 확인된 모델만 파트너샵·지역·제품군으로 넓힙니다.' },
+  { img: 'images/loop-sell.webp', alt: '매장에서 휴대폰 주문으로 이어지는 판매 채널을 설명하는 상담 장면', en: 'Sell', t: '판매 채널 구축', d: '체험 카페·파트너샵·공동구매·온라인까지 채널을 직접 열고 운영합니다.' },
+  { img: 'images/loop-content.webp', alt: '태블릿으로 상품 영상과 사진 콘텐츠를 보여 주는 상담 장면', en: 'Content', t: '팔리는 콘텐츠', d: '영상·SNS·상세페이지·세미나 자료를 표준화해 누구나 같은 품질로 설명합니다.' },
+  { img: 'images/loop-data.webp', alt: '노트북으로 고객 목록과 판매 그래프를 짚어 주는 상담 장면', en: 'Data', t: '고객 데이터 축적', d: '체험·구매·재구매 데이터를 쌓아 다음 판매와 공급량을 예측합니다.' },
+  { img: 'images/loop-scale.webp', alt: '확인 표시와 오르는 그래프를 보여 주는 상담 장면', en: 'Scale', t: '검증 후 확장', d: '숫자로 확인된 모델만 파트너샵·지역·제품군으로 넓힙니다.' },
 ]
 
 const compare = [
@@ -64,14 +65,8 @@ export default function Company() {
       <section className="section leafbg">
         <div className="wrap">
           <h2 className="h-section">알프스가 길을 내는 방법</h2>
-          <div className="rows">
-            {solution.map((s) => (
-              <div className="row" key={s.t}>
-                <h3><span className="en" style={{ fontSize: '0.8rem', display: 'block', opacity: 0.7, fontWeight: 600 }}>{s.en}</span>{s.t}</h3>
-                <p className="muted">{s.d}</p>
-              </div>
-            ))}
-          </div>
+          <p className="lead muted mt-s">팔고, 알리고, 쌓고, 넓힌 결과가 다시 다음 판매로 돌아옵니다.</p>
+          <LoopCycle items={solution} label="알프스가 길을 내는 네 단계" />
         </div>
       </section>
 

@@ -853,3 +853,123 @@ ol.howto { padding: 0; }
   .hero__visual { justify-content: center; }
   .hero .hero__logo { width: min(100%, 520px); }
 }
+
+/* ─── 진단: 구조 점수 ─── */
+.q__ex { margin: -4px 0 12px; font-size: var(--t-sm); color: var(--ink-2); background: var(--silk-2); border-radius: var(--radius-s); padding: 8px 12px; }
+.chips--col { display: grid; gap: 8px; }
+.chips--col label span { display: block; text-align: left; }
+.report__vs { display: block; font-size: var(--t-sm); font-weight: 700; color: var(--leaf); margin-top: 4px; }
+.vs__top { display: flex; gap: 18px; align-items: center; margin: 10px 0 18px; }
+.vs__top p { margin: 0; color: var(--ink-2); }
+.vs__num { font-family: var(--display-en); font-size: clamp(2.6rem, 6vw, 3.6rem); line-height: 1; letter-spacing: -0.04em; color: var(--leaf); }
+.vs__num--c { color: var(--warn); }
+.vs__num--d { color: var(--warn); }
+.vs__frac { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: stretch; }
+.vs__part { border: 1.5px solid var(--line); border-radius: var(--radius-m); padding: 14px 16px; background: #fff; }
+.vs__part--up { border-color: rgba(47, 107, 74, 0.35); }
+.vs__part--down { border-color: rgba(168, 85, 31, 0.3); }
+.vs__part h4 { margin: 0 0 10px; font-size: var(--t-md); }
+.vs__part h4 small { font-weight: 600; color: var(--ink-2); margin-left: 6px; }
+.vs__part ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.vs__part li { display: grid; grid-template-columns: 1fr auto 2.6em; gap: 10px; align-items: center; font-size: var(--t-sm); }
+.vs__k small { color: var(--ink-2); font-weight: 600; }
+.vs__part li b { text-align: right; }
+.vs__dots { display: inline-flex; gap: 4px; }
+.vs__dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--silk-2); }
+.vs__part--up .vs__dots i.on { background: var(--leaf-2); }
+.vs__part--down .vs__dots i.on { background: var(--warn); }
+.vs__div { display: grid; place-items: center; font-size: 1.6rem; font-weight: 800; color: var(--ink-2); }
+.vs__lh { margin: 18px 0 10px; }
+.vs__levers { margin: 0; padding-left: 1.2em; display: grid; gap: 10px; }
+.vs__levers b { margin-right: 8px; }
+.vs__gain { font-weight: 700; color: var(--leaf); font-size: var(--t-sm); }
+.vs__levers p { margin: 4px 0 0; color: var(--ink-2); font-size: var(--t-sm); }
+@media (max-width: 640px) {
+  .vs__frac { grid-template-columns: 1fr; }
+  .vs__div { padding: 0; }
+  .vs__top { flex-direction: column; align-items: flex-start; }
+}
+.vs__badge { font-size: var(--t-xs); font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-left: 6px; vertical-align: 3px; }
+.vs__badge--a, .vs__badge--b { background: var(--good-bg); color: var(--leaf); }
+.vs__badge--c, .vs__badge--d { background: var(--warn-bg); color: var(--warn); }
+
+/* ─── Google 로그인 ─── */
+.auth-h2 { font-size: var(--t-xl); margin-bottom: 16px; }
+.btn--google { width: 100%; justify-content: center; gap: 10px; margin-top: 14px; background: #fff; color: var(--ink); border: 1.5px solid var(--line); }
+.btn--google:hover { border-color: var(--ink-2); }
+.btn--google:focus-visible { outline: 3px solid var(--leaf-2); outline-offset: 2px; }
+.auth-hint { margin-top: 10px; text-align: center; }
+.inapp { display: grid; gap: 12px; padding: 14px 16px; border-radius: var(--radius-m); background: var(--warn-bg); }
+.inapp p { margin: 0; }
+.page-loading { min-height: 50vh; display: grid; place-items: center; color: var(--ink-2); }
+
+/* 영상 만들기: 누끼 결과만 보기 · 제목 */
+.vm__trial { font-size: 0.5em; font-weight: 700; color: var(--ink-2); margin-left: 8px; letter-spacing: 0; vertical-align: 0.35em; }
+.cutres { margin: 12px 0 4px; }
+.cutres__img { display: flex; justify-content: center; padding: 14px; border-radius: var(--radius-s); border: 1.5px solid var(--line);
+  background: repeating-conic-gradient(#e8e8e8 0 25%, #fff 0 50%) 0 0 / 18px 18px; }
+.cutres__img canvas { display: block; max-width: 100%; height: auto !important; }
+.cutres__busy { display: flex; align-items: center; gap: 8px; font-size: var(--t-sm); color: var(--ink-2); }
+
+/* ─── 홈: 세 갈래(lane) 제목 옆 그림 · 네 채널 아이콘 ─── */
+.lane__head { display: flex; align-items: center; gap: 14px; }
+.lane__icon { width: 108px; height: auto; flex: none; border-radius: 14px; }
+.lane__head h3 { margin: 0; }
+.channel__head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.channel__icon { width: 56px; height: 56px; flex: none; }
+.channel__head h3 { margin: 2px 0 0; }
+@media (max-width: 480px) { .lane__icon { width: 92px; } .channel__icon { width: 48px; height: 48px; } }
+
+/* ─── AI 마케팅: 멈추는 이유 (사진 크게 · 글은 아래) ─── */
+.pains { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 3vw, 36px); margin-top: 44px; }
+.pain { margin: 0; }
+.pain__img { aspect-ratio: 3 / 2; overflow: hidden; border-radius: 42% 42% 28px 28px / 46% 46% 28px 28px; background: var(--silk-2); }
+.pain__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pain figcaption { padding: 18px 4px 0; }
+.pain h3 { font-size: var(--t-lg); margin-bottom: 6px; }
+.pain p { color: var(--ink-2); font-size: var(--t-sm); }
+@media (max-width: 860px) { .pains { grid-template-columns: 1fr; } }
+
+/* ─── 회사 소개: 네 단계가 이어져 굴러가는 순환 ─── */
+.loop { display: grid; grid-template-columns: minmax(0, 1fr) clamp(40px, 6vw, 84px) minmax(0, 1fr);
+  grid-template-areas: "c1 a12 c2" "a41 hub a23" "c4 a34 c3"; align-items: center; justify-items: center;
+  row-gap: clamp(6px, 1.4vw, 14px); margin-top: 40px; }
+.loop__c1 { grid-area: c1; } .loop__c2 { grid-area: c2; } .loop__c3 { grid-area: c3; } .loop__c4 { grid-area: c4; }
+.loop__a12 { grid-area: a12; } .loop__a23 { grid-area: a23; } .loop__a34 { grid-area: a34; } .loop__a41 { grid-area: a41; } .loop__hub { grid-area: hub; }
+.loop__card { margin: 0; width: 100%; max-width: 520px; outline: none; transition: transform .5s ease; }
+.loop__img { aspect-ratio: 3 / 2; overflow: hidden; border-radius: 42% 42% 26px 26px / 46% 46% 26px 26px; background: rgba(242, 243, 238, 0.12);
+  box-shadow: 0 0 0 0 rgba(169, 211, 238, 0); transition: box-shadow .5s ease; }
+.loop__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.loop__card.on { transform: translateY(-4px) scale(1.02); }
+.loop__card.on .loop__img { box-shadow: 0 0 0 4px var(--drop), 0 26px 50px -24px rgba(0, 0, 0, 0.55); }
+.loop__card:focus-visible .loop__img { box-shadow: 0 0 0 4px var(--silk); }
+.loop__card figcaption { display: grid; gap: 2px; padding: 12px 4px 0; }
+.loop__n { font-size: var(--t-xs); font-weight: 700; opacity: 0.72; }
+.loop__card b { font-size: var(--t-lg); }
+.loop__d { font-size: var(--t-sm); color: rgba(242, 243, 238, 0.76); }
+.loop__arrow { display: grid; place-items: center; width: clamp(30px, 4vw, 48px); color: rgba(242, 243, 238, 0.45); transition: color .4s ease; }
+.loop__arrow svg { width: 100%; height: auto; }
+.loop__arrow--down svg { transform: rotate(90deg); }
+.loop__arrow--left svg { transform: rotate(180deg); }
+.loop__arrow--up svg { transform: rotate(-90deg); }
+.loop__arrow.on { color: var(--drop); }
+.loop__a12, .loop__a34 { align-self: start; margin-top: clamp(40px, 9vw, 120px); }
+.loop__hub { width: clamp(34px, 5vw, 60px); color: var(--drop); }
+.loop__hub svg { width: 100%; height: auto; display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .loop__hub svg { animation: loopspin 9s linear infinite; }
+  .loop__arrow.on svg path { animation: loopnudge 1.3s ease-in-out infinite; }
+}
+@keyframes loopspin { to { transform: rotate(360deg); } }
+@keyframes loopnudge { 50% { transform: translateX(4px); } }
+@media (max-width: 640px) {
+  .loop__card b { font-size: var(--t-md); }
+  .loop__d { font-size: 0.78rem; }
+  .loop__a12, .loop__a34 { margin-top: 18vw; }
+}
+
+/* AI 에이전트 카드: 제목 옆 로봇 아이콘 */
+.agent__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.agent__head h3 { margin-bottom: 0; }
+.agent__icon { width: 88px; height: auto; flex: none; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.28)); }
+@media (max-width: 480px) { .agent__icon { width: 80px; } }

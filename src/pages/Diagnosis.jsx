@@ -3,10 +3,11 @@ import { CATEGORIES, STEPS } from '../diagnosis/questions.js'
 import { useAuth } from '../lib/auth.jsx'
 
 const outputs = [
+  { t: '구조 점수', d: '품질향상·재구매율·확장성을 원가·재고·유통비·시장성(경쟁 부담)으로 나눠, 팔수록 남는 사업인지 숫자 하나로 보여 줍니다.' },
   { t: '영역별 점수', d: '시장·매출·온라인·오프라인·고객·상품·운영 여건 7개 영역을 100점 기준으로 봅니다.' },
   { t: '강점과 없는 것', d: '이미 잘하고 있는 것, 아예 없는 것, 부족해서 보완할 것을 나눠 보여 드립니다.' },
   { t: '이번 주부터 할 일', d: '이번 주 · 한 달 안 · 석 달 계획으로 우선순위를 정리합니다.' },
-  { t: '상품군 분석', d: '입문 상품, 재구매율, 가격대, 타깃을 따로 짚고 상품 단계를 제안합니다.' },
+  { t: '상품군 분석', d: '입문 상품, 재구매, 원가 구조, 경쟁을 따로 짚고 상품 단계를 제안합니다.' },
 ]
 
 export default function Diagnosis() {
@@ -18,7 +19,7 @@ export default function Diagnosis() {
         <div className="wrap diag-hero__grid">
           <div className="intro">
             <span className="kicker">무료 · 회원 전용</span>
-            <h1>우리 가게, 어디가 비어 있는지 10분이면 보입니다</h1>
+            <h1>우리 가게, 팔수록 남는 구조인지 5분이면 보입니다</h1>
             <p className="lead">업종을 고르고 질문 {STEPS.length}묶음에 짧게 답하면, 강점과 없는 것, 보완할 것, 이번 주에 할 일까지 정리된 진단표가 나옵니다.</p>
             <div className="btn-row mt-m">
               <Link to={start} state={{ from: '/diagnosis/new' }} className="btn btn--primary">{user ? '진단 시작하기' : '로그인하고 무료 진단하기'}</Link>

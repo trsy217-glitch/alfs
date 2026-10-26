@@ -5,8 +5,8 @@ import { fileToDataUrl, loadImage, trim } from '../videomaker/image.js'
 import { record, pickMime } from '../videomaker/recorder.js'
 import { generateCopy, syncFromDescription } from '../videomaker/copywriter.js'
 import { LIMITS } from '../videomaker/copyRules.js'
-import CutEditor from '../videomaker/CutEditor.jsx'
-import { saveBlob, safeFileName } from '../videomaker/saveFile.js'
+import CutResult from '../videomaker/CutResult.jsx'
+import { saveBlob, safeFileName, isMobile } from '../videomaker/saveFile.js'
 import { asset } from '../lib/asset.js'
 import { ls } from '../lib/safeStorage.js'
 
@@ -196,7 +196,7 @@ export default function VideoMaker() {
       <div className="wrap">
         <header className="vm__head">
           <span className="kicker">무료 · 로그인 없이</span>
-          <h1>우리 가게 홍보영상, 지금 바로 만들어 보세요</h1>
+          <h1>10초만에 제품홍보영상만들기<small className="vm__trial">(체험용)</small></h1>
           <p className="lead muted">상품 사진을 올리면 배경을 지워 상품만 남기고(누끼), 상품 색에 맞춘 배경과 광고 문구까지 자동으로 채워 6초·10초 제품 광고 영상을 만듭니다. 채워진 문구와 색은 마음대로 고칠 수 있어요.</p>
         </header>
 
@@ -236,7 +236,7 @@ export default function VideoMaker() {
                   <button type="button" className="btn btn--primary" onClick={makeVideo} disabled={recording || !img || cutBusy}>
                     {recording ? `만드는 중… ${Math.round(rec.progress * 100)}%` : '영상 만들기'}
                   </button>
-                  {rec.state === 'done' && <button type="button" className="btn btn--line" onClick={onSave}>영상 저장하기 ({rec.ext.toUpperCase()} · {(rec.blob.size / 1048576).toFixed(1)}MB)</button>}
+                  {rec.state === 'done' && <button type="button" className="btn btn--line" onClick={onSave}>{isMobile() ? '휴대폰에 저장하기' : '영상 저장하기'} ({rec.ext.toUpperCase()} · {(rec.blob.size / 1048576).toFixed(1)}MB)</button>}
                 </div>
                 <p className="vm__hint">
                   {recording ? '영상이 실제 시간으로 녹화됩니다. 끝날 때까지 이 탭을 보이는 상태로 두세요.'
@@ -244,6 +244,7 @@ export default function VideoMaker() {
                       : '이 브라우저는 영상 저장을 지원하지 않습니다. 크롬·엣지·사파리 최신 버전에서 열어 주세요.'}
                 </p>
                 {rec.saved === 'saved' && <p className="vm__hint" role="status">저장했어요. 고른 폴더에서 '{fileName}' 파일을 확인하세요.</p>}
+                {rec.saved === 'shared' && <p className="vm__hint" role="status">공유 창에서 '동영상 저장'(또는 '파일에 저장')을 고르면 사진첩에 저장돼요.</p>}
                 {rec.saved === 'downloaded' && <p className="vm__hint" role="status">다운로드를 시작했어요. 브라우저 다운로드 목록에서 '{fileName}'을 확인하세요.</p>}
                 {rec.error && <p className="err" role="alert">{rec.error}</p>}
               </>
@@ -261,7 +262,7 @@ export default function VideoMaker() {
               {!sample && (
                 <label className="consent"><input type="checkbox" checked={cutBg} onChange={(e) => setCutBg(e.target.checked)} disabled={cutBusy} /> <span>배경 지우기 (누끼)</span></label>
               )}
-              {!sample && cutBg && <CutEditor image={rawImg} onResult={setImg} onBusy={setCutBusy} />}
+              {!sample && cutBg && <CutResult image={rawImg} onResult={setImg} onBusy={setCutBusy} />}
               {imgError && <p className="err">{imgError}</p>}
               {!sample && (
                 <label className="vm__range vm__scale">영상 속 상품 크기 <b>{scalePct}%</b>

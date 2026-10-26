@@ -1,116 +1,84 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { supabase, isDemoMode } from './supabase.js'
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult, signOut as fbSignOut } from 'firebase/auth'
+import { auth, isDemoMode } from './firebase.js'
 import { ls } from './safeStorage.js'
-import { authProviders } from '../config/site.js'
+
+// 로그인·회원가입: Firebase Authentication 의 Google 계정 로그인 하나로 처리합니다.
+// 처음 Google 로 로그인하면 그 자체가 회원가입입니다.
 
 const AuthContext = createContext(null)
 export const useAuth = () => useContext(AuthContext)
 
-const DEMO_USERS = 'alfs_demo_users'
 const DEMO_SESSION = 'alfs_demo_session'
 
-async function hash(text) {
-  try {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text))
-    return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('')
-  } catch {
-    return btoa(unescape(encodeURIComponent(text)))
-  }
+// 카카오톡·인스타그램 등 앱 안 브라우저에서는 Google 이 로그인을 막습니다.
+export const inAppBrowser = () => {
+  const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
+  if (/KAKAOTALK/i.test(ua)) return 'kakao'
+  if (/Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps|everytimeApp|Whale\/.*inapp/i.test(ua)) return 'other'
+  return ''
 }
 
-// Supabase 오류 메시지를 사용자가 이해할 수 있는 말로 바꿉니다.
-function friendly(error) {
-  const m = (error?.message || '').toLowerCase()
-  if (m.includes('invalid login')) return '이메일 또는 비밀번호가 맞지 않습니다. 다시 확인해 주세요.'
-  if (m.includes('already registered') || m.includes('already been registered')) return '이미 가입된 이메일입니다. 로그인해 주세요.'
-  if (m.includes('email not confirmed')) return '가입 확인 메일의 링크를 먼저 눌러 주세요.'
-  if (m.includes('password')) return '비밀번호는 8자 이상으로 입력해 주세요.'
-  if (m.includes('rate limit')) return '요청이 많습니다. 잠시 후 다시 시도해 주세요.'
-  return error?.message || '처리하지 못했습니다. 잠시 후 다시 시도해 주세요.'
+// 카카오톡 안 브라우저 → 휴대폰 기본 브라우저로 같은 주소 열기
+export const openInExternalBrowser = () => {
+  window.location.href = `kakaotalk://web/openExternal?url=${encodeURIComponent(window.location.href)}`
 }
+
+function friendly(error) {
+  const c = error?.code || ''
+  if (c === 'auth/popup-closed-by-user' || c === 'auth/cancelled-popup-request') return ''
+  if (c === 'auth/unauthorized-domain') return '이 주소는 아직 로그인이 허용되지 않았습니다. Firebase 콘솔 → Authentication → 설정 → 승인된 도메인에 사이트 주소를 추가해 주세요.'
+  if (c === 'auth/network-request-failed') return '네트워크가 불안정합니다. 잠시 후 다시 시도해 주세요.'
+  if (c === 'auth/operation-not-allowed') return 'Google 로그인이 꺼져 있습니다. Firebase 콘솔 → Authentication → 로그인 방법에서 Google 을 켜 주세요.'
+  return '로그인하지 못했습니다. 잠시 후 다시 시도해 주세요.'
+}
+
+const mapUser = (u) => (u ? { id: u.uid, email: u.email, name: u.displayName || u.email?.split('@')[0], photo: u.photoURL || '' } : null)
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    if (isDemoMode) {
-      setUser(ls.get(DEMO_SESSION))
-      setLoading(false)
-      return
-    }
-    supabase.auth.getSession().then(({ data }) => {
-      setUser(mapUser(data.session?.user))
-      setLoading(false)
-    })
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => setUser(mapUser(session?.user)))
-    return () => sub.subscription.unsubscribe()
+    if (isDemoMode) { setUser(ls.get(DEMO_SESSION)); setLoading(false); return }
+    getRedirectResult(auth).catch((e) => setError(friendly(e)))
+    return onAuthStateChanged(auth, (u) => { setUser(mapUser(u)); setLoading(false) })
   }, [])
 
   const api = useMemo(() => ({
     user,
     loading,
+    error,
     demo: isDemoMode,
-    providers: isDemoMode ? {} : authProviders,
 
-    async signUp({ email, password, name }) {
+    async signInWithGoogle() {
       if (isDemoMode) {
-        const users = ls.get(DEMO_USERS, {})
-        const key = email.trim().toLowerCase()
-        if (users[key]) return { error: '이미 가입된 이메일입니다. 로그인해 주세요.' }
-        const id = `demo-${Date.now().toString(36)}`
-        users[key] = { id, name, pass: await hash(password) }
-        ls.set(DEMO_USERS, users)
-        const u = { id, email: key, name }
+        const u = ls.get(DEMO_SESSION) || { id: `demo-${Date.now().toString(36)}`, email: 'demo@alfs.kr', name: '체험 사용자' }
         ls.set(DEMO_SESSION, u); setUser(u)
         return { ok: true }
       }
-      const { data, error } = await supabase.auth.signUp({
-        email, password, options: { data: { name }, emailRedirectTo: window.location.origin + '/diagnosis/new' },
-      })
-      if (error) return { error: friendly(error) }
-      if (!data.session) return { needConfirm: true }
-      return { ok: true }
-    },
-
-    async signIn({ email, password }) {
-      if (isDemoMode) {
-        const users = ls.get(DEMO_USERS, {})
-        const key = email.trim().toLowerCase()
-        const u = users[key]
-        if (!u || u.pass !== (await hash(password))) return { error: '이메일 또는 비밀번호가 맞지 않습니다. 다시 확인해 주세요.' }
-        const s = { id: u.id, email: key, name: u.name }
-        ls.set(DEMO_SESSION, s); setUser(s)
+      const provider = new GoogleAuthProvider()
+      provider.setCustomParameters({ prompt: 'select_account' })
+      try {
+        await signInWithPopup(auth, provider)
         return { ok: true }
+      } catch (e) {
+        // 팝업이 막힌 브라우저는 페이지 이동 방식으로 다시 시도
+        if (e?.code === 'auth/popup-blocked' || e?.code === 'auth/operation-not-supported-in-this-environment') {
+          await signInWithRedirect(auth, provider)
+          return { ok: true }
+        }
+        const m = friendly(e)
+        return m ? { error: m } : { cancelled: true }
       }
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
-      return error ? { error: friendly(error) } : { ok: true }
-    },
-
-    async signInWithKakao(redirectPath = '/diagnosis/new') {
-      if (isDemoMode) return { error: '체험 모드에서는 카카오 로그인을 쓸 수 없습니다.' }
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'kakao', options: { redirectTo: window.location.origin + redirectPath },
-      })
-      return error ? { error: friendly(error) } : { ok: true }
-    },
-
-    async resetPassword(email) {
-      if (isDemoMode) return { error: '체험 모드에서는 비밀번호 재설정 메일을 보낼 수 없습니다.' }
-      const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/login' })
-      return error ? { error: friendly(error) } : { ok: true }
     },
 
     async signOut() {
       if (isDemoMode) { ls.remove(DEMO_SESSION); setUser(null); return }
-      await supabase.auth.signOut()
+      await fbSignOut(auth)
     },
-  }), [user, loading])
+  }), [user, loading, error])
 
   return <AuthContext.Provider value={api}>{children}</AuthContext.Provider>
-}
-
-function mapUser(u) {
-  if (!u) return null
-  return { id: u.id, email: u.email, name: u.user_metadata?.name || u.user_metadata?.full_name || u.email?.split('@')[0] }
 }

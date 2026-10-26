@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { asset } from '../lib/asset.js'
 import CtaBand from '../components/CtaBand.jsx'
 
 const chain = [
@@ -9,10 +10,10 @@ const chain = [
 ]
 
 const channels = [
-  { en: 'Cafe · Party', t: '체험 카페·홈파티', d: '호스트가 하루 카페를 열고 참석자에게 체험 키트를 전달합니다. 신규 고객이 처음 들어오는 문입니다.' },
-  { en: 'Partner shop', t: '오프라인 파트너샵', d: '지역 건강샵·웰니스샵이 상시 체험·판매 거점이 됩니다. 교육과 판매 자료는 알프스가 지원합니다.' },
-  { en: 'Group buy', t: '인플루언서 공동구매', d: '검증된 콘텐츠로 공동구매를 열고, 주문·정산은 시스템이 처리합니다.' },
-  { en: 'Online', t: '온라인 스토어', d: '네이버·쿠팡에서 재구매를 받는 상시 창구. 오프라인 고객이 여기로 돌아옵니다.' },
+  { icon: 'ch-cafe', en: 'Cafe · Party', t: '체험 카페·홈파티', d: '호스트가 하루 카페를 열고 참석자에게 체험 키트를 전달합니다. 신규 고객이 처음 들어오는 문입니다.' },
+  { icon: 'ch-partner', en: 'Partner shop', t: '오프라인 파트너샵', d: '지역 건강샵·웰니스샵이 상시 체험·판매 거점이 됩니다. 교육과 판매 자료는 알프스가 지원합니다.' },
+  { icon: 'ch-groupbuy', en: 'Group buy', t: '인플루언서 공동구매', d: '검증된 콘텐츠로 공동구매를 열고, 주문·정산은 시스템이 처리합니다.' },
+  { icon: 'ch-online', en: 'Online', t: '온라인 스토어', d: '네이버·쿠팡에서 재구매를 받는 상시 창구. 오프라인 고객이 여기로 돌아옵니다.' },
 ]
 
 const pilot = [
@@ -67,7 +68,13 @@ export default function Distribution() {
           <h2 className="h-section">네 개의 채널이 서로 고객을 넘겨줍니다</h2>
           <div className="channels">
             {channels.map((c) => (
-              <div key={c.t} className="channel"><span className="en">{c.en}</span><h3>{c.t}</h3><p>{c.d}</p></div>
+              <div key={c.t} className="channel">
+                <div className="channel__head">
+                  <img className="channel__icon" src={asset(`images/icons/${c.icon}.webp`)} alt="" width="192" height="192" loading="lazy" />
+                  <div><span className="en">{c.en}</span><h3>{c.t}</h3></div>
+                </div>
+                <p>{c.d}</p>
+              </div>
             ))}
           </div>
           <p className="channels-flow">처음은 체험으로, 다음은 매장에서, 그 다음은 온라인 재구매로.</p>

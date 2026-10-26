@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
@@ -13,13 +13,16 @@ import AiMarketing from './pages/AiMarketing.jsx'
 import Partner from './pages/Partner.jsx'
 import Contact from './pages/Contact.jsx'
 import NotFound from './pages/NotFound.jsx'
-import Diagnosis from './pages/Diagnosis.jsx'
-import DiagnosisNew from './pages/DiagnosisNew.jsx'
-import DiagnosisResult from './pages/DiagnosisResult.jsx'
-import MyDiagnoses from './pages/MyDiagnoses.jsx'
 import Login from './pages/Login.jsx'
-import VideoMaker from './pages/VideoMaker.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
+import HomeFirst from './components/HomeFirst.jsx'
+
+// 무거운 화면(진단·영상 만들기)은 들어갈 때만 불러옵니다 → 첫 화면이 빨리 뜸
+const Diagnosis = lazy(() => import('./pages/Diagnosis.jsx'))
+const DiagnosisNew = lazy(() => import('./pages/DiagnosisNew.jsx'))
+const DiagnosisResult = lazy(() => import('./pages/DiagnosisResult.jsx'))
+const MyDiagnoses = lazy(() => import('./pages/MyDiagnoses.jsx'))
+const VideoMaker = lazy(() => import('./pages/VideoMaker.jsx'))
 import { AuthProvider } from './lib/auth.jsx'
 import { ConsultContext } from './components/consult.js'
 
@@ -28,10 +31,12 @@ export default function App() {
   return (
     <AuthProvider>
     <ConsultContext.Provider value={{ open: () => setOpen(true) }}>
+      <HomeFirst />
       <ScrollToTop />
       <a href="#main" className="sr-only">본문으로 건너뛰기</a>
       <Header />
       <main id="main">
+        <Suspense fallback={<div className="page-loading" role="status">불러오는 중…</div>}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/company" element={<Company />} />
@@ -51,6 +56,7 @@ export default function App() {
           <Route path="/my" element={<RequireAuth><MyDiagnoses /></RequireAuth>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </Suspense>
       </main>
       <Footer />
       <ConsultSheet open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)} />

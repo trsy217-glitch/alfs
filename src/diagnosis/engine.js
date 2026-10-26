@@ -1,7 +1,7 @@
 // 우리가게 진단 — 답변을 점수·강점·없는 것·보완점·실행 계획으로 바꾸는 분석 엔진
-import { AREAS, STEPS, CATEGORIES, categoryById, questionsOf } from './questions.js'
+import { AREAS, STEPS, CATEGORIES, VALUE_FACTORS, categoryById, questionsOf } from './questions.js'
 
-export const ENGINE_VERSION = 1
+export const ENGINE_VERSION = 2 // 2: 구조 점수 추가, 문항 24개로 축소
 
 // 받침 유무에 맞춰 조사를 고릅니다 (예: 경쟁력이 / 건강도가)
 const josa = (w, a, b) => { const c = w.charCodeAt(w.length - 1); return c >= 0xac00 && c <= 0xd7a3 && (c - 0xac00) % 28 ? w + a : w + b }
@@ -28,13 +28,52 @@ export const levelOf = (s) => (s >= 80 ? '강점' : s >= 60 ? '양호' : s >= 40
 const CHANNEL_W = { place: 25, insta: 20, kakao: 15, blog: 12, short: 15, store: 10, karrot: 8 }
 const OFFLINE_W = { sign: 12, pop: 10, flyer: 8, trial: 20, partner: 14, member: 22, class: 14 }
 
+// 구조 점수 항목별 진단 문구
+const VS_TEXT = {
+  v_core: { good: '상품·서비스를 계속 더 좋게 만들 수 있는 구조입니다.', bad: '상품을 더 좋게 만들 여지가 적어 가격 경쟁에 휘말리기 쉽습니다.' },
+  v_rebuy: { good: '한 번 산 손님이 다시 사는 구조입니다. 구조 점수에서 가장 무거운 항목(×4.5)입니다.', bad: '한 번 팔고 끝나는 구조라 매번 새 손님을 찾아야 합니다.' },
+  v_scale: { good: '사장님이 없어도 팔리는 구조가 있습니다.', bad: '사장님이 직접 해야만 매출이 생겨 더 크게 키우기 어렵습니다.' },
+  v_cost: { good: '원가 부담이 낮아 팔수록 남습니다.', bad: '원가 비중이 높아 많이 팔아도 남는 게 적습니다.' },
+  v_stock: { good: '버려지는 재고 걱정이 적습니다.', bad: '안 팔리면 버려지는 재고가 그대로 손실이 됩니다.' },
+  v_dist: { good: '손님에게 닿기까지 드는 비용이 적습니다.', bad: '배달·수수료 같은 유통비가 이익을 깎습니다.' },
+  v_comp: { good: '나만큼 잘하는 경쟁자가 적습니다.', bad: '비슷하게 잘하는 경쟁자가 많아 가격으로 밀리기 쉽습니다.' },
+}
+
+// 구조 점수 = (품질향상×2.5 + 재구매율×4.5 + 확장성×3.5) ÷ (원가×2.5 + 재고×1 + 유통비×2 + (6−시장성)×4)
+export function valueScore(answers) {
+  const val = (id) => { const n = Number(answers[id]); return n >= 1 && n <= 5 ? n : 3 }
+  const calc = (get) => {
+    const num = VALUE_FACTORS.filter((f) => f.side === 'up').reduce((n, f) => n + get(f) * f.w, 0)
+    const den = VALUE_FACTORS.filter((f) => f.side === 'down').reduce((n, f) => n + get(f) * f.w, 0)
+    return { num, den, v: num / den }
+  }
+  const base = calc((f) => val(f.id))
+  // 한 단계만 바꿨을 때 점수가 가장 많이 오르는 항목 = 가장 효과 큰 지렛대
+  const levers = VALUE_FACTORS.map((f) => {
+    const cur = val(f.id)
+    const next = f.side === 'up' ? Math.min(5, cur + 1) : Math.max(1, cur - 1)
+    if (next === cur) return null
+    const after = calc((g) => (g.id === f.id ? next : val(g.id))).v
+    return { id: f.id, k: f.k, side: f.side, invert: !!f.invert, gain: Math.round((after - base.v) * 100) / 100, after: Math.round(after * 100) / 100, tip: f.tip }
+  }).filter(Boolean).sort((a, b) => b.gain - a.gain).slice(0, 3)
+  const v = Math.round(base.v * 100) / 100
+  const level = v >= 1.8 ? '팔수록 남는 구조' : v >= 1.2 ? '남는 구조 · 더 키울 여지' : v >= 0.9 ? '본전 구조 · 구조 보완 필요' : '팔수록 힘든 구조'
+  return {
+    value: v, level, tone: v >= 1.8 ? 'a' : v >= 1.2 ? 'b' : v >= 0.9 ? 'c' : 'd',
+    numerator: base.num, denominator: base.den,
+    answered: VALUE_FACTORS.every((f) => answers[f.id] != null),
+    factors: VALUE_FACTORS.map((f) => ({ id: f.id, k: f.k, w: f.w, side: f.side, invert: !!f.invert, v: val(f.id), shown: f.invert ? 6 - val(f.id) : val(f.id), weighted: val(f.id) * f.w })),
+    levers,
+  }
+}
+
 const MINERAL_BASE = { health: 90, cafe: 85, fitness: 85, pharmacy: 85, beauty: 80, spa: 80, community: 80, grocery: 75, online: 75, hair: 70, restaurant: 70 }
 
 export function diagnose(answers) {
   const category = answers.category
   const cat = categoryById(category)
   const idx = questionIndex(category)
-  const isOffline = answers.size !== 'none' && answers.m_area !== 'online'
+  const isOffline = answers.size !== 'none'
 
   const bucket = Object.fromEntries(AREAS.map((a) => [a.id, []]))
   const flags = []
@@ -57,6 +96,16 @@ export function diagnose(answers) {
     }
   })
 
+  // 구조 점수 항목별 강점·보완
+  VALUE_FACTORS.forEach((f) => {
+    const n = Number(answers[f.id])
+    if (!n) return
+    const good = f.side === 'up' ? n >= 4 : n <= 2
+    const bad = f.side === 'up' ? n <= 2 : n >= 4
+    if (good) add('strength', f.area, `${f.k}: ${VS_TEXT[f.id].good}`)
+    if (bad) add('weak', f.area, `${f.k}: ${VS_TEXT[f.id].bad}`, f.tip, f.id === 'v_rebuy' || f.id === 'v_comp' ? 1 : 2)
+  })
+
   // 온라인 채널 (복수 선택)
   const ch = (answers.o_channels || []).filter((x) => x !== 'none')
   bucket.online.push(clamp(ch.reduce((n, c) => n + (CHANNEL_W[c] || 0), 0) * (isOffline ? 1 : 1.15)))
@@ -69,7 +118,7 @@ export function diagnose(answers) {
 
   // 오프라인 홍보 (복수 선택)
   const ft = (answers.f_tools || []).filter((x) => x !== 'none')
-  if (isOffline) {
+  if (isOffline && answers.f_tools) { // 예전 진단(오프라인 홍보 복수 선택 문항이 있던 버전)만
     bucket.offline.push(clamp(ft.reduce((n, c) => n + (OFFLINE_W[c] || 0), 0) * 1.25))
     if (!ft.includes('member')) add('missing', 'offline', '쿠폰·스탬프·멤버십 같은 재방문 장치가 없습니다.', '종이 스탬프나 카카오톡 채널 쿠폰처럼 바로 시작할 수 있는 방식부터 쓰세요.', 2)
     if (!ft.includes('trial')) add('weak', 'offline', '손님이 직접 경험해 볼 시식·체험 기회가 없습니다.', '월 1회 체험 데이를 열어 새 상품을 맛보게 하세요.', 2)
@@ -78,11 +127,9 @@ export function diagnose(answers) {
   }
 
   // 2) 서로 엮인 답변 규칙
-  if (answers.m_price === 'high' && answers.m_diff === 'clear') add('strength', 'market', '가격이 높아도 그만한 이유를 손님에게 설명할 수 있습니다.')
-  if (answers.m_price === 'high' && answers.m_diff !== 'clear') add('weak', 'market', '가격은 높은데 그 이유가 손님에게 전달되지 않습니다.', '재료·과정·서비스 중 가격을 설명하는 근거 하나를 메뉴판과 상세 소개에 적으세요.', 1)
-  if (answers.m_price === 'low' && ['down', 'drop'].includes(answers.s_trend)) add('weak', 'sales', '가격이 낮은데도 매출이 줄고 있어 가격 외 이유가 필요합니다.', '가격 할인보다 경험(체험·서비스·분위기)을 더하는 쪽으로 방향을 바꿔 보세요.', 2)
-  if (answers.p_price && ['30', '31'].includes(answers.p_price) && answers.p_entry !== 'yes') add('weak', 'product', '주력 상품 가격이 높은데 입문 상품이 분명하지 않습니다.', '고가 상품일수록 체험·소용량 상품이 첫 구매를 만듭니다.', 1)
-  if (answers.k_time === '0' && ['0', '1'].includes(answers.k_budget)) add('weak', 'capacity', '마케팅에 쓸 시간과 예산이 모두 부족합니다.', '돈보다 시간이 덜 드는 일(리뷰 답글, 카카오 채널 친구 모으기)부터 자동화하세요.', 1)
+  if (answers.v_rebuy && Number(answers.v_rebuy) <= 2 && answers.p_sub !== 'yes') add('missing', 'sales', '다시 사게 만드는 정기구매·회원권 상품이 없습니다.', '구조 점수에서 가장 무거운 재구매율을 올리는 가장 빠른 방법입니다. 3회권·월 정기 세트를 시험해 보세요.', 1)
+  if (answers.m_diff !== 'clear' && Number(answers.v_comp) >= 4) add('weak', 'market', '경쟁이 많은데 우리 가게만의 이유가 분명하지 않습니다.', '경쟁점이 하지 않는 한 가지를 정해 간판·플레이스·프로필 첫 줄에 똑같이 적으세요.', 1)
+  if (answers.k_time === '0' && Number(answers.v_scale) <= 2) add('weak', 'capacity', '사장님 시간이 없는데 사장님 없이는 팔리지 않는 구조입니다.', '예약·주문·문의 응답부터 자동화해 사장님 손을 덜어 내세요.', 1)
 
   // 3) 영역 점수
   const areas = AREAS.map((a) => {
@@ -116,40 +163,36 @@ export function diagnose(answers) {
   // 6) 시장 · 매출 요약
   const L = (id) => optionLabel(idx, id, answers[id])
   const market = [
-    answers.m_area && `상권: ${L('m_area')}`,
-    answers.m_comp && `같은 업종 경쟁점: ${L('m_comp')}`,
-    answers.m_trend && `최근 1년 분위기: ${L('m_trend')}`,
-    answers.m_price && `주변 대비 가격: ${L('m_price')}`,
+    answers.region && `지역: ${answers.region}`,
+    answers.v_comp && `나만큼 잘하는 집: ${L('v_comp')}`,
     answers.m_diff && `차별점: ${L('m_diff')}`,
+    answers.size && `가게 형태: ${L('size')}`,
   ].filter(Boolean)
   const sales = [
-    answers.s_monthly && `월 평균 매출: ${L('s_monthly')}`,
     answers.s_trend && `최근 6개월: ${L('s_trend')}`,
-    answers.s_season && `계절 편차: ${L('s_season')}`,
-    answers.s_repeat && `단골 매출 비중: ${L('s_repeat')}`,
-    answers.s_ticket && `객단가: ${L('s_ticket')}`,
+    answers.v_rebuy && `재구매: ${L('v_rebuy')}`,
+    answers.v_cost && `원가 비중: ${L('v_cost')}`,
+    answers.v_dist && `유통비: ${L('v_dist')}`,
   ].filter(Boolean)
 
   // 7) 상품군 분석
   const st = (v, good, mid) => (good.includes(v) ? 'good' : mid.includes(v) ? 'mid' : 'bad')
-  const ages = optionLabel(idx, 'c_age', answers.c_age)
   const product = {
-    main: answers.p_main || '',
+    main: '',
     cells: [
       { k: '입문 상품', v: L('p_entry') || '-', s: st(answers.p_entry, ['yes'], ['vague']),
         note: answers.p_entry === 'yes' ? '첫 구매 문턱이 낮습니다.' : '처음 온 손님이 가볍게 고를 상품이 필요합니다.' },
-      { k: '재구매율', v: L('p_rebuy') || '-', s: st(answers.p_rebuy, ['50', '30'], ['10']),
-        note: ['50', '30'].includes(answers.p_rebuy) ? '다시 사는 손님이 매출을 받칩니다.' : '두 번째 구매를 만드는 장치가 필요합니다.' },
-      { k: '가격대', v: L('p_price') || '-', s: 'info',
-        note: ['30', '31'].includes(answers.p_price) ? '고가 주력이라 체험·상담이 구매를 결정합니다.' : answers.p_price === '1' ? '저가 주력이라 방문 빈도와 객단가를 함께 올려야 합니다.' : '주력 가격대 위아래로 선택지를 두면 객단가가 올라갑니다.' },
-      { k: '타깃', v: [L('p_target'), ages && `주 고객 ${ages}`, answers.c_gender && L('c_gender')].filter(Boolean).join(' · ') || '-',
-        s: st(answers.p_target, ['clear'], ['rough']),
-        note: answers.p_target === 'clear' ? '메시지를 한 사람에게 맞출 수 있습니다.' : '가장 많이 사는 손님 한 유형으로 좁혀 보세요.' },
+      { k: '재구매', v: L('v_rebuy') || '-', s: st(answers.v_rebuy, ['5', '4'], ['3']),
+        note: Number(answers.v_rebuy) >= 4 ? '다시 사는 손님이 매출을 받칩니다.' : '두 번째 구매를 만드는 장치가 필요합니다.' },
+      { k: '원가 구조', v: L('v_cost') || '-', s: st(answers.v_cost, ['1', '2'], ['3']),
+        note: Number(answers.v_cost) >= 4 ? '원가율이 낮은 상품(체험·클래스·세트)을 함께 팔면 평균이 내려갑니다.' : '원가 부담이 크지 않아 판매량이 곧 이익이 됩니다.' },
+      { k: '시장성', v: L('v_comp') || '-', s: st(answers.v_comp, ['1', '2'], ['3']),
+        note: Number(answers.v_comp) >= 4 ? '가격 말고 나만의 이유를 앞세워야 합니다.' : '경쟁이 적어 시장성이 좋은 자리를 지키고 있습니다.' },
     ],
     ladder: [
       { k: '입문', d: '체험·소용량·첫 방문 상품', has: answers.p_entry === 'yes' },
-      { k: '주력', d: answers.p_main || '대표 상품', has: true },
-      { k: '정기', d: '회원권·정기구매·패키지', has: answers.p_sub === 'yes' || answers.p_ladder === 'ladder' },
+      { k: '주력', d: '대표 상품', has: true },
+      { k: '정기', d: '회원권·정기구매·패키지', has: answers.p_sub === 'yes' },
     ],
   }
 
@@ -160,9 +203,7 @@ export function diagnose(answers) {
   if (answers.k_space === 'no') { fit -= 15; reasons.push('진열 공간이 부족해 카운터 소형 진열부터 맞습니다.') }
   if (answers.k_new === 'yes') { fit += 5; reasons.push('새 상품 도입에 적극적입니다.') }
   if (answers.k_new === 'no') { fit -= 20; reasons.push('당분간 새 상품 도입 계획이 없습니다.') }
-  if (answers.p_health === 'now') { fit += 5; reasons.push('건강·웰니스 상품 판매 경험이 있습니다.') }
-  if (answers.p_health === 'never') { fit -= 5; reasons.push('건강 상품은 처음이라 판매 교육이 함께 필요합니다.') }
-  if (['30', '40', '50', '60'].some((a) => (answers.c_age || []).includes(a))) reasons.push('주 고객층이 생활 습관 상품에 관심이 많은 연령대를 포함합니다.')
+  if (Number(answers.v_rebuy) <= 2) reasons.push('매일 마시는 소모품이라 재구매 상품을 더하는 효과가 큽니다.')
   fit = clamp(fit)
   const mineral = { score: fit, level: fit >= 80 ? '높음' : fit >= 60 ? '보통' : '낮음', reasons, idea: cat?.idea || '' }
 
@@ -180,13 +221,14 @@ export function diagnose(answers) {
       shopName: answers.shopName || '우리 가게',
       region: answers.region || '',
       category, categoryName: cat?.name || '',
-      years: L('years'), size: L('size'), staff: L('staff'),
+      size: L('size'),
       worry: answers.k_worry || '',
     },
     total, grade,
     summary: best && worst && best.id !== worst.id
       ? `${josa(best.label, '이', '가')} 가장 강하고, ${worst.label}부터 손보면 효과가 가장 큽니다.`
       : '영역별 점수가 고르게 나왔습니다.',
+    value: valueScore(answers),
     areas, strengths, missing, weak, plan, market, sales, product, mineral, help,
   }
 }
