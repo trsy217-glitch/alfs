@@ -2,7 +2,6 @@ import Alfs3D from '../components/Alfs3D.jsx'
 import { Link } from 'react-router-dom'
 import EngineLoop, { engineSteps } from '../components/EngineLoop.jsx'
 import CtaBand from '../components/CtaBand.jsx'
-import { useConsult } from '../components/consult.js'
 import { asset } from '../lib/asset.js'
 
 const lanes = [
@@ -37,7 +36,6 @@ const channels = [
 ]
 
 export default function Home() {
-  const consult = useConsult()
   return (
     <>
       <section className="hero">
@@ -51,10 +49,6 @@ export default function Home() {
             <p className="hero__lead">
               알프스는 제품 발굴부터 콘텐츠·체험·판매·재구매까지, 상품이 시장에 안착하는 시스템을 만드는 웰니스 유통 회사입니다.
             </p>
-            <div className="btn-row">
-              <button className="btn btn--primary" onClick={consult.open}>파트너 상담 시작하기</button>
-              <Link to="/products" className="btn btn--ghost">첫 제품, 오륜미네랄</Link>
-            </div>
           </div>
           <div className="hero__visual">
             <div className="hero__logo intro-img">

@@ -982,3 +982,10 @@ ol.howto { padding: 0; }
   .engine__steps li { grid-template-columns: 112px 1fr; gap: 14px; }
   .engine__img { width: 112px; height: 84px; }
 }
+
+/* 제목 안 강조 단어 (예: 멈추는 · 네 가지) */
+.hl { font-style: normal; color: var(--leaf); background: linear-gradient(transparent 58%, rgba(200, 162, 76, 0.45) 58%); padding: 0 0.08em; }
+.dark .hl, .leafbg .hl { color: var(--drop); background: linear-gradient(transparent 58%, rgba(169, 211, 238, 0.28) 58%); }
+/* 비교표: 알프스 쪽 머리글을 칩으로 */
+.compare thead th:last-child { color: inherit; }
+.compare__us { display: inline-block; background: var(--leaf); color: var(--silk); font-weight: 800; font-size: var(--t-md); padding: 6px 14px; border-radius: 999px; white-space: nowrap; }

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { drawFrame, FPS, SIZES, THEMES, themeFromColor, colorFromImage, FONT } from '../videomaker/adScene.js'
 import { fileToDataUrl, loadImage, trim } from '../videomaker/image.js'
 import { record, pickMime } from '../videomaker/recorder.js'
-import { generateCopy, syncFromDescription } from '../videomaker/copywriter.js'
+import { generateCopy } from '../videomaker/copywriter.js'
 import { LIMITS } from '../videomaker/copyRules.js'
 import CutResult from '../videomaker/CutResult.jsx'
 import { saveBlob, safeFileName, isMobile } from '../videomaker/saveFile.js'
@@ -42,7 +42,6 @@ export default function VideoMaker() {
   const [cutBg, setCutBg] = useState(true)
   const [cutBusy, setCutBusy] = useState(false)
   const [autoColor, setAutoColor] = useState(null)
-  const [docs, setDocs] = useState([])
   const [frame, setFrame] = useState(0)
   const [playing, setPlaying] = useState(true)
   const [rec, setRec] = useState({ state: 'idle', progress: 0, blob: null, ext: '', error: '' })
@@ -50,7 +49,6 @@ export default function VideoMaker() {
   const [gen, setGen] = useState({ state: 'idle', source: '', msg: '', step: '' })
   const canvasRef = useRef(null)
   const frameRef = useRef(0)
-  const descDirty = useRef(false)
 
   const sample = !rawImg
   const durationFrames = form.duration * FPS
@@ -70,13 +68,6 @@ export default function VideoMaker() {
   useEffect(() => { if (rawImg && !cutBg) setImg(trim(rawImg)) }, [rawImg, cutBg])
   // 상품 색 자동
   useEffect(() => { if (img) setAutoColor(colorFromImage(img)) }, [img])
-
-  // 설명을 적는 대로 템플릿 칸에 반영 (AI가 다듬은 뒤에는 덮어쓰지 않음)
-  useEffect(() => {
-    if (!descDirty.current || form.aiApplied) return
-    const t = setTimeout(() => setForm((s) => syncFromDescription(s)), 350)
-    return () => clearTimeout(t)
-  }, [form.description]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const draw = useCallback((f) => {
     const c = canvasRef.current
@@ -102,18 +93,17 @@ export default function VideoMaker() {
 
   const set = (k) => (e) => setForm((s) => ({ ...s, [k]: e.target.type === 'checkbox' ? e.target.checked : e.target.value }))
   const setText = (k) => (e) => setForm((s) => ({ ...s, [k]: e.target.value, touched: { ...s.touched, [k]: true } }))
-  const setDesc = (e) => { descDirty.current = true; const v = e.target.value; setForm((s) => ({ ...s, description: v })) }
   const pickOption = (o) => setForm((s) => ({ ...s, copyL: o.copyL, copyR: o.copyR, touched: { ...s.touched, copyL: true, copyR: true } }))
 
-  // 자동 문구: 설명 + 설명서 사진 (+ 상품 사진) → 템플릿 칸에 나눠 넣기
+  // 자동 문구: 상품 사진 → 템플릿 칸에 나눠 넣기
   const runGenerate = async (productImage = rawImg) => {
     setGen({ state: 'loading', source: '', msg: '', step: '' })
     const out = await generateCopy({
-      description: form.description || '', image: productImage, docs: docs.map((d) => d.img), productName: form.touched.productName ? form.productName : '',
+      description: '', image: productImage, docs: [], productName: form.touched.productName ? form.productName : '',
       onStep: (step) => setGen((g) => ({ ...g, step })),
     })
     if (!out.copyL && !out.copyR) {
-      setGen({ state: 'idle', source: out.source, msg: '문구를 만들지 못했어요. 설명을 한두 줄 적고 다시 눌러 주세요.', step: '' })
+      setGen({ state: 'idle', source: out.source, msg: '문구를 자동으로 만들지 못했어요. 2번 칸에 직접 적어 주세요.', step: '' })
       return
     }
     frameRef.current = 0
@@ -147,18 +137,7 @@ export default function VideoMaker() {
     } catch (err) { setImgError(err.message) }
   }
 
-  const onDocs = async (e) => {
-    const files = [...(e.target.files || [])].filter((f) => f.type.startsWith('image/') && f.size <= 15 * 1024 * 1024)
-    e.target.value = ''
-    const add = []
-    for (const f of files.slice(0, 3 - docs.length)) {
-      try { const url = await fileToDataUrl(f); add.push({ id: `${Date.now()}-${Math.random()}`, img: await loadImage(url), thumb: url }) } catch { /* 건너뜀 */ }
-    }
-    if (add.length) setDocs((d) => [...d, ...add])
-  }
-
   const backToSample = () => {
-    descDirty.current = false
     setRawImg(null); setImg(null); setDocs([]); setAutoColor(null)
     setForm((s) => ({ ...EMPTY, size: s.size, duration: s.duration, music: s.music }))
     setGen({ state: 'idle', source: '', msg: '', step: '' })
@@ -234,7 +213,7 @@ export default function VideoMaker() {
                 </div>
                 <div className="vm__make">
                   <button type="button" className="btn btn--primary" onClick={makeVideo} disabled={recording || !img || cutBusy}>
-                    {recording ? `만드는 중… ${Math.round(rec.progress * 100)}%` : '영상 만들기'}
+                    {recording ? `만드는 중… ${Math.round(rec.progress * 100)}%` : cutBusy ? '상품 배경 지우는 중…' : '영상 만들기'}
                   </button>
                   {rec.state === 'done' && <button type="button" className="btn btn--line" onClick={onSave}>{isMobile() ? '휴대폰에 저장하기' : '영상 저장하기'} ({rec.ext.toUpperCase()} · {(rec.blob.size / 1048576).toFixed(1)}MB)</button>}
                 </div>
@@ -253,16 +232,13 @@ export default function VideoMaker() {
 
           <form className="vm__form form" onSubmit={(e) => e.preventDefault()}>
             <fieldset className="vm__box">
-              <legend>1. 상품 사진과 설명</legend>
+              <legend>1. 상품 사진</legend>
               <label className="vm__file">
                 <input type="file" accept="image/png,image/jpeg,image/webp" onChange={onFile} disabled={recording} />
                 <span>{sample ? '내 상품 사진 올리기' : '다른 사진으로 바꾸기'}</span>
               </label>
               {sample && <p className="hint">사진을 올리면 상품만 남기고 배경을 자동으로 지워요(누끼). 사진은 서버로 보내지 않고 이 브라우저 안에서 처리합니다.</p>}
-              {!sample && (
-                <label className="consent"><input type="checkbox" checked={cutBg} onChange={(e) => setCutBg(e.target.checked)} disabled={cutBusy} /> <span>배경 지우기 (누끼)</span></label>
-              )}
-              {!sample && cutBg && <CutResult image={rawImg} onResult={setImg} onBusy={setCutBusy} />}
+              {!sample && cutBg && <CutResult image={rawImg} onResult={setImg} onBusy={setCutBusy} hidden />}
               {imgError && <p className="err">{imgError}</p>}
               {!sample && (
                 <label className="vm__range vm__scale">영상 속 상품 크기 <b>{scalePct}%</b>
@@ -271,39 +247,7 @@ export default function VideoMaker() {
                 </label>
               )}
 
-              <div className="field">
-                <label htmlFor="vm-desc">상품 설명 (선택)</label>
-                <textarea id="vm-desc" rows={4} value={form.description} onChange={setDesc} maxLength={1600} disabled={recording}
-                  placeholder={'예: 제주 감귤 수제청. 노지 감귤을 껍질째 갈아 만들었어요. 탄산수에 타면 감귤 에이드. 제조원: 한라농원'} />
-              </div>
-              <div className="field">
-                <span className="vm__label">설명서·라벨·전단 사진 첨부 (선택 · 최대 3장)</span>
-                <div className="vm__docs">
-                  {docs.map((d, i) => (
-                    <div className="vm__doc" key={d.id}>
-                      <img src={d.thumb} alt={`설명서 사진 ${i + 1}`} />
-                      <button type="button" onClick={() => setDocs((x) => x.filter((y) => y.id !== d.id))} aria-label={`설명서 사진 ${i + 1} 빼기`}>
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" /></svg>
-                      </button>
-                    </div>
-                  ))}
-                  {docs.length < 3 && (
-                    <label className="vm__docadd">
-                      <input type="file" accept="image/png,image/jpeg,image/webp" multiple onChange={onDocs} disabled={recording} />
-                      <span>사진 추가</span>
-                    </label>
-                  )}
-                </div>
-              </div>
-              <button type="button" className="btn btn--primary vm__gen" onClick={() => runGenerate()} disabled={recording || gen.state === 'loading'}>
-                {gen.state === 'loading' ? (gen.step || '문구 만드는 중…') : 'AI로 홍보 문구 다듬기 → 2번에 나눠 넣기'}
-              </button>
-              <p className="hint" role="status">
-                {gen.msg || (gen.state === 'done'
-                  ? (gen.source === 'ai' ? 'AI가 사진과 설명을 읽고 2번 칸에 나눠 넣었어요. 아래에서 바로 고쳐 쓸 수 있어요.'
-                    : 'AI 연결이 없어 기본 도우미로 업종에 맞는 문구를 넣었어요. 설명서 사진에서 읽은 글은 설명 칸에 붙였어요.')
-                  : '사진만 올려도 문구가 자동으로 채워져요. 설명이나 설명서 사진을 더하면 더 잘 맞는 문구가 나옵니다.')}
-              </p>
+              {(gen.state === 'loading' || gen.msg) && <p className="hint" role="status">{gen.msg || gen.step || '사진을 보고 문구를 만드는 중…'}</p>}
             </fieldset>
 
             <fieldset className="vm__box">

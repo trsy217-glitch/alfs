@@ -52,7 +52,7 @@ export default function Company() {
 
       <section className="section--tight">
         <div className="wrap">
-          <h2 className="h-section">좋은 제품이 시장에서 멈추는 네 가지 이유</h2>
+          <h2 className="h-section">좋은 제품이 시장에서 <em className="hl">멈추는</em> <em className="hl">네 가지</em> 이유</h2>
           <div className="rows">
             {problems.map((p) => (
               <div className="row" key={p.t}><h3>{p.t}</h3><p className="muted">{p.d}</p></div>
@@ -75,7 +75,7 @@ export default function Company() {
           <h2 className="h-section">알프스와 협력하면 무엇이 달라질까요</h2>
           <div style={{ overflowX: 'auto' }}>
             <table className="compare">
-              <thead><tr><th>구분</th><th>기존 제품 유통</th><th>알프스와 협력</th></tr></thead>
+              <thead><tr><th>구분</th><th>기존 제품 유통</th><th><span className="compare__us">알프스와 협업이유</span></th></tr></thead>
               <tbody>{compare.map((r) => <tr key={r[0]}>{r.map((c, i) => <td key={i}>{c}</td>)}</tr>)}</tbody>
             </table>
           </div>

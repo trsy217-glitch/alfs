@@ -16,12 +16,6 @@ const channels = [
   { icon: 'ch-online', en: 'Online', t: '온라인 스토어', d: '네이버·쿠팡에서 재구매를 받는 상시 창구. 오프라인 고객이 여기로 돌아옵니다.' },
 ]
 
-const pilot = [
-  { when: 'Step 1 · ~30일', t: '시장 반응 확인', items: ['체험 카페·세미나 운영', '판매 콘텐츠 제작', '파트너샵 입점 준비'], goal: '목표 · 체험 고객 300명' },
-  { when: 'Step 2 · ~60일', t: '판매 테스트', items: ['4개 채널 동시 판매', '고객 DB 확보', '재구매 흐름 추적'], goal: '목표 · 파트너샵 3곳 · 고객 DB 200명' },
-  { when: 'Step 3 · ~90일', t: '성과 리포트·확대 결정', items: ['판매량·재구매율 리포트', '채널별 효율 분석', '공급량·지역 확대 결정'], goal: '결과 · 데이터로 다음 단계 합의' },
-]
-
 const roadmap = [
   { y: 'Phase 1', t: '오륜미네랄', d: '90일 검증으로 판매 모델을 확정합니다.' },
   { y: 'Phase 2', t: '파트너샵·지역 확장', d: '검증된 모델을 전국 거점으로 넓힙니다.' },
@@ -78,23 +72,6 @@ export default function Distribution() {
             ))}
           </div>
           <p className="channels-flow">처음은 체험으로, 다음은 매장에서, 그 다음은 온라인 재구매로.</p>
-        </div>
-      </section>
-
-      <section className="section leafbg">
-        <div className="wrap">
-          <h2 className="h-section">처음부터 큰 계약을 제안하지 않습니다. 먼저 90일, 숫자로 증명합니다</h2>
-          <div className="steps">
-            {pilot.map((p) => (
-              <div className="step" key={p.t}>
-                <span className="when">{p.when}</span>
-                <h3>{p.t}</h3>
-                <ul>{p.items.map((i) => <li key={i}>{i}</li>)}</ul>
-                <p className="goal">{p.goal}</p>
-              </div>
-            ))}
-          </div>
-          <p className="muted mt-m" style={{ fontSize: '0.85rem' }}>목표치는 파일럿 범위 협의에 따라 조정합니다.</p>
         </div>
       </section>
 

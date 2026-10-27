@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { prepareBase, autoMask, applyMask } from './cutout.js'
 import { trim } from './image.js'
 
-// 자동 누끼 → 결과(상품만)만 보여 줍니다. 편집 도구 없음.
-export default function CutResult({ image, onResult, onBusy }) {
+// 자동 누끼 → 결과(상품만)를 영상에 넘깁니다. hidden 이면 화면에는 아무것도 그리지 않습니다.
+export default function CutResult({ image, onResult, onBusy, hidden = false }) {
   const ref = useRef(null)
   const [state, setState] = useState('working') // working · done · fail
   const [out, setOut] = useState(null)
@@ -41,6 +41,8 @@ export default function CutResult({ image, onResult, onBusy }) {
     ctx.clearRect(0, 0, v.width, v.height)
     ctx.drawImage(out, 0, 0, v.width, v.height)
   }, [out])
+
+  if (hidden) return null
 
   return (
     <div className="cutres">

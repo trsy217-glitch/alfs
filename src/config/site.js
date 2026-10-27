@@ -38,7 +38,7 @@ export const channels = [
     id: 'instagram',
     label: '인스타그램 DM · 미네랄카페',
     desc: '레시피·체험 카페 소식',
-    url: 'https://www.instagram.com/',
+    url: 'https://www.instagram.com/mineral_detox_cafe?psln=dnp6cTV1ZHdlZ2xt',
   },
   {
     id: 'youtube',
