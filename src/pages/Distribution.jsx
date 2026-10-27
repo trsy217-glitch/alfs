@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import Faq from '../components/Faq.jsx'
+import { FAQ_DISTRIBUTION } from '../seo.js'
 import { asset } from '../lib/asset.js'
 import CtaBand from '../components/CtaBand.jsx'
 
@@ -28,7 +30,7 @@ export default function Distribution() {
     <>
       <section className="page-hero">
         <div className="wrap intro">
-          <span className="kicker">총판·유통</span>
+          <span className="kicker">알프스 유통 · 미네랄 총판</span>
           <h1>한 번 팔고 끝나는 유통이 아니라, 고객이 돌아오는 엔진</h1>
           <p className="lead">알프스는 총판으로서 제품을 공급하는 데서 멈추지 않고, 매장과 셀러가 실제로 팔 수 있도록 콘텐츠·교육·데이터까지 함께 넘겨드립니다.</p>
         </div>
@@ -91,6 +93,8 @@ export default function Distribution() {
           </ol>
         </div>
       </section>
+
+      <Faq title="알프스 유통, 자주 묻는 질문" items={FAQ_DISTRIBUTION} />
 
       <CtaBand title="제조사·브랜드라면, 알프스의 판매 시스템에 제품을 올려 보세요." text="공급 조건 확인 미팅 → 90일 파일럿 범위 합의 → 첫 체험 행사 오픈 순서로 진행합니다." toLabel="제휴 제안 남기기" />
     </>

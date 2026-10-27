@@ -16,6 +16,8 @@ import NotFound from './pages/NotFound.jsx'
 import Login from './pages/Login.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 import HomeFirst from './components/HomeFirst.jsx'
+import SeoHead from './components/SeoHead.jsx'
+import MineralGuide from './pages/MineralGuide.jsx'
 
 // 무거운 화면(진단·영상 만들기)은 들어갈 때만 불러옵니다 → 첫 화면이 빨리 뜸
 const Diagnosis = lazy(() => import('./pages/Diagnosis.jsx'))
@@ -32,6 +34,7 @@ export default function App() {
     <AuthProvider>
     <ConsultContext.Provider value={{ open: () => setOpen(true) }}>
       <HomeFirst />
+      <SeoHead />
       <ScrollToTop />
       <a href="#main" className="sr-only">본문으로 건너뛰기</a>
       <Header />
@@ -45,6 +48,7 @@ export default function App() {
           <Route path="/products/oryun" element={<Navigate to="/products" replace />} />
           <Route path="/products/enzyme" element={<EnzymeTab />} />
           <Route path="/product" element={<Navigate to="/products" replace />} />
+          <Route path="/mineral-guide" element={<MineralGuide />} />
           <Route path="/ai-marketing" element={<AiMarketing />} />
           <Route path="/partner" element={<Partner />} />
           <Route path="/contact" element={<Contact />} />

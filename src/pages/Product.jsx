@@ -1,6 +1,9 @@
 import CtaBand from '../components/CtaBand.jsx'
 import PromoVideo from '../components/PromoVideo.jsx'
 import ProductTabs from '../components/ProductTabs.jsx'
+import Faq from '../components/Faq.jsx'
+import { Link } from 'react-router-dom'
+import { FAQ_PRODUCT } from '../seo.js'
 import { useConsult } from '../components/consult.js'
 import { asset, scrollToId } from '../lib/asset.js'
 import { commerce, channels } from '../config/site.js'
@@ -74,7 +77,7 @@ export default function Product() {
       <section className="p-hero dark">
         <div className="wrap p-hero__grid p-hero__grid--video">
           <div className="intro">
-            <span className="kicker">First product · 오륜미네랄</span>
+            <span className="kicker">알프스 유통 첫 제품 · 오륜미네랄</span>
             <h1>물 한 잔에 타는, 뽕잎과 누에의 미네랄</h1>
             <div className="badges">
               <span className="badge">제조사 특허 제1541516호</span>
@@ -182,6 +185,8 @@ export default function Product() {
           </table>
         </div>
       </section>
+
+      <Faq title="오륜미네랄 자주 묻는 질문" items={FAQ_PRODUCT} lead={<>미네랄 제품을 고르는 기준이 궁금하다면 <Link to="/mineral-guide">미네랄 고르는 법</Link>도 읽어 보세요.</>} />
 
       <CtaBand
         title="매장에서 오륜미네랄을 팔고 싶으신가요?"

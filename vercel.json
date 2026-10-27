@@ -1,1 +1,5 @@
-{ "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }] }
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/app.html" }]
+}

@@ -1,0 +1,17 @@
+# 알프스 ALFS — https://alfs.kr
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /my
+Disallow: /diagnosis/new
+Disallow: /diagnosis/result/
+Disallow: /api/
+
+# 네이버 검색 로봇
+User-agent: Yeti
+Allow: /
+Disallow: /login
+Disallow: /my
+Disallow: /api/
+
+Sitemap: https://alfs.kr/sitemap.xml

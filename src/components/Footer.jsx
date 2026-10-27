@@ -17,6 +17,7 @@ export default function Footer() {
             <h4>메뉴</h4>
             <ul>
               {navItems.map((n) => <li key={n.to}><Link to={n.to}>{n.label}</Link></li>)}
+              <li><Link to="/mineral-guide">미네랄 고르는 법</Link></li>
               <li><Link to="/contact">상담 신청</Link></li>
             </ul>
           </div>

@@ -39,7 +39,7 @@ export default function Partner() {
             <div className="btn-row mt-m"><button type="button" className="btn btn--primary" onClick={() => scrollToId('apply')}>입점 상담 신청하기</button></div>
           </div>
           <div className="cocoon cocoon--wide intro-img">
-            <img src={asset('images/lifestyle-park.webp')} alt="공원 벤치에서 오륜미네랄을 탄 물을 마시는 사람" width="1100" height="1099" fetchpriority="high" />
+            <img src={asset('images/lifestyle-park.webp')} alt="공원 벤치에서 오륜미네랄을 탄 물을 마시는 사람" width="1100" height="1099" fetchPriority="high" />
           </div>
         </div>
       </section>
