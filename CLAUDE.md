@@ -16,6 +16,8 @@
 - 우리가게 진단: `src/diagnosis/questions.js`(24문항 · 구조 점수 7요소 `VALUE_FACTORS` · 업종별 맞춤 1문항), `src/diagnosis/engine.js`(구조 점수 `valueScore` = (품질향상×2.5+재구매율×4.5+확장성×3.5)÷(원가×2.5+재고×1+유통비×2+(6−시장성)×4), 영역 점수·강점·없는 것·보완·실행 계획·상품군·미네랄 적합도)
 - 로그인·저장: Firebase. `src/lib/firebase.js`(설정, `VITE_FIREBASE_*`), `src/lib/auth.jsx`(Google 로그인 · 값이 없으면 체험 모드), `src/lib/store.js`(Firestore `users/{uid}/diagnoses`), `firestore.rules`(본인만 접근)
 - 첫 화면: 새로 열면 항상 홈(`src/components/HomeFirst.jsx`, `?stay`로 예외)
+- 진단 → 구글 시트(알프스 내부 보관): 저장 성공 후 `src/lib/sheet.js` → `api/diagnosis-sheet.js`(Firebase 토큰 확인, 이메일은 토큰에서) → Apps Script `docs/diagnosis-sheet.gs` → 시트 '진단리포트'. 환경 변수 `DIAG_SHEET_URL`, `DIAG_SHEET_SECRET`. 고객 화면에는 표시하지 않음
+- 배포 사이트는 체험 모드 없음: Firebase 값이 없으면 로그인 '준비 중' (체험 모드는 `npm run dev`에서만)
 - 보호 화면: `RequireAuth`로 감싼 `/diagnosis/new`, `/diagnosis/result/:id`, `/my`. 나머지 페이지는 공개
 - 제품: `/products`(오륜미네랄) · `/products/enzyme`(효소세상, 준비 중). 탭 목록은 `src/components/ProductTabs.jsx`
 - 첫 화면 3D 'ALFS': `src/components/Alfs3D.jsx` (@remotion/svg-3d-engine 으로 글자에 두께를 주고 회전, 브라우저 애니메이션·동작 줄이기 설정 시 정지)

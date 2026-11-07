@@ -9,7 +9,7 @@ export const company = {
   fullNameEn: 'Alpha Food Store',
   ceo: '이소영',
   // 전자상거래법상 사이트 하단 표시 정보 — 실제 값으로 바꿔 주세요.
-  bizNumber: '000-00-00000',
+  bizNumber: '523-70-00224',
   mailOrderNumber: '제 0000-서울OO-0000호',
   address: '주소를 입력해 주세요',
   phone: '010-0000-0000',

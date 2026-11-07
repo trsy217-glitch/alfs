@@ -30,11 +30,11 @@ export default function Login() {
       <div className="wrap auth-grid">
         <div className="intro">
           <span className="kicker">우리가게 진단</span>
-          <h1 className="auth-title">Google 계정으로 시작하면 진단 결과가 내 계정에만 저장됩니다</h1>
+          <h1 className="auth-title">Google 계정으로 시작하면 진단 결과를 내 계정에서 언제든 볼 수 있습니다</h1>
           <ul className="auth-points">
             <li>따로 가입할 필요 없이 Google 계정으로 바로 시작해요. 처음 로그인이 곧 회원가입입니다.</li>
             <li>가입과 진단은 모두 무료예요.</li>
-            <li>결과는 진단한 본인만 볼 수 있어요. 알프스 직원도 따로 열람하지 않습니다.</li>
+            <li>결과는 내 계정으로 로그인해야만 볼 수 있어요. 다른 사람의 진단은 볼 수 없습니다.</li>
             <li>지난 진단과 비교하고 PDF로 내려받을 수 있어요.</li>
           </ul>
           <p className="muted mt-m">진단 없이 둘러보시려면 <Link to="/diagnosis">진단 소개</Link>로 가세요.</p>
@@ -47,7 +47,9 @@ export default function Login() {
             <p className="demo-note">지금은 <b>체험 모드</b>입니다. 진단 결과가 이 브라우저에만 저장돼요. Firebase를 연결하면 Google 계정으로 로그인하고 서버에 안전하게 저장됩니다.</p>
           )}
 
-          {inApp ? (
+          {auth.missing ? (
+            <p className="demo-note">로그인 준비 중입니다. 잠시 후 다시 이용해 주세요. 급한 상담은 카카오톡 채널로 남겨 주세요.</p>
+          ) : inApp ? (
             <div className="inapp">
               <p><b>{inApp === 'kakao' ? '카카오톡' : '앱'} 안의 브라우저에서는 Google 로그인이 막혀 있어요.</b> 크롬·사파리 같은 기본 브라우저에서 열어 주세요.</p>
               {inApp === 'kakao'
@@ -58,7 +60,7 @@ export default function Login() {
             <>
               <label className="consent">
                 <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} />
-                <span>진단 결과 저장을 위해 Google 계정의 이메일·이름과 진단 응답을 수집하며, 탈퇴 또는 삭제 요청 시 바로 파기하는 데 동의합니다. (필수)</span>
+                <span>진단 결과 저장과 상담 안내를 위해 Google 계정의 이메일·이름과 진단 응답을 수집·보관하며, 삭제 요청 시 바로 파기하는 데 동의합니다. (필수)</span>
               </label>
               {msg && <p className="err" role="alert">{msg}</p>}
               <button type="button" className="btn btn--google" onClick={start} disabled={busy || auth.loading}>

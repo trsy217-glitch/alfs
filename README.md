@@ -134,9 +134,16 @@ npm run poster        # 첫 화면 이미지
 - "효소 제품 페이지를 /product/enzyme 으로 하나 더 만들어줘"
 
 
+## 진단 리포트 → 구글 시트 (알프스 내부 보관)
+
+로그인한 고객이 진단을 마치면 결과가 알프스 구글 시트 '진단리포트'에 한 줄씩 쌓입니다 (고객 화면에는 표시 안 함).
+1. 구글 시트를 새로 만들고 [확장 프로그램] → [Apps Script]에 `docs/diagnosis-sheet.gs`를 붙여 넣은 뒤 `SECRET` 값을 바꿉니다.
+2. [배포] → [새 배포] → 웹 앱 · 실행: 나 · 액세스: 모든 사용자 → 웹 앱 URL 복사
+3. Vercel 환경 변수 `DIAG_SHEET_URL`(웹 앱 URL), `DIAG_SHEET_SECRET`(SECRET과 같은 값) 추가 → Redeploy
+
 ## 로그인 · 진단 저장 (Firebase · Google 계정)
 
-로그인과 회원가입은 **Google 계정 하나로** 합니다. 처음 로그인이 곧 회원가입입니다. 진단 결과는 Firestore `users/{uid}/diagnoses` 에 저장되고, `firestore.rules` 로 본인만 읽고 지울 수 있습니다. Firebase 값이 없으면 '체험 모드'(이 브라우저에만 저장)로 동작합니다.
+로그인과 회원가입은 **Google 계정 하나로** 합니다. 처음 로그인이 곧 회원가입입니다. 진단 결과는 Firestore `users/{uid}/diagnoses` 에 저장되고, `firestore.rules` 로 본인만 읽고 지울 수 있습니다. Firebase 값이 없으면 배포 사이트에서는 로그인이 '준비 중'으로 막히고, 개발 서버(`npm run dev`)에서만 '체험 모드'로 동작합니다.
 
 1. https://console.firebase.google.com 에서 **프로젝트 만들기** (이름 예: alfs)
 2. **Authentication → 시작하기 → 로그인 방법 → Google → 사용 설정**, 지원 이메일 선택 → 저장

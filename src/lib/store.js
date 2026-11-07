@@ -6,6 +6,7 @@ import { app, isDemoMode } from './firebase.js'
 
 const db = app ? getFirestore(app) : null
 import { ls } from './safeStorage.js'
+import { sendToSheet } from './sheet.js'
 
 const key = (uid) => `alfs_demo_diag_${uid}`
 const col = (uid) => collection(db, 'users', uid, 'diagnoses')
@@ -22,6 +23,7 @@ export async function saveDiagnosis(user, { shopName, category, answers, result 
   }
   try {
     const ref = await addDoc(col(user.id), { shop_name: shopName || '', category: category || '', answers: clean(answers), result: clean(result), created_at: serverTimestamp() })
+    sendToSheet(ref.id, answers, result) // 기다리지 않음 · 실패해도 고객 화면에는 영향 없음
     return { data: { id: ref.id, created_at: new Date().toISOString(), shop_name: shopName, category, answers, result } }
   } catch {
     return { error: '진단 결과를 저장하지 못했습니다. 네트워크를 확인하고 다시 시도해 주세요.' }

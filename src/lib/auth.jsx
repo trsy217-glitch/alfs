@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult, signOut as fbSignOut } from 'firebase/auth'
-import { auth, isDemoMode } from './firebase.js'
+import { auth, isDemoMode, authMissing } from './firebase.js'
 import { ls } from './safeStorage.js'
 
 // 로그인·회원가입: Firebase Authentication 의 Google 계정 로그인 하나로 처리합니다.
@@ -42,6 +42,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     if (isDemoMode) { setUser(ls.get(DEMO_SESSION)); setLoading(false); return }
+    if (authMissing) { setUser(null); setLoading(false); return }
     getRedirectResult(auth).catch((e) => setError(friendly(e)))
     return onAuthStateChanged(auth, (u) => { setUser(mapUser(u)); setLoading(false) })
   }, [])
@@ -51,6 +52,7 @@ export function AuthProvider({ children }) {
     loading,
     error,
     demo: isDemoMode,
+    missing: authMissing,
 
     async signInWithGoogle() {
       if (isDemoMode) {
@@ -58,6 +60,7 @@ export function AuthProvider({ children }) {
         ls.set(DEMO_SESSION, u); setUser(u)
         return { ok: true }
       }
+      if (authMissing) return { error: '로그인 준비 중입니다. 잠시 후 다시 이용해 주세요.' }
       const provider = new GoogleAuthProvider()
       provider.setCustomParameters({ prompt: 'select_account' })
       try {
@@ -76,7 +79,7 @@ export function AuthProvider({ children }) {
 
     async signOut() {
       if (isDemoMode) { ls.remove(DEMO_SESSION); setUser(null); return }
-      await fbSignOut(auth)
+      if (auth) await fbSignOut(auth)
     },
   }), [user, loading, error])
 
