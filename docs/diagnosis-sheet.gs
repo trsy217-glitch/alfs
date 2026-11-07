@@ -5,12 +5,12 @@
  * 2) [확장 프로그램] → [Apps Script] 에 이 코드를 통째로 붙여 넣고, 아래 SECRET 을 아무 긴 문자열로 바꿉니다.
  * 3) [배포] → [새 배포] → 유형: 웹 앱 / 실행: 나 / 액세스 권한: 모든 사용자 → 배포 → 권한 허용
  * 4) 나온 '웹 앱 URL' 과 SECRET 을 Vercel 환경 변수에 넣습니다:
- *      DIAG_SHEET_URL    = 웹 앱 URL
- *      DIAG_SHEET_SECRET = 아래 SECRET 과 같은 값
+ *      DIAG_SHEET_URL    = https://script.google.com/macros/s/AKfycbxXMNmVRABroM3PPHmhxqxRC7geTYfNYHzjrVh2d8Ksvs9tJVen_FFFIvppeJMqC_gV/exec
+ *      DIAG_SHEET_SECRET = asdfghjklpoiuytrewq
  *    → Vercel 에서 Redeploy
  * 코드를 고친 뒤에는 [배포] → [배포 관리] → 연필 → 버전: 새 버전 으로 다시 배포해야 반영됩니다.
  */
-const SECRET = '여기에-아무-긴-문자열을-넣으세요';
+const SECRET = 'asdfghjklpoiuytrewq';
 const SHEET = '진단리포트';
 const AREAS = ['시장 경쟁력', '매출 건강도', '온라인 홍보', '오프라인 홍보', '고객 관리', '상품 구성', '운영 여건'];
 const HEAD = ['진단시각', '이메일', '이름', '가게 이름', '지역', '업종', '가게 형태', '총점', '등급', '요약']
