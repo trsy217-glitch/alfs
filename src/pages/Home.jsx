@@ -1,4 +1,4 @@
-import Alfs3D from '../components/Alfs3D.jsx'
+import LogoFilm from '../components/LogoFilm.jsx'
 import { Link } from 'react-router-dom'
 import EngineLoop, { engineSteps } from '../components/EngineLoop.jsx'
 import CtaBand from '../components/CtaBand.jsx'
@@ -38,8 +38,9 @@ const channels = [
 export default function Home() {
   return (
     <>
+      <LogoFilm />
       <section className="hero">
-        <div className="wrap hero__grid">
+        <div className="wrap hero__grid hero__grid--solo">
           <div className="intro">
             <h1 className="hero__title">
               <span>좋은 제품은 많습니다.</span>
@@ -49,11 +50,6 @@ export default function Home() {
             <p className="hero__lead">
               알프스는 제품 발굴부터 콘텐츠·체험·판매·재구매까지, 상품이 시장에 안착하는 시스템을 만드는 웰니스 유통 회사입니다.
             </p>
-          </div>
-          <div className="hero__visual">
-            <div className="hero__logo intro-img">
-              <Alfs3D />
-            </div>
           </div>
         </div>
         <div className="wordmark" aria-hidden="true">ALFS</div>

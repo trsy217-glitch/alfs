@@ -989,3 +989,9 @@ ol.howto { padding: 0; }
 /* 비교표: 알프스 쪽 머리글을 칩으로 */
 .compare thead th:last-child { color: inherit; }
 .compare__us { display: inline-block; background: var(--leaf); color: var(--silk); font-weight: 800; font-size: var(--t-md); padding: 6px 14px; border-radius: 999px; white-space: nowrap; }
+
+/* ─── 첫 화면 맨 위 3D 로고 영상 (블렌더) ─── */
+.logofilm { position: relative; background: #000; }
+.logofilm__video { display: block; width: 100%; height: min(56.25vw, 72svh); object-fit: cover; background: #000; }
+.logofilm .promo__toggle { left: var(--pad); bottom: 16px; }
+.hero .hero__grid--solo { grid-template-columns: 1fr; }
