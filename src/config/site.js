@@ -42,9 +42,9 @@ export const channels = [
   },
   {
     id: 'youtube',
-    label: '유튜브 · 미네랄디톡스',
+    label: '유튜브 · 알프스 웰니스',
     desc: '제품 이야기와 영상 콘텐츠',
-    url: 'https://www.youtube.com/',
+    url: 'https://www.youtube.com/@alfs_official',
   },
   {
     id: 'phone',
