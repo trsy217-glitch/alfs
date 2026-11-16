@@ -1016,8 +1016,6 @@ ol.howto { padding: 0; }
 .buybox .btn-row { margin-top: 14px; }
 .buybox__note { margin-top: 12px; font-size: var(--t-xs); line-height: 1.6; color: var(--ink-2); }
 .buybox--dark .buybox__note { color: rgba(242, 243, 238, 0.66); }
-.hero-price { display: flex; align-items: baseline; gap: 10px; margin-top: 18px; color: var(--ink-2); }
-.hero-price b { font-size: var(--t-xl); color: var(--ink); letter-spacing: -0.02em; }
 
 /* 주문서 창 (ConsultSheet 위에 겹쳐 열림) */
 .sheet-backdrop--buy { z-index: 80; }
