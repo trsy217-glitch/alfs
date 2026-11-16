@@ -141,6 +141,11 @@ npm run poster        # 첫 화면 이미지
 2. [배포] → [새 배포] → 웹 앱 · 실행: 나 · 액세스: 모든 사용자 → 웹 앱 URL 복사
 3. Vercel 환경 변수 `DIAG_SHEET_URL`(웹 앱 URL), `DIAG_SHEET_SECRET`(SECRET과 같은 값) 추가 → Redeploy
 
+`api/diagnosis-sheet.js` 에는 위 웹 앱 URL·SECRET·Firebase 웹 API 키의 **기본값이 들어 있어**, 환경 변수를 넣지 않아도 시트 기록이 동작합니다. 환경 변수를 넣으면 항상 환경 변수 값이 우선합니다.
+
+- 시트 기록이 실패하면 `/api/diagnosis-sheet` 는 `502` 와 함께 실패 사유를 돌려주고 Vercel 로그·브라우저 콘솔에 남깁니다(고객 화면은 그대로).
+- 보안을 위해 SECRET 을 바꿀 때는 ① Apps Script 의 `SECRET` 을 새 값으로 바꾸고 **새 버전으로 다시 배포** → ② Vercel 에 `DIAG_SHEET_SECRET` 을 새 값으로 넣고 **Redeploy** 순서로 하세요.
+
 ## 로그인 · 진단 저장 (Firebase · Google 계정)
 
 로그인과 회원가입은 **Google 계정 하나로** 합니다. 처음 로그인이 곧 회원가입입니다. 진단 결과는 Firestore `users/{uid}/diagnoses` 에 저장되고, `firestore.rules` 로 본인만 읽고 지울 수 있습니다. Firebase 값이 없으면 배포 사이트에서는 로그인이 '준비 중'으로 막히고, 개발 서버(`npm run dev`)에서만 '체험 모드'로 동작합니다.

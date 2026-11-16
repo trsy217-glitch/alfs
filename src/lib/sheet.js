@@ -40,10 +40,12 @@ export async function sendToSheet(id, answers, result) {
       mineral: r.mineral ? `${r.mineral.score} (${r.mineral.level})` : '',
       qa: readable(answers),
     }
-    await fetch('/api/diagnosis-sheet', {
+    const resp = await fetch('/api/diagnosis-sheet', {
       method: 'POST', keepalive: true,
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify(body),
     })
-  } catch { /* 조용히 무시 — 고객 진단 흐름은 그대로 */ }
+    // 고객 화면에는 알리지 않지만, 회사 측 시트 기록이 실패하면 개발자 도구 콘솔에 남깁니다.
+    if (!resp.ok) console.warn('[alfs] 진단 시트 기록 실패', resp.status, await resp.text().catch(() => ''))
+  } catch (e) { console.warn('[alfs] 진단 시트 기록 실패', e?.message || e) }
 }
