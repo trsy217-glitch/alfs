@@ -720,6 +720,49 @@ ol.howto { padding: 0; }
 .ptab-empty { min-height: 46vh; }
 .ptab-empty h1 { font-size: var(--t-3xl); }
 
+/* ─── 효소세상 상품 목록 · 상세 ─── */
+.prodgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.4vw, 28px); margin-top: 44px; }
+@media (max-width: 980px) { .prodgrid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 620px) { .prodgrid { grid-template-columns: 1fr; } }
+
+.pcard { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-m); overflow: hidden; }
+.pcard__media { position: relative; aspect-ratio: 1 / 1; background: #fff; display: grid; place-items: center; padding: 10px; border-bottom: 1px solid var(--line); }
+.pcard__media img { width: 100%; height: 100%; object-fit: contain; }
+.pcard__tag { position: absolute; top: 12px; left: 12px; font-size: var(--t-xs); font-weight: 700; padding: 4px 12px; border-radius: 999px; background: var(--leaf); color: var(--silk); }
+.pcard__body { padding: 20px 20px 22px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.pcard__brand { font-size: var(--t-xs); font-weight: 700; color: var(--leaf-2); letter-spacing: 0.01em; }
+.pcard__body h3 { font-size: var(--t-lg); line-height: 1.3; }
+.pcard__option { font-size: var(--t-sm); color: var(--ink-2); }
+.pcard__price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.pcard__price b { font-size: 1.35rem; letter-spacing: -0.02em; }
+.pcard__list { font-size: var(--t-sm); color: var(--ink-2); text-decoration: line-through; }
+.pcard__rate { font-size: var(--t-xs); font-weight: 800; color: #A33A2B; }
+.pcard__ship { font-size: var(--t-sm); color: var(--leaf-2); font-weight: 700; }
+.pcard__btns { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-top: 12px; }
+.pcard__btns .btn { min-height: 44px; padding: 0 18px; font-size: 0.95rem; }
+.pcard__store { margin-top: 10px; font-size: var(--t-xs); color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; }
+.pcard__store:hover { color: var(--leaf); }
+
+.pdetail--alt { background: var(--silk-2); }
+.pdetail__media { display: grid; gap: 14px; align-content: start; }
+.pdetail__media img { width: 100%; border-radius: var(--radius-m); background: #fff; border: 1px solid var(--line); }
+.pdetail__media img.pdetail__media-detail { background: transparent; border: 0; }
+.pdetail .spec { margin-top: 24px; }
+.pdetail__h3 { font-size: var(--t-lg); margin: 34px 0 0; }
+.plist { margin: 18px 0 0; padding-left: 18px; color: var(--ink-2); font-size: var(--t-md); }
+.plist li { margin-bottom: 4px; }
+
+.pricebox { margin-top: 22px; padding: 20px; border-radius: var(--radius-m); background: #fff; border: 1px solid var(--line); }
+.pricebox__line { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; }
+.pricebox__label { font-size: var(--t-sm); font-weight: 700; color: var(--ink-2); }
+.pricebox__line b { font-size: clamp(1.5rem, 3vw, 1.9rem); letter-spacing: -0.02em; }
+.pricebox__meta { margin-top: 6px; font-size: var(--t-sm); color: var(--ink-2); }
+.pricebox .btn-row { margin-top: 14px; }
+
+.howto--flat { margin-top: 14px; }
+.howto--flat li { background: var(--silk); }
+.pdetail--alt .howto--flat li { background: #fff; }
+
 /* ─── 홈 첫 화면 로고 ─── */
 .hero__logo { max-width: 440px; margin-left: auto; border-radius: 32px; overflow: hidden; background: #0A0A0B;
   box-shadow: 0 40px 80px -40px rgba(22, 32, 26, 0.6); aspect-ratio: 1 / 1; }

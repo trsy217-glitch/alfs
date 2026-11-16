@@ -4,6 +4,8 @@
 // ⚠️ 식품표시광고법: 오륜미네랄 문구에 질병 예방·치료, 기능성 효능, 흡수율 비교, 효능 후기를 넣지 않습니다.
 // ─────────────────────────────────────────────────────────────
 
+import { enzymeProducts } from './config/enzyme.js'
+
 export const SITE_URL = 'https://alfs.kr'
 export const SITE_NAME = '알프스 ALFS'
 const OG_IMAGE = `${SITE_URL}/og-image.jpg`
@@ -31,8 +33,8 @@ export const ROUTES = {
     description: '미네랄 제품을 고를 때는 원료 출처, 제조사, 식품 유형, 먹는 방법, 꾸준히 챙길 수 있는지를 봅니다. 오륜미네랄을 예로 다섯 가지 기준을 정리했습니다.',
   },
   '/products/enzyme': {
-    title: '효소 (준비 중) | 알프스 ALFS 제품',
-    description: '알프스 ALFS가 오륜미네랄 다음으로 준비 중인 효소 제품 안내 페이지입니다.',
+    title: '효소세상 제품 5종 | 1.3fit 클렌즈 · 바이오에너지 · 자이모젠 · 클린바이옴 — 알프스 ALFS',
+    description: '효소세상이 만든 발효 효소·미생물 발효 음료 5종을 알프스가 유통합니다. 1.3fit 30일·3일 클렌즈 프로그램, 바이오에너지 클렌즈 프로그램, 자이모젠, 클린바이옴 자몽. 구성과 판매가, 섭취 방법을 확인하고 주문서로 접수할 수 있습니다. 전 상품 무료배송.',
   },
   '/ai-marketing': {
     title: '소상공인 AI 마케팅 컨설팅 | 알프스 ALFS',
@@ -102,6 +104,33 @@ export const FAQ_PRODUCT = [
   {
     q: '오륜미네랄은 어디서 살 수 있나요?',
     a: '알프스 파트너샵(건강·뷰티·카페·헬스샵 등)과 alfs.kr 제품 페이지에서 구매할 수 있습니다. 제품 페이지의 구매하기를 누르면 주문서가 열리고, 카드 결제를 준비하는 동안에는 주문서를 카카오톡·전화·이메일로 접수하면 담당자가 결제 방법과 배송 일정을 안내합니다.',
+  },
+]
+
+export const FAQ_ENZYME = [
+  {
+    q: '효소세상 제품은 어떤 제품인가요?',
+    a: '효소세상이 만든 발효 효소·미생물 발효 음료입니다. 1.3fit(일쩜삼) 30일·3일 클렌즈 프로그램, 바이오에너지 클렌즈 프로그램, 자이모젠, 클린바이옴 자몽 5종을 알프스가 유통합니다. 모두 의약품이 아니며 질병의 예방이나 치료를 위한 제품이 아닙니다.',
+  },
+  {
+    q: '가격과 배송비는 얼마인가요?',
+    a: '판매가는 알프스.샵 네이버 스마트스토어의 판매가와 같습니다. 1.3fit 30일 프로그램 396,000원, 바이오에너지 220,000원, 자이모젠 180,000원, 클린바이옴 자몽 107,100원, 1.3fit 3일 클렌즈 99,000원입니다. 다섯 상품 모두 무료배송이고, 제주·도서지역은 추가 6,000원입니다. 네이버 쿠폰과 멤버십 적립은 스토어 정책을 따릅니다.',
+  },
+  {
+    q: '어떻게 주문하나요? 카드 결제도 되나요?',
+    a: '상품의 구매하기를 누르면 주문서가 열립니다. 배송지와 연락처를 적어 주문서를 확인하면 카카오톡·전화·이메일로 접수할 수 있고, 담당자가 결제 방법과 배송 일정을 안내합니다. alfs.kr 카드 결제는 가맹 심사를 준비 중이며, 그동안 네이버 스마트스토어의 각 상품 페이지에서도 바로 구매하실 수 있습니다.',
+  },
+  {
+    q: '30일 프로그램과 3일 클렌즈는 무엇이 다른가요?',
+    a: '1.3fit 30일 프로그램은 엔자임밀 200ml 9포와 클린바이옴 100ml 3병 구성으로 30일 동안 나눠 쓰는 상품(396,000원)이고, 3일 클렌즈는 같은 엔자임밀·클린바이옴을 3일 분량으로 묶은 상품(99,000원)입니다. 처음 써 보시려면 3일 구성을 권합니다.',
+  },
+  {
+    q: '어떻게 마시나요?',
+    a: '섭취 방법은 제품 라벨의 안내를 따라 주세요. 클린바이옴 자몽은 상온의 물 300~500ml에 한 병을 희석해 5분 안에 마시고, 식후 2시간 이후나 공복에 마시도록 안내하고 있습니다. 섭취 중 이상이 느껴지면 섭취를 중단하고 전문가와 상담하세요.',
+  },
+  {
+    q: '네이버 스토어에서도 살 수 있나요?',
+    a: '네, 각 상품의 상세 화면에 있는 네이버 스토어 링크로 알프스.샵 스마트스토어 상품 페이지에서 바로 구매하실 수 있습니다. 스토어에서 쓰는 쿠폰과 적립은 스토어 결제 화면 기준입니다.',
   },
 ]
 
@@ -189,6 +218,39 @@ const crumbs = (path, title) => ({
   ],
 })
 
+// 효소세상 제품 5종 — 구매 페이지가 따로 없어 이 화면의 상세 섹션으로 연결합니다.
+const enzymeProductLd = (p) => ({
+  '@type': 'Product',
+  '@id': `${SITE_URL}/products/enzyme#${p.slug}`,
+  name: p.name,
+  description: p.summary,
+  image: `${SITE_URL}/${p.image}`,
+  brand: { '@type': 'Brand', name: p.brand },
+  manufacturer: { '@type': 'Organization', name: '효소세상' },
+  countryOfOrigin: 'KR',
+  offers: {
+    '@type': 'Offer',
+    price: String(p.price),
+    priceCurrency: 'KRW',
+    availability: 'https://schema.org/InStock',
+    itemCondition: 'https://schema.org/NewCondition',
+    url: `${SITE_URL}/products/enzyme#p-${p.slug}`,
+    seller: { '@type': 'Organization', name: '알프스(AL.F.S)' },
+  },
+  additionalProperty: [
+    { '@type': 'PropertyValue', name: '구성', value: p.option },
+    { '@type': 'PropertyValue', name: '배송비', value: '무료배송' },
+    { '@type': 'PropertyValue', name: '판매처', value: '알프스.샵 네이버 스마트스토어' },
+  ],
+})
+const enzymeListLd = {
+  '@type': 'ItemList',
+  name: '효소세상 제품 5종',
+  url: `${SITE_URL}/products/enzyme`,
+  numberOfItems: enzymeProducts.length,
+  itemListElement: enzymeProducts.map((p, i) => ({ '@type': 'ListItem', position: i + 1, item: enzymeProductLd(p) })),
+}
+
 export function jsonLdFor(path) {
   const m = metaFor(path)
   const graph = [org, website]
@@ -196,6 +258,7 @@ export function jsonLdFor(path) {
   if (m.path === '/products') graph.push(product, faqLd(FAQ_PRODUCT))
   if (m.path === '/mineral-guide') graph.push({ '@type': 'Article', headline: m.title, description: m.description, author: { '@id': `${SITE_URL}/#org` }, publisher: { '@id': `${SITE_URL}/#org` }, mainEntityOfPage: m.url, about: { '@id': `${SITE_URL}/products#oryun` }, inLanguage: 'ko-KR' }, product)
   if (m.path === '/distribution') graph.push(faqLd(FAQ_DISTRIBUTION))
+  if (m.path === '/products/enzyme') graph.push(enzymeListLd, faqLd(FAQ_ENZYME))
   return { '@context': 'https://schema.org', '@graph': graph }
 }
 

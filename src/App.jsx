@@ -36,10 +36,13 @@ import BuySheet from './components/BuySheet.jsx'
 export default function App() {
   const [open, setOpen] = useState(false)
   const [buyOpen, setBuyOpen] = useState(false)
+  // 주문서에 담을 상품. null 이면 기본 상품(오륜미네랄)으로 열립니다.
+  const [buyItem, setBuyItem] = useState(null)
+  const openBuy = (item) => { setBuyItem(item || null); setBuyOpen(true) }
   return (
     <AuthProvider>
     <ConsultContext.Provider value={{ open: () => setOpen(true) }}>
-    <BuyContext.Provider value={{ open: () => setBuyOpen(true), close: () => setBuyOpen(false) }}>
+    <BuyContext.Provider value={{ open: openBuy, close: () => setBuyOpen(false) }}>
       <HomeFirst />
       <SeoHead />
       <ScrollToTop />
@@ -76,7 +79,7 @@ export default function App() {
       </main>
       <Footer />
       <ConsultSheet open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)} />
-      <BuySheet open={buyOpen} onClose={() => setBuyOpen(false)} />
+      <BuySheet open={buyOpen} item={buyItem} onClose={() => setBuyOpen(false)} />
     </BuyContext.Provider>
     </ConsultContext.Provider>
     </AuthProvider>

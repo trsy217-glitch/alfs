@@ -1,14 +1,31 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { product, company, channels, won, shippingFor } from '../config/site.js'
+import { product as oryun, company, channels, won } from '../config/site.js'
 import { CloseIcon } from './Icons.jsx'
 import { asset } from '../lib/asset.js'
 
 // 구매하기 → 주문서. 아직 카드 결제가 연결되기 전이라, 주문 내용을 확인해
 // 카카오톡·전화·이메일로 접수하는 단계까지 안내합니다. (결제 연동 시 이 화면에 결제창을 붙입니다)
+//
+// 효소세상 상품처럼 여러 상품을 팔 때는 buy.open(item) 으로 상품을 넘겨
+// 주문서의 상품명·구성·가격·배송비가 그 상품 기준으로 바뀝니다.
 const EMPTY = { name: '', phone: '', address: '', memo: '', agree: false }
 
-export default function BuySheet({ open, onClose }) {
+const DEFAULT_ITEM = {
+  id: 'oryun',
+  name: oryun.name,
+  volume: oryun.volume,
+  price: oryun.price,
+  listPrice: null,
+  image: 'images/bottle-mulberry.webp',
+  maxQty: oryun.maxQty,
+  shippingFee: oryun.shippingFee,
+  freeShippingOver: oryun.freeShippingOver,
+  carrier: oryun.carrier,
+}
+
+export default function BuySheet({ open, item, onClose }) {
+  const it = item || DEFAULT_ITEM
   const [qty, setQty] = useState(1)
   const [v, setV] = useState(EMPTY)
   const [errors, setErrors] = useState({})
@@ -30,8 +47,12 @@ export default function BuySheet({ open, onClose }) {
     setStatus('idle'); setCopied(false); setErrors({})
   }, [open])
 
-  const amount = product.price * qty
-  const ship = shippingFor(amount)
+  // 다른 상품의 구매 버튼을 누르면 수량을 1로 되돌립니다.
+  useEffect(() => { setQty(1) }, [it.id])
+
+  const amount = it.price * qty
+  const free = it.freeShippingOver === 0 || amount >= it.freeShippingOver
+  const ship = free ? 0 : it.shippingFee
   const total = amount + ship
 
   const set = (k) => (e) => setV((s) => ({ ...s, [k]: e.target.type === 'checkbox' ? e.target.checked : e.target.value }))
@@ -47,7 +68,7 @@ export default function BuySheet({ open, onClose }) {
   }
 
   const summary = () =>
-    `[알프스 주문]\n상품: ${product.name} ${product.volume} × ${qty}\n상품금액: ${won(amount)}\n배송비: ${ship === 0 ? '무료' : won(ship)} (${product.carrier})\n결제 예정금액: ${won(total)}\n받는 분: ${v.name}\n연락처: ${v.phone}\n배송지: ${v.address}\n요청사항: ${v.memo || '-'}`
+    `[알프스 주문]\n상품: ${it.name} (${it.volume}) × ${qty}\n상품금액: ${won(amount)}\n배송비: ${ship === 0 ? '무료' : won(ship)} (${it.carrier})\n결제 예정금액: ${won(total)}\n받는 분: ${v.name}\n연락처: ${v.phone}\n배송지: ${v.address}\n요청사항: ${v.memo || '-'}`
 
   const submit = (e) => {
     e.preventDefault()
@@ -73,7 +94,7 @@ export default function BuySheet({ open, onClose }) {
         <div className="sheet__head">
           <div>
             <h2 id="buy-title">{status === 'ready' ? '주문 내용을 확인해 주세요' : '주문하기'}</h2>
-            <p>{product.name} {product.volume}</p>
+            <p>{it.name} · {it.volume}</p>
           </div>
           <button ref={closeRef} className="icon-btn" onClick={close} aria-label="주문 창 닫기" tabIndex={open ? 0 : -1}><CloseIcon /></button>
         </div>
@@ -81,21 +102,24 @@ export default function BuySheet({ open, onClose }) {
         {status === 'idle' ? (
           <form className="form" onSubmit={submit} noValidate>
             <div className="order-line">
-              <img src={asset('images/bottle-mulberry.webp')} alt="" width="64" height="64" loading="lazy" />
+              <img src={asset(it.image)} alt="" width="64" height="64" loading="lazy" />
               <div className="order-line__body">
-                <b>{product.name} {product.volume}</b>
-                <span>{won(product.price)}</span>
+                <b>{it.name}</b>
+                <span>{it.volume} · {won(it.price)}</span>
               </div>
               <div className="qty" role="group" aria-label="수량">
                 <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="수량 줄이기" disabled={qty <= 1}>−</button>
                 <output aria-live="polite">{qty}</output>
-                <button type="button" onClick={() => setQty((q) => Math.min(product.maxQty, q + 1))} aria-label="수량 늘리기" disabled={qty >= product.maxQty}>+</button>
+                <button type="button" onClick={() => setQty((q) => Math.min(it.maxQty, q + 1))} aria-label="수량 늘리기" disabled={qty >= it.maxQty}>+</button>
               </div>
             </div>
 
             <dl className="order-total">
               <div><dt>상품금액</dt><dd>{won(amount)}</dd></div>
-              <div><dt>배송비 <span className="muted">({product.carrier} · {won(product.freeShippingOver)} 이상 무료)</span></dt><dd>{ship === 0 ? '무료' : won(ship)}</dd></div>
+              <div>
+                <dt>배송비 <span className="muted">({it.freeShippingOver === 0 ? '무료배송 상품' : `${won(it.freeShippingOver)} 이상 무료`})</span></dt>
+                <dd>{ship === 0 ? '무료' : won(ship)}</dd>
+              </div>
               <div className="order-total__sum"><dt>결제 예정금액</dt><dd>{won(total)}</dd></div>
             </dl>
 
@@ -139,7 +163,7 @@ export default function BuySheet({ open, onClose }) {
             <div className="btn-row">
               {kakao && <button className="btn btn--kakao" onClick={sendKakao}>카카오톡으로 주문 접수</button>}
               <a className="btn btn--primary" href={`tel:${company.phone.replace(/-/g, '')}`}>전화 주문 {company.phone}</a>
-              <a className="btn btn--ghost" href={`mailto:${company.email}?subject=${encodeURIComponent(`[알프스 주문] ${product.name} ${product.volume} ${qty}병`)}&body=${encodeURIComponent(summary())}`}>이메일로 주문</a>
+              <a className="btn btn--ghost" href={`mailto:${company.email}?subject=${encodeURIComponent(`[알프스 주문] ${it.name} ${qty}개`)}&body=${encodeURIComponent(summary())}`}>이메일로 주문</a>
             </div>
             {copied && <p className="muted" style={{ fontSize: '0.85rem' }}>주문 내용을 복사했어요. 카카오톡 대화창에 붙여넣기 해 주세요.</p>}
             <p className="muted" style={{ fontSize: '0.85rem' }}>
