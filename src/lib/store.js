@@ -23,7 +23,12 @@ export async function saveDiagnosis(user, { shopName, category, answers, result 
   }
   try {
     const ref = await addDoc(col(user.id), { shop_name: shopName || '', category: category || '', answers: clean(answers), result: clean(result), created_at: serverTimestamp() })
-    sendToSheet(ref.id, answers, result) // 기다리지 않음 · 실패해도 고객 화면에는 영향 없음
+    // 회사 측(구글 시트) 기록도 남깁니다. 화면 이동으로 요청이 끊기지 않도록 최대 4초까지만 기다리고,
+    // 느리거나 실패해도 고객 화면은 그대로 진행합니다(sendToSheet 안에서 실패를 삼킴).
+    await Promise.race([
+      sendToSheet(ref.id, answers, result),
+      new Promise((done) => setTimeout(done, 4000)),
+    ])
     return { data: { id: ref.id, created_at: new Date().toISOString(), shop_name: shopName, category, answers, result } }
   } catch {
     return { error: '진단 결과를 저장하지 못했습니다. 네트워크를 확인하고 다시 시도해 주세요.' }
