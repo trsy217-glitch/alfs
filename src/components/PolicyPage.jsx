@@ -38,7 +38,7 @@ export default function PolicyPage({ title, lead, children }) {
         </div>
       </section>
 
-      <section className="section--tight">
+      <section className="section--tight" style={{ paddingTop: 0 }}>
         <div className="wrap policy">
           <nav className="policy__tabs" aria-label="약관·정책 목록">
             {policyLinks.map((p) => (
