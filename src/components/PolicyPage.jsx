@@ -39,7 +39,8 @@ export default function PolicyPage({ title, lead, children }) {
       </section>
 
       <section className="section--tight" style={{ paddingTop: 0 }}>
-        <div className="wrap policy">
+        <div className="wrap">
+          <div className="policy">
           <nav className="policy__tabs" aria-label="약관·정책 목록">
             {policyLinks.map((p) => (
               <NavLink key={p.to} to={p.to} className={({ isActive }) => `policy__tab ${isActive ? 'active' : ''}`}>{p.label}</NavLink>
@@ -53,6 +54,7 @@ export default function PolicyPage({ title, lead, children }) {
           <p className="policy__more">
             제품·배송 문의는 <Link to="/contact">상담 신청</Link> 또는 고객센터({company.phone})로 연락 주세요.
           </p>
+          </div>
         </div>
       </section>
     </>

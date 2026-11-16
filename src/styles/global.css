@@ -1038,7 +1038,7 @@ ol.howto { padding: 0; }
 .order-summary { margin: 14px 0 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; font-family: var(--font); font-size: var(--t-sm); line-height: 1.7; white-space: pre-wrap; overflow: auto; }
 
 /* ═══════════ 약관·정책 페이지 ═══════════ */
-.policy { max-width: 860px; margin: 0; }
+.policy { max-width: 860px; }
 .policy__date { margin-top: 10px; font-size: var(--t-sm); color: var(--ink-2); }
 .policy__tabs { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
 .policy__tab { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; font-size: var(--t-sm); font-weight: 700; color: var(--ink-2); }
