@@ -1094,6 +1094,19 @@ ol.howto { padding: 0; }
 .policy__body p { margin-top: 10px; }
 .policy__body ol, .policy__body ul { margin-top: 10px; padding-left: 1.25em; display: grid; gap: 6px; }
 .policy__body a { color: var(--leaf-2); text-decoration: underline; }
+/* 정책 페이지: 판매 상품·배송비 표 */
+.policy__table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: var(--t-md); }
+.policy__table th, .policy__table td { padding: 11px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.policy__table thead th { font-size: var(--t-sm); font-weight: 700; color: var(--ink-2); }
+.policy__table tbody th { font-weight: 600; color: var(--ink); }
+.policy__table td { color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.policy__table-option { display: block; margin-top: 2px; font-size: var(--t-xs); font-weight: 500; color: var(--ink-2); }
+.policy__table-group th { padding-top: 18px; font-weight: 800; color: var(--leaf); }
+.policy__table-group:first-child th { padding-top: 11px; }
+@media (max-width: 560px) {
+  .policy__table { font-size: var(--t-sm); }
+  .policy__table th, .policy__table td { padding: 9px 6px; }
+}
 .policy__biz { margin-top: 48px; padding: 22px 24px; border-radius: var(--radius-m); background: var(--silk-2); }
 .policy__biz h2 { font-size: var(--t-md); }
 .policy__biz dl { margin: 14px 0 0; display: grid; gap: 8px; font-size: var(--t-sm); }
