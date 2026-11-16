@@ -5,5 +5,10 @@
     { "source": "/shipping", "destination": "/refund-policy", "permanent": true },
     { "source": "/refund", "destination": "/refund-policy", "permanent": true }
   ],
-  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/app.html" }]
+  "rewrites": [
+    { "source": "/login", "destination": "/app.html" },
+    { "source": "/my", "destination": "/app.html" },
+    { "source": "/diagnosis/new", "destination": "/app.html" },
+    { "source": "/diagnosis/result/(.*)", "destination": "/app.html" }
+  ]
 }
