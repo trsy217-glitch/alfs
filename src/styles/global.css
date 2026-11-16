@@ -1128,6 +1128,12 @@ ol.howto { padding: 0; }
 @media (max-width: 640px) { .footer__top { grid-template-columns: 1fr; } }
 
 /* ─── 미네랄 카페 레시피 (/products/cafe) ───────────────────
+   짙은 배경(.leafbg) 안의 흰 가격 카드는 글자색을 다시 어둡게 되돌립니다. */
+.leafbg .pricebox { color: var(--ink); }
+.leafbg .pricebox .pricebox__label,
+.leafbg .pricebox .pricebox__meta { color: var(--ink-2); }
+.leafbg .pricebox s { color: var(--ink-2); }
+
    레시피 카드는 원본 이미지 비율(1260×891)을 그대로 보여 주고, 누르면 크게 보기 창이 열립니다. */
 .cafegrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(18px, 2.6vw, 30px); margin-top: 44px; }
 @media (max-width: 820px) { .cafegrid { grid-template-columns: 1fr; } }
@@ -1146,6 +1152,10 @@ ol.howto { padding: 0; }
 .capecard__ing li:last-child { border-color: var(--leaf); color: var(--leaf); font-weight: 700; }
 .capecard__meta { font-size: var(--t-xs); color: var(--ink-2); }
 .capecard__btn { margin-top: auto; min-height: 44px; font-size: 0.95rem; }
+
+.howto--four { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1100px) { .howto--four { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 620px) { .howto--four { grid-template-columns: 1fr; } }
 
 .capecaution { margin-top: 40px; padding: 24px 26px; border-radius: var(--radius-m); background: #fff; border: 1px solid var(--line); }
 .capecaution h3 { font-size: var(--t-lg); }

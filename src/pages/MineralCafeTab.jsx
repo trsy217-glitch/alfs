@@ -136,7 +136,7 @@ export default function MineralCafeTab() {
         <div className="wrap">
           <h2 className="h-section">이렇게 만들어요</h2>
           <p className="lead muted mt-s">여섯 가지 모두 같은 순서로 만듭니다. 다른 점은 과일과 곁들이는 재료뿐입니다.</p>
-          <ol className="howto">
+          <ol className="howto howto--four">
             {cafeSteps.map((s, i) => (
               <li key={s.t}>
                 <span className="n">{i + 1}</span>
