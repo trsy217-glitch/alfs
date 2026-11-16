@@ -762,6 +762,8 @@ ol.howto { padding: 0; }
 .howto--flat { margin-top: 14px; }
 .howto--flat li { background: var(--silk); }
 .pdetail--alt .howto--flat li { background: #fff; }
+.hero-note { margin-top: 24px; font-size: var(--t-sm); line-height: 1.6; max-width: 36em; }
+.split--top { align-items: start; }
 
 /* ─── 홈 첫 화면 로고 ─── */
 .hero__logo { max-width: 440px; margin-left: auto; border-radius: 32px; overflow: hidden; background: #0A0A0B;

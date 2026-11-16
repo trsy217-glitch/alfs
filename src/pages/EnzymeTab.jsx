@@ -38,7 +38,7 @@ export default function EnzymeTab() {
               <button type="button" className="btn btn--drop" onClick={() => scrollToId('products')}>제품 5종 보기</button>
               <button type="button" className="btn btn--ghost" onClick={consult.open}>어떤 제품이 맞을지 상담</button>
             </div>
-            <p className="credit">
+            <p className="muted hero-note">
               표시 가격은 알프스.샵 네이버 스마트스토어의 판매가와 같습니다. 쿠폰·멤버십 적립은 스토어 정책에 따릅니다.
             </p>
           </div>
@@ -87,7 +87,7 @@ export default function EnzymeTab() {
       {enzymeProducts.map((p, i) => (
         <section key={p.id} id={`p-${p.slug}`} className={`section--tight pdetail ${i % 2 === 0 ? '' : 'pdetail--alt'}`}>
           <div className="wrap">
-            <div className={`split ${i % 2 === 0 ? '' : 'split--flip'}`}>
+            <div className={`split split--top ${i % 2 === 0 ? '' : 'split--flip'}`}>
               <div className="pdetail__media">
                 <img src={asset(p.image)} alt={p.imageAlt} loading="lazy" width="900" height="900" />
                 {p.imageDetail && (
