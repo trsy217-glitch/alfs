@@ -6,7 +6,6 @@ import ConsultSheet from './components/ConsultSheet.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import Home from './pages/Home.jsx'
 import Company from './pages/Company.jsx'
-import Distribution from './pages/Distribution.jsx'
 import Product from './pages/Product.jsx'
 import EnzymeTab from './pages/EnzymeTab.jsx'
 import MineralCafeTab from './pages/MineralCafeTab.jsx'
@@ -54,7 +53,9 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/company" element={<Company />} />
-          <Route path="/distribution" element={<Distribution />} />
+          {/* 총판·유통 페이지는 회사 소개로 통합 — 예전 주소와 /about 은 회사 소개로 모읍니다 */}
+          <Route path="/distribution" element={<Navigate to="/company" replace />} />
+          <Route path="/about" element={<Navigate to="/company" replace />} />
           <Route path="/products" element={<Product />} />
           <Route path="/products/oryun" element={<Navigate to="/products" replace />} />
           <Route path="/products/enzyme" element={<EnzymeTab />} />

@@ -7,7 +7,7 @@ import { asset } from '../lib/asset.js'
 
 const lanes = [
   {
-    to: '/distribution',
+    to: '/company',
     title: '총판·유통',
     text: '제조사에서 매장까지, 제품이 흘러가는 길을 직접 설계하고 운영합니다. 체험 카페·파트너샵·공동구매·온라인 네 채널이 서로 고객을 넘겨줍니다.',
     more: '유통 구조 보기',

@@ -18,12 +18,8 @@ export const ROUTES = {
     description: '알프스(ALFS, Alpha Food Store)는 오륜미네랄 총판 유통과 샵인샵 파트너샵 공급, 소상공인 SNS·AI 마케팅을 함께 하는 웰니스 유통 회사입니다. 잘 팔리고 다시 찾는 제품이 시장에 자리 잡도록 체험·판매·재구매까지 함께 운영합니다.',
   },
   '/company': {
-    title: '회사 소개 | 알프스 ALFS — 제품은 파트너가, 시장은 알프스가',
-    description: '알프스 ALFS는 물건만 넘기는 총판이 아니라 판매 채널·콘텐츠·고객 데이터·확장까지 상품이 팔리는 구조를 만드는 유통·마케팅 파트너입니다.',
-  },
-  '/distribution': {
-    title: '알프스 유통 | 오륜미네랄 총판 · 샵인샵 파트너샵 공급 — 알프스 ALFS',
-    description: '알프스 유통은 체험 카페·홈파티, 오프라인 파트너샵, 인플루언서 공동구매, 온라인 스토어 네 채널로 오륜미네랄을 공급합니다. 건강·뷰티·카페·헬스샵의 재구매 흐름까지 함께 관리합니다.',
+    title: '회사 소개 | 오륜미네랄 총판·유통 구조와 네 개의 판매 채널 — 알프스 ALFS',
+    description: '알프스 ALFS는 물건만 넘기는 총판이 아니라 판매 채널·콘텐츠·고객 데이터·확장까지 상품이 팔리는 구조를 만드는 유통·마케팅 파트너입니다. 제조사 유디아미네랄에서 파트너샵·소비자까지 이어지는 유통 경로와 체험 카페·파트너샵·공동구매·온라인 스토어 네 채널, 단계별 확장 계획을 함께 안내합니다.',
   },
   '/products': {
     title: '오륜미네랄 | 뽕잎·누에 원료 액상 미네랄 — 알프스 ALFS',
@@ -166,7 +162,7 @@ export const FAQ_CAFE = [
   },
 ]
 
-export const FAQ_DISTRIBUTION = [
+export const FAQ_COMPANY = [
   {
     q: '알프스(ALFS)는 어떤 회사인가요?',
     a: '알프스(ALFS, Alpha Food Store)는 미네랄·건강식품 총판 유통과 소상공인 SNS·AI 마케팅 컨설팅을 함께 하는 회사입니다. 첫 유통 제품은 제조사 유디아미네랄의 오륜미네랄입니다.',
@@ -316,7 +312,7 @@ export function jsonLdFor(path) {
   if (m.path !== '/') graph.push(crumbs(m.path, m.title))
   if (m.path === '/products') graph.push(product, faqLd(FAQ_PRODUCT))
   if (m.path === '/mineral-guide') graph.push({ '@type': 'Article', headline: m.title, description: m.description, author: { '@id': `${SITE_URL}/#org` }, publisher: { '@id': `${SITE_URL}/#org` }, mainEntityOfPage: m.url, about: { '@id': `${SITE_URL}/products#oryun` }, inLanguage: 'ko-KR' }, product)
-  if (m.path === '/distribution') graph.push(faqLd(FAQ_DISTRIBUTION))
+  if (m.path === '/company') graph.push(faqLd(FAQ_COMPANY))
   if (m.path === '/products/enzyme') graph.push(enzymeListLd, faqLd(FAQ_ENZYME))
   if (m.path === '/products/cafe') graph.push(cafeListLd, faqLd(FAQ_CAFE))
   return { '@context': 'https://schema.org', '@graph': graph }

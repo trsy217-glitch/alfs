@@ -8,8 +8,8 @@ React + Vite + React Router로 만들었고, 서버 없이 Vercel·Netlify에 �
 | 주소 | 메뉴 | 내용 |
 | --- | --- | --- |
 | `/` | 홈 | 핵심 메시지, 하는 일 3갈래, 재구매 엔진, 제품·채널·AI 마케팅 미리보기 |
-| `/company` | 회사 소개 | 문제 → 해법(Sell·Content·Data·Scale), 비교표, 운영 중인 인프라, 약속 |
-| `/distribution` | 총판·유통 | 유통 경로, 4개 판매 채널, 90일 파일럿, 성장 로드맵 |
+| `/company` | 회사 소개 | 문제 → 해법(Sell·Content·Data·Scale), 유통 경로, 4개 판매 채널, 비교표, 인프라, 성장 로드맵, 약속, FAQ |
+| `/distribution` | (총판·유통) → `/company`로 이동 | 회사 소개에 통합됨. `vercel.json` 리다이렉트 + `App.jsx` Navigate |
 | `/products` | 제품 (오륜미네랄 탭) | 후킹 카피, 원료 순환 이야기, 가문 이력·수상, 섭취법, 제품 정보 |
 | `/products/enzyme` | 제품 (효소세상 탭, 준비 중) | 탭만 있는 자리. `src/pages/EnzymeTab.jsx`를 채우면 됩니다 |
 | `/video-maker` | 영상 만들기 | 업주가 상품 사진·문구를 넣으면 브라우저에서 바로 홍보영상(MP4/WebM) 생성 · 로그인 없음 |

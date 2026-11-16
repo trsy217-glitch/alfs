@@ -3,6 +3,16 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/distribution",
+      "destination": "/company",
+      "permanent": true
+    },
+    {
+      "source": "/about",
+      "destination": "/company",
+      "permanent": true
+    },
+    {
       "source": "/shipping",
       "destination": "/refund-policy",
       "permanent": true

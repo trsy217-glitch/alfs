@@ -43,7 +43,7 @@ export default function MineralGuide() {
           <p className="notice mt-m">오륜미네랄은 기타가공품(일반식품)이며 질병의 예방·치료를 위한 의약품이나 건강기능식품이 아닙니다. 건강 상태에 따른 섭취는 전문가와 상담하세요.</p>
           <div className="btn-row mt-m">
             <Link to="/products" className="btn btn--primary">오륜미네랄 제품 정보 보기</Link>
-            <Link to="/distribution" className="btn btn--ghost">알프스 유통 알아보기</Link>
+            <Link to="/company" className="btn btn--ghost">알프스 유통 구조 알아보기</Link>
           </div>
         </div>
       </section>

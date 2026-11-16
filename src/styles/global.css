@@ -286,10 +286,9 @@ p { margin: 0; }
 .chain { display: flex; align-items: stretch; gap: 0; margin-top: 40px; }
 .chain__item { flex: 1; text-align: center; padding: 22px 10px; }
 .chain__item .dot { width: 64px; height: 80px; margin: 0 auto 14px; border-radius: 50% / 42%; display: grid; place-items: center; font-size: 1.6rem; }
-.chain__item:nth-child(1) .dot { background: #E9E2D3; }
-.chain__item:nth-child(3) .dot { background: #CFE3C9; }
-.chain__item:nth-child(5) .dot { background: #F1EFE7; border: 1px solid var(--line); }
-.chain__item:nth-child(7) .dot { background: var(--drop); }
+.chain__item .dot { background: #E9E2D3; }
+.chain__item .dot--leaf { background: var(--leaf); }
+.chain__item .dot--drop { background: var(--drop); }
 .chain__item b { display: block; font-size: var(--t-md); }
 .chain__item span { font-size: var(--t-sm); color: var(--ink-2); }
 .chain__arrow { align-self: center; color: var(--leaf-2); font-size: 1.3rem; padding-bottom: 40px; }

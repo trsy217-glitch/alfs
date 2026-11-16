@@ -7,7 +7,6 @@ import { asset } from '../lib/asset.js'
 
 export const navItems = [
   { to: '/company', label: '회사 소개' },
-  { to: '/distribution', label: '총판·유통' },
   { to: '/products', label: '제품' },
   { to: '/ai-marketing', label: 'AI 마케팅' },
   { to: '/partner', label: '파트너 입점' },
