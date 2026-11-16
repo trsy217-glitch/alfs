@@ -141,6 +141,7 @@ p { margin: 0; }
 .drawer {
   position: fixed; inset: var(--header-h) 0 0 0; z-index: 49; background: var(--silk);
   padding: 24px var(--pad) 40px; display: flex; flex-direction: column; gap: 4px;
+  overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
   transform: translateY(-8px); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
 }
 .drawer.open { transform: none; opacity: 1; pointer-events: auto; }
