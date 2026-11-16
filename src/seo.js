@@ -5,6 +5,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import { enzymeProducts } from './config/enzyme.js'
+import { cafeRecipes } from './config/cafe.js'
 
 export const SITE_URL = 'https://alfs.kr'
 export const SITE_NAME = '알프스 ALFS'
@@ -35,6 +36,10 @@ export const ROUTES = {
   '/products/enzyme': {
     title: '효소세상 제품 6종 | 1.3fit 클렌즈 · 바이오에너지 · 자이모젠 · 클린바이옴 — 알프스 ALFS',
     description: '효소세상이 만든 발효 효소·미생물 발효 음료 6종을 알프스가 유통합니다. 1.3fit 30일·3일 클렌즈 프로그램, 바이오에너지 클렌즈 프로그램, 자이모젠 10병, 클린바이옴 6병·1병. 구성과 판매가, 섭취 방법을 확인하고 주문서로 접수할 수 있습니다. 5만 원 이상 무료배송.',
+  },
+  '/products/cafe': {
+    title: '미네랄 카페 레시피 6종 | 오륜미네랄 홈카페 음료 — 알프스 ALFS',
+    description: '오륜미네랄 60ml를 넣어 만드는 홈카페 음료 6종입니다. 키위벨벳·토마선셋·아보바나스무디·블루바나넛츠·키위브리츠·아보베리요거의 재료와 만드는 순서를 카드 이미지와 함께 안내합니다. 레시피는 무료 음용·활용 가이드이고, 판매 상품은 오륜미네랄 1,000ml(220,000원)입니다.',
   },
   '/ai-marketing': {
     title: '소상공인 AI 마케팅 컨설팅 | 알프스 ALFS',
@@ -131,6 +136,33 @@ export const FAQ_ENZYME = [
   {
     q: '네이버 스토어에서도 살 수 있나요?',
     a: '네, 각 상품의 상세 화면에 있는 네이버 스토어 링크로 알프스.샵 스마트스토어 상품 페이지에서 바로 구매하실 수 있습니다. 스토어에서 쓰는 쿠폰과 적립은 스토어 결제 화면 기준입니다.',
+  },
+]
+
+export const FAQ_CAFE = [
+  {
+    q: '미네랄 카페 레시피는 어떤 페이지인가요?',
+    a: '오륜미네랄 60ml를 넣어 만드는 홈카페 음료 6종의 레시피를 카드 이미지와 재료 목록으로 정리한 페이지입니다. 키위벨벳, 토마선셋, 아보바나스무디, 블루바나넛츠, 키위브리츠, 아보베리요거 6종이며, 레시피는 누구나 볼 수 있는 무료 음용·활용 가이드입니다.',
+  },
+  {
+    q: '레시피 6종을 주문하면 오나요?',
+    a: '아닙니다. 이 페이지에서 판매하는 상품은 오륜미네랄 1,000ml(220,000원) 한 가지입니다. 레시피는 그 제품을 물 대신 음료에 넣어 마시는 방법을 안내하는 글이고, 완성된 음료나 재료를 판매하지는 않습니다.',
+  },
+  {
+    q: '오륜미네랄은 어떤 제품인가요?',
+    a: '충북 보은의 제조사 유디아미네랄이 어린 뽕잎과 누에를 원료로 만든 액상 미네랄입니다. 식품유형은 기타가공품(일반식품), 내용량은 1,000ml이고, 알프스(ALFS)가 총판으로 유통합니다. 질병의 예방이나 치료를 위한 제품이 아니며 효능·효과를 표방하지 않습니다.',
+  },
+  {
+    q: '레시피에 달걀이 들어가는데 그대로 마셔도 되나요?',
+    a: '키위벨벳·토마선셋·아보바나스무디·아보베리요거 네 가지는 카드에 적힌 대로 달걀 2개를 넣습니다. 신선한 달걀을 사용하고, 임산부·어린이·고령자·면역력이 약한 분은 달걀을 빼거나 익힌 재료로 바꾸는 편이 안전합니다. 달걀·견과류·유제품 알레르기가 있으면 해당 재료를 빼고 만드세요.',
+  },
+  {
+    q: '레시피 재료를 바꿔도 되나요?',
+    a: '과일과 요구르트·두유는 집에 있는 것으로 바꿔도 됩니다. 오륜미네랄 60ml는 카드에 적힌 양을 그대로 넣고, 처음 만든다면 40ml부터 넣어 보고 입맛에 맞게 늘려도 좋습니다.',
+  },
+  {
+    q: '오륜미네랄은 어떻게 마시나요?',
+    a: '원액을 물에 10~30배 희석해 하루 한 잔 마십니다. 레시피처럼 음료에 60ml를 넣어 마시기도 합니다. 농도와 양은 취향에 맞게 조절하고, 섭취 중 이상이 느껴지면 섭취를 중단하고 전문가와 상담하세요.',
   },
 ]
 
@@ -251,6 +283,33 @@ const enzymeListLd = {
   itemListElement: enzymeProducts.map((p, i) => ({ '@type': 'ListItem', position: i + 1, item: enzymeProductLd(p) })),
 }
 
+// 미네랄 카페 레시피 6종 — 레시피 자체는 판매 상품이 아니므로 Offer 없이 Recipe 로만 적습니다.
+const cafeRecipeLd = (p) => ({
+  '@type': 'Recipe',
+  '@id': `${SITE_URL}/products/cafe#${p.slug}`,
+  name: p.name,
+  alternateName: p.nameEn,
+  image: `${SITE_URL}/${p.image}`,
+  description: p.line,
+  recipeCategory: '음료',
+  recipeCuisine: '한국',
+  recipeYield: '1잔',
+  recipeIngredient: p.ingredients,
+  recipeInstructions: [
+    { '@type': 'HowToStep', text: '재료를 손질해 믹서에 넣고 오륜미네랄 60ml와 함께 매끄러워질 때까지 갑니다.' },
+    { '@type': 'HowToStep', text: '갈아서 바로 마십니다. 남으면 냉장 보관하고 그날 안에 드세요.' },
+  ],
+  author: { '@id': `${SITE_URL}/#org` },
+  inLanguage: 'ko-KR',
+})
+const cafeListLd = {
+  '@type': 'ItemList',
+  name: '오륜미네랄 카페 레시피 6종',
+  url: `${SITE_URL}/products/cafe`,
+  numberOfItems: cafeRecipes.length,
+  itemListElement: cafeRecipes.map((p, i) => ({ '@type': 'ListItem', position: i + 1, item: cafeRecipeLd(p) })),
+}
+
 export function jsonLdFor(path) {
   const m = metaFor(path)
   const graph = [org, website]
@@ -259,6 +318,7 @@ export function jsonLdFor(path) {
   if (m.path === '/mineral-guide') graph.push({ '@type': 'Article', headline: m.title, description: m.description, author: { '@id': `${SITE_URL}/#org` }, publisher: { '@id': `${SITE_URL}/#org` }, mainEntityOfPage: m.url, about: { '@id': `${SITE_URL}/products#oryun` }, inLanguage: 'ko-KR' }, product)
   if (m.path === '/distribution') graph.push(faqLd(FAQ_DISTRIBUTION))
   if (m.path === '/products/enzyme') graph.push(enzymeListLd, faqLd(FAQ_ENZYME))
+  if (m.path === '/products/cafe') graph.push(cafeListLd, faqLd(FAQ_CAFE))
   return { '@context': 'https://schema.org', '@graph': graph }
 }
 

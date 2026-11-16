@@ -47,7 +47,7 @@ for (const route of Object.keys(ROUTES)) {
 }
 
 const today = new Date().toISOString().slice(0, 10)
-const prio = { '/': '1.0', '/products': '0.9', '/distribution': '0.9', '/mineral-guide': '0.8', '/partner': '0.8' }
+const prio = { '/': '1.0', '/products': '0.9', '/distribution': '0.9', '/mineral-guide': '0.8', '/partner': '0.8', '/products/cafe': '0.8' }
 const urls = Object.keys(ROUTES).map((r) => `  <url><loc>${SITE_URL}${r === '/' ? '/' : r}</loc><lastmod>${today}</lastmod><priority>${prio[r] || '0.6'}</priority></url>`)
 fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`)
 fs.rmSync(path.join(root, 'dist-ssr'), { recursive: true, force: true })

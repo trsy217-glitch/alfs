@@ -19,7 +19,7 @@
 - 진단 → 구글 시트(알프스 내부 보관): 저장 성공 후 `src/lib/sheet.js` → `api/diagnosis-sheet.js`(Firebase 토큰 확인, 이메일은 토큰에서) → Apps Script `docs/diagnosis-sheet.gs` → 시트 '진단리포트'. 환경 변수 `DIAG_SHEET_URL`, `DIAG_SHEET_SECRET`. 고객 화면에는 표시하지 않음
 - 배포 사이트는 체험 모드 없음: Firebase 값이 없으면 로그인 '준비 중' (체험 모드는 `npm run dev`에서만)
 - 보호 화면: `RequireAuth`로 감싼 `/diagnosis/new`, `/diagnosis/result/:id`, `/my`. 나머지 페이지는 공개
-- 제품: `/products`(오륜미네랄) · `/products/enzyme`(효소세상, 준비 중). 탭 목록은 `src/components/ProductTabs.jsx`
+- 제품: `/products`(오륜미네랄) · `/products/enzyme`(효소세상) · `/products/cafe`(미네랄 카페 레시피 6종, 판매 상품 없음). 탭 목록은 `src/components/ProductTabs.jsx`, 레시피 내용은 `src/config/cafe.js`
 - 첫 화면 3D 'ALFS': `src/components/Alfs3D.jsx` (@remotion/svg-3d-engine 으로 글자에 두께를 주고 회전, 브라우저 애니메이션·동작 줄이기 설정 시 정지)
 - 로고·OG: `public/brand/*`, `public/og-image.jpg`, 주소는 `vite.config.js`의 `__SITE_URL__` 치환
 - 홍보 영상: `video/`(Remotion 별도 프로젝트) → 결과물 `public/video/*` → `src/components/PromoVideo.jsx`가 오륜미네랄 첫 화면에 재생

@@ -160,8 +160,11 @@ export default function Product() {
         <div className="wrap split split--flip">
           <div>
             <h2 className="h-section">그냥 물이 심심하다면, 미네랄카페 레시피</h2>
-            <p className="lead muted mt-s">과일 에이드, 단백질 쉐이크, 홈카페 음료에 원액을 한 스푼. 인스타그램 미네랄카페에서 매주 새 레시피를 올립니다.</p>
-            {insta && <div className="btn-row mt-m"><a className="btn btn--primary" href={insta.url} target="_blank" rel="noreferrer">미네랄카페 레시피 보기</a></div>}
+            <p className="lead muted mt-s">과일 에이드, 단백질 쉐이크, 홈카페 음료에 원액을 한 스푼. 오륜미네랄 60ml로 만드는 홈카페 음료 6종을 레시피 카드로 모아 두었습니다.</p>
+            <div className="btn-row mt-m">
+              <Link to="/products/cafe" className="btn btn--primary">미네랄 카페 레시피 6종 보기</Link>
+              {insta && <a className="btn btn--ghost" href={insta.url} target="_blank" rel="noreferrer">인스타그램 미네랄카페</a>}
+            </div>
           </div>
           <div className="cocoon cocoon--wide">
             <img src={asset('images/lifestyle-drink.webp')} alt="야외 테이블에서 오륜미네랄을 탄 물을 마시는 사람" loading="lazy" width="500" height="506" />

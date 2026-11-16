@@ -9,6 +9,7 @@ import Company from './pages/Company.jsx'
 import Distribution from './pages/Distribution.jsx'
 import Product from './pages/Product.jsx'
 import EnzymeTab from './pages/EnzymeTab.jsx'
+import MineralCafeTab from './pages/MineralCafeTab.jsx'
 import AiMarketing from './pages/AiMarketing.jsx'
 import Partner from './pages/Partner.jsx'
 import Contact from './pages/Contact.jsx'
@@ -57,6 +58,7 @@ export default function App() {
           <Route path="/products" element={<Product />} />
           <Route path="/products/oryun" element={<Navigate to="/products" replace />} />
           <Route path="/products/enzyme" element={<EnzymeTab />} />
+          <Route path="/products/cafe" element={<MineralCafeTab />} />
           <Route path="/product" element={<Navigate to="/products" replace />} />
           <Route path="/mineral-guide" element={<MineralGuide />} />
           <Route path="/terms" element={<Terms />} />

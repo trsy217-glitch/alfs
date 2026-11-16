@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom'
 export const products = [
   { to: '/products', label: '오륜미네랄', end: true },
   { to: '/products/enzyme', label: '효소세상' },
+  { to: '/products/cafe', label: '미네랄 카페' },
 ]
 
 export default function ProductTabs() {
