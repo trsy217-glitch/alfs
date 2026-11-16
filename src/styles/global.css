@@ -126,6 +126,13 @@ p { margin: 0; }
 .header__cta { min-height: 42px; padding: 0 16px; font-size: 0.92rem; }
 .header__me { font-size: 0.9rem; font-weight: 600; color: var(--ink-2); text-decoration: none; padding: 8px 6px; }
 .header__me:hover { color: var(--ink); }
+.header__out {
+  background: none; border: 0; font: inherit; font-size: 0.9rem; font-weight: 600; color: var(--ink-2);
+  padding: 8px 8px; border-radius: 999px; cursor: pointer; white-space: nowrap; transition: color .15s, background .15s;
+}
+.header__out:hover { color: var(--ink); background: rgba(22, 32, 26, 0.06); }
+.header__out:disabled { opacity: 0.55; cursor: default; }
+.header__out:focus-visible { outline: 3px solid var(--leaf-2); outline-offset: 2px; }
 .btn--line { border-color: var(--leaf); color: var(--leaf); background: transparent; }
 .btn--line:hover { background: rgba(31, 77, 52, 0.07); }
 .menu-btn { display: none; background: none; border: 0; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; color: var(--ink); }
@@ -140,7 +147,8 @@ p { margin: 0; }
 .drawer a.navlink { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; padding: 14px 0; text-decoration: none; border-bottom: 1px solid var(--line); }
 .drawer a.navlink.active { color: var(--leaf-2); }
 .drawer__btns { display: grid; gap: 10px; margin-top: 24px; }
-.drawer__out { margin-top: 18px; align-self: flex-start; }
+.drawer__out { width: 100%; }
+.drawer__account { margin-top: 18px; display: grid; gap: 10px; }
 
 @media (max-width: 1180px) {
   .nav { display: none; }
@@ -502,6 +510,15 @@ ol.howto { padding: 0; }
 .tabs button { border: 0; background: transparent; border-radius: 999px; padding: 10px; font-weight: 700; cursor: pointer; color: var(--ink-2); }
 .tabs button.on { background: #fff; color: var(--ink); box-shadow: 0 2px 8px -4px rgba(22, 32, 26, 0.3); }
 .demo-note { font-size: var(--t-sm); background: #DCEBF4; color: var(--ink); padding: 12px 14px; border-radius: var(--radius-s); margin-bottom: 18px; }
+/* 로그인 상태 확인 중: 폼을 먼저 그리지 않고 안내만 보여 깜빡임을 막습니다 */
+.auth-wait { display: flex; align-items: center; justify-content: center; gap: 10px; max-width: 440px; margin: clamp(40px, 12vh, 140px) auto; padding: 28px 24px; text-align: center; font-weight: 600; color: var(--ink-2); }
+.auth-wait__dot {
+  flex: none; width: 16px; height: 16px; border-radius: 50%;
+  border: 2.5px solid var(--silk-2); border-top-color: var(--leaf-2);
+  animation: auth-spin .8s linear infinite;
+}
+@keyframes auth-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .auth-wait__dot { animation: none; border-top-color: var(--silk-2); } }
 .auth-kakao { width: 100%; margin-top: 12px; }
 .auth-foot { margin-top: 16px; text-align: center; }
 .form .btn { justify-self: start; }

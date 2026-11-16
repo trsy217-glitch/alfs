@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { MenuIcon, CloseIcon } from './Icons.jsx'
 import { useConsult } from './consult.js'
 import { useAuth } from '../lib/auth.jsx'
@@ -16,9 +16,25 @@ export const navItems = [
 
 export default function Header() {
   const [menu, setMenu] = useState(false)
+  const [signingOut, setSigningOut] = useState(false)
   const { pathname } = useLocation()
+  const nav = useNavigate()
   const consult = useConsult()
   const { user, signOut } = useAuth()
+
+  // 로그아웃: 세션을 지운 뒤 홈으로 보냅니다. (헤더 PC·모바일 공통)
+  const logout = async () => {
+    if (signingOut) return
+    setSigningOut(true)
+    setMenu(false)
+    try {
+      await signOut()
+    } finally {
+      setSigningOut(false)
+      nav('/', { replace: true })
+    }
+  }
+
   useEffect(() => setMenu(false), [pathname])
   useEffect(() => {
     document.body.style.overflow = menu ? 'hidden' : ''
@@ -39,9 +55,20 @@ export default function Header() {
             ))}
           </nav>
           <div className="header__actions">
-            {user
-              ? <Link to="/my" className="header__me">내 진단</Link>
-              : <Link to="/login" className="header__me">로그인</Link>}
+            {user ? (
+              <>
+                <Link to="/my" className="header__me">내 진단</Link>
+                <button
+                  type="button"
+                  className="header__out"
+                  onClick={logout}
+                  disabled={signingOut}
+                  title={user.email ? `${user.email} 계정에서 로그아웃` : '로그아웃'}
+                >
+                  {signingOut ? '로그아웃 중…' : '로그아웃'}
+                </button>
+              </>
+            ) : <Link to="/login" className="header__me">로그인</Link>}
             <Link to="/diagnosis" className="btn btn--line header__cta">우리가게 진단하기</Link>
             <button className="btn btn--primary header__cta" onClick={consult.open}>상담하기</button>
           </div>
@@ -62,7 +89,14 @@ export default function Header() {
           <Link to="/diagnosis" className="btn btn--line" tabIndex={t}>우리가게 진단하기</Link>
           <button className="btn btn--primary" tabIndex={t} onClick={() => { setMenu(false); consult.open() }}>상담하기</button>
         </div>
-        {user && <button className="linkish drawer__out" tabIndex={t} onClick={signOut}>로그아웃 ({user.email})</button>}
+        {user && (
+          <div className="drawer__account">
+            <span className="drawer__email">{user.email}</span>
+            <button type="button" className="btn btn--line drawer__out" tabIndex={t} onClick={logout} disabled={signingOut}>
+              {signingOut ? '로그아웃 중…' : '로그아웃'}
+            </button>
+          </div>
+        )}
       </div>
     </>
   )

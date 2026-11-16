@@ -25,6 +25,21 @@ export default function Login() {
     if (r.error) setMsg(r.error)
   }
 
+  // 로그인 상태를 확인하는 동안에는 로그인 폼을 그리지 않습니다.
+  // 이미 로그인한 사람이 이 화면에 들어왔을 때 폼이 잠깐 보였다가 사라지는 깜빡임을 막습니다.
+  if (auth.loading) {
+    return (
+      <section className="section auth-page">
+        <div className="wrap">
+          <div className="panel auth-wait" role="status" aria-live="polite">
+            <span className="auth-wait__dot" aria-hidden="true" />
+            <span>로그인 상태 확인 중…</span>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="section auth-page">
       <div className="wrap auth-grid">
