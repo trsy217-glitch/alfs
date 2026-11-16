@@ -10,7 +10,7 @@ export default function RefundPolicy() {
       <h2 id="shipping">1. 배송 안내</h2>
       <ul>
         <li>배송 방법: 택배({product.carrier})</li>
-        <li>배송 지역: 대한민국 전국 · 제주·도서산간 지역은 추가 배송비가 발생할 수 있으며 주문 전에 안내합니다.</li>
+        <li>배송 지역: 대한민국 전국 · 제주·도서 산간 지역은 추가 배송비 6,000원이 발생합니다.</li>
         <li>배송비: {shippingSummary} (상품금액 {won(product.freeShippingOver)} 이상이면 배송비가 없습니다.)</li>
         <li>출고 소요: 결제 확인 후 2~3영업일 이내 발송 (주말·공휴일 제외)</li>
         <li>배송 기간: 발송 후 통상 1~3영업일 (택배사 사정에 따라 달라질 수 있습니다)</li>

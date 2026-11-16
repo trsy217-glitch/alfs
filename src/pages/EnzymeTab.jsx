@@ -4,7 +4,7 @@ import Faq from '../components/Faq.jsx'
 import CtaBand from '../components/CtaBand.jsx'
 import { useBuy } from '../components/buy.js'
 import { useConsult } from '../components/consult.js'
-import { enzymeProducts, enzymeShipping, toOrderItem, discountRate } from '../config/enzyme.js'
+import { enzymeProducts, enzymeShipping, shippingText, toOrderItem, discountRate } from '../config/enzyme.js'
 import { company, won } from '../config/site.js'
 import { asset, scrollToId } from '../lib/asset.js'
 import { FAQ_ENZYME } from '../seo.js'
@@ -24,18 +24,18 @@ export default function EnzymeTab() {
         <div className="wrap">
           <div className="intro">
             <span className="kicker">알프스 유통 · 효소세상</span>
-            <h1>매일 한 포씩, 발효 음료 다섯 가지</h1>
+            <h1>매일 한 포씩, 발효 음료 여섯 가지</h1>
             <p className="lead muted">
-              효소세상이 만든 발효 효소·미생물 발효 음료 5종을 알프스가 유통합니다. 30일·3일 프로그램부터
+              효소세상이 만든 발효 효소·미생물 발효 음료 6종을 알프스가 유통합니다. 30일·3일 프로그램부터
               낱개로 챙기는 병 제품까지, 쓰는 기간과 방식에 맞춰 고르실 수 있습니다.
             </p>
             <div className="badges">
-              <span className="badge">전 상품 무료배송</span>
+              <span className="badge">5만 원 이상 무료배송</span>
               <span className="badge">카드 결제 준비 중 · 주문서 접수</span>
               <span className="badge">제조사 효소세상</span>
             </div>
             <div className="btn-row">
-              <button type="button" className="btn btn--drop" onClick={() => scrollToId('products')}>제품 5종 보기</button>
+              <button type="button" className="btn btn--drop" onClick={() => scrollToId('products')}>제품 6종 보기</button>
               <button type="button" className="btn btn--ghost" onClick={consult.open}>어떤 제품이 맞을지 상담</button>
             </div>
             <p className="muted hero-note">
@@ -47,7 +47,7 @@ export default function EnzymeTab() {
 
       <section className="section" id="products">
         <div className="wrap">
-          <h2 className="h-section">효소세상 제품 5종</h2>
+          <h2 className="h-section">효소세상 제품 6종</h2>
           <p className="lead muted mt-s">
             상품을 누르면 구성과 섭취 방법을 볼 수 있고, 구매하기를 누르면 주문서가 열립니다.
           </p>
@@ -70,7 +70,7 @@ export default function EnzymeTab() {
                       <b>{won(p.price)}</b>
                       {rate > 0 && <span className="pcard__rate">{rate}%</span>}
                     </div>
-                    <p className="pcard__ship">배송비 무료배송</p>
+                    <p className="pcard__ship">{shippingText(p)}</p>
                     <div className="pcard__btns">
                       <button type="button" className="btn btn--primary" onClick={() => buy.open(toOrderItem(p))}>구매하기</button>
                       <button type="button" className="btn btn--ghost" onClick={() => scrollToId(`p-${p.slug}`)}>자세히</button>
@@ -108,7 +108,7 @@ export default function EnzymeTab() {
                     <b>{won(p.price)}</b>
                     {p.listPrice && <s className="muted">{won(p.listPrice)}</s>}
                   </div>
-                  <p className="pricebox__meta">{p.option} · 배송비 무료배송 · {enzymeShipping.carrier} 발송</p>
+                  <p className="pricebox__meta">{p.option} · {shippingText(p)} · {enzymeShipping.carrier} 발송</p>
                   <div className="btn-row">
                     <button type="button" className="btn btn--primary" onClick={() => buy.open(toOrderItem(p))}>구매하기</button>
                     <a className="btn btn--ghost" href={p.storeUrl} target="_blank" rel="noreferrer">네이버 스토어</a>
@@ -142,7 +142,7 @@ export default function EnzymeTab() {
           <div>
             <h2 className="h-section">배송·교환·환불 안내</h2>
             <p className="lead muted mt-s">
-              다섯 상품 모두 무료배송입니다. 제주·도서지역은 추가 6,000원이 붙고, 결제와 배송 일정은 주문서를 받은 뒤 담당자가 안내드립니다.
+              상품 금액 5만 원 이상이면 무료배송이고, 5만 원 미만은 배송비 4,000원입니다. 제주·도서지역은 추가 6,000원이 붙고, 결제와 배송 일정은 주문서를 받은 뒤 담당자가 안내드립니다.
             </p>
             <div className="btn-row mt-m">
               <Link to="/refund-policy" className="btn btn--ghost">배송·교환·환불 정책</Link>
@@ -152,7 +152,7 @@ export default function EnzymeTab() {
           <div>
             <table className="spec">
               <tbody>
-                <tr><th scope="row">배송비</th><td>무료배송 · 제주·도서지역 추가 6,000원</td></tr>
+                <tr><th scope="row">배송비</th><td>5만 원 이상 무료배송 · 5만 원 미만 4,000원 · 제주·도서지역 추가 6,000원</td></tr>
                 <tr><th scope="row">배송 방법</th><td>택배 발송</td></tr>
                 <tr><th scope="row">출고</th><td>주문서 확인 후 담당자가 일정 안내</td></tr>
                 <tr><th scope="row">결제</th><td>카드 결제 준비 중 · 주문서를 카카오톡·전화·이메일로 접수</td></tr>

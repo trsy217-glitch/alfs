@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-// 효소세상 제품 5종 — 알프스.샵(네이버 스마트스토어) 판매 페이지에서 확인한 값만 적었습니다.
+// 효소세상 제품 6종 — 알프스.샵(네이버 스마트스토어) 판매 페이지에서 확인한 값만 적었습니다.
 //  · 판매가 = 스토어 '상품 가격'(쿠폰 적용 전). 정가(listPrice)는 스토어 '할인 전 가격'.
 //  · 원산지·용량·포장수량은 스토어 상품정보 고시에 적힌 값입니다.
 //  · 확인되지 않은 값은 비워 두고 spec 에 넣지 않습니다. (지어내지 않음)
@@ -10,12 +10,24 @@
 
 const STORE = 'https://smartstore.naver.com/gunban-kimchi/products'
 
-// 이 상품들은 모두 5만 원 이상이라 알프스 기본 배송 정책(5만 원 이상 무료)에서 무료배송입니다.
+// 스토어 배송 정책: 기본 배송비 4,000원, 5만 원 이상 무료배송, 제주·도서지역 추가 6,000원.
+// 5만 원이 넘는 상품(1.3fit·바이오에너지·자이모젠·클린바이옴 6병)은 무료배송이고,
+// 19,950원짜리 클린바이옴 1병만 5만 원 미만이라 배송비 4,000원이 붙습니다.
 export const enzymeShipping = {
-  fee: 0,
+  fee: 4000,
   freeOver: 50000,
   carrier: '택배',
-  note: '전 상품 무료배송 · 제주·도서지역은 추가 6,000원',
+  note: '5만 원 이상 무료배송 · 5만 원 미만 배송비 4,000원 · 제주·도서지역은 추가 6,000원',
+}
+
+// 상품 카드·상세에 쓰는 배송비 표기 (상품에 배송비를 적지 않으면 무료배송)
+export const shippingText = (p) => {
+  const fee = p.shippingFee || 0
+  if (!fee) return '무료배송'
+  const over = p.freeShippingOver || 0
+  return over
+    ? `배송비 ${fee.toLocaleString()}원 · ${over.toLocaleString()}원 이상 무료`
+    : `배송비 ${fee.toLocaleString()}원`
 }
 
 export const enzymeProducts = [
@@ -113,8 +125,8 @@ export const enzymeProducts = [
     slug: 'zymogen',
     name: '자이모젠',
     brand: '자이모젠 (Zymogen)',
-    tag: '박스 구성',
-    option: '100ml 병 단위 구성',
+    tag: '10병',
+    option: '100ml × 10병 (1,000ml)',
     price: 180000,
     listPrice: null,
     image: 'images/enzyme/zymogen.webp',
@@ -122,11 +134,11 @@ export const enzymeProducts = [
     imageDetail: 'images/enzyme/zymogen-set.webp',
     imageDetailAlt: '자이모젠 박스와 병 구성 전체',
     summary:
-      '효소세상의 미생물 발효 음용 제품입니다. 병에 담겨 오고, 한 상자 단위로 받아 보시는 구성입니다.',
-    points: ['100ml 병 구성', '박스 포장', '실온보관'],
+      '효소세상의 미생물 발효 음용 제품입니다. 100ml 병 10병이 한 상자에 담겨 오는 구성으로, 한 병씩 꺼내 마시면 됩니다.',
+    points: ['100ml 10병 (1,000ml)', '박스 포장', '실온보관'],
     spec: [
       ['판매가', '180,000원'],
-      ['구성', '100ml 병 단위 구성 (박스 포장)'],
+      ['구성', '100ml × 10병 (1,000ml)'],
       ['제조', '효소세상'],
       ['브랜드', '자이모젠 (Zymogen)'],
       ['원산지', '국산(경기도 여주시)'],
@@ -135,7 +147,7 @@ export const enzymeProducts = [
     usage: [{ t: '라벨 안내대로', d: '섭취 방법과 보관 방법은 제품 라벨의 안내를 따라 주세요.' }],
     storeUrl: `${STORE}/11803452794`,
     storeId: '11803452794',
-    note: '병 수량과 내용량은 스토어 상품 정보에 표기되어 있지 않아 제품 라벨 기준으로 안내드립니다. 정확한 수량은 주문 전에 확인해 드립니다.',
+    note: '스토어 상품정보에는 병 수량 표기가 없어, 확인해 주신 100ml 10병(1,000ml) 구성으로 안내합니다.',
   },
   {
     id: 'cleanbiome',
@@ -167,6 +179,39 @@ export const enzymeProducts = [
     storeUrl: `${STORE}/11901292751`,
     storeId: '11901292751',
   },
+  {
+    id: 'cleanbiome1',
+    slug: 'cleanbiome-1',
+    name: '클린바이옴 1병',
+    brand: '클린바이옴',
+    tag: '1병',
+    option: '100ml × 1병',
+    price: 19950,
+    listPrice: 21000,
+    image: 'images/enzyme/cleanbiome-1bottle.webp',
+    imageAlt: '클린바이옴 미생물 발효 음료 100ml 병 1병',
+    summary:
+      '위의 클린바이옴 6병 구성과 같은 100ml 병을 한 병만 담은 상품입니다. 여섯 병을 한 번에 사기 전에 한 병만 먼저 써 보려는 분들이 찾습니다.',
+    points: ['100ml 1병', '물에 희석해 마시는 음료', '5만 원 미만은 배송비 4,000원'],
+    spec: [
+      ['판매가', '19,950원'],
+      ['정가', '21,000원'],
+      ['구성', '100ml × 1병'],
+      ['브랜드', '클린바이옴'],
+      ['원산지', '국산(경기도 여주시)'],
+      ['배송비', '4,000원 (50,000원 이상 무료배송)'],
+    ],
+    usage: [
+      { t: '물에 희석', d: '상온의 물 300~500ml에 한 병을 풀어 주세요.' },
+      { t: '5분 안에', d: '희석한 뒤 5분 안에 마시도록 안내하고 있습니다.' },
+      { t: '마시는 때', d: '식후 2시간 이후나 공복에 마시는 것을 권하고 있습니다.' },
+    ],
+    shippingFee: 4000,
+    freeShippingOver: 50000,
+    storeUrl: `${STORE}/11803613417`,
+    storeId: '11803613417',
+    note: '스토어 상품명은 “한병으로 장내 가스, 숙변제거 장건강 음료, 특허받은 미생물발효 다이어트 효소음료”로 등록되어 있습니다. 사이트에는 효능 표현 없이 제품명과 구성만 적었습니다.',
+  },
 ]
 
 export const enzymeBySlug = (slug) => enzymeProducts.find((p) => p.slug === slug)
@@ -180,8 +225,8 @@ export const toOrderItem = (p) => ({
   listPrice: p.listPrice,
   image: p.image,
   maxQty: 5,
-  shippingFee: 0,
-  freeShippingOver: 0,
+  shippingFee: p.shippingFee || 0,
+  freeShippingOver: p.freeShippingOver || 0,
   carrier: enzymeShipping.carrier,
 })
 

@@ -5,10 +5,11 @@ import { useLocation, useNavigate } from 'react-router-dom'
 // - 브라우저 탭에서 처음 연 순간에만 홈으로 보내고, 그다음 사이트 안 이동은 그대로 둡니다.
 // - 주소 끝에 ?stay 를 붙이면 그 페이지에 그대로 머뭅니다 (예: 홍보용 링크 /video-maker?stay).
 // - 로그인 화면(Google 로그인 후 돌아오는 곳)과 약관·정책 페이지는 예외입니다.
+// - 효소세상 제품(/products/enzyme)은 광고·문자로 링크를 받은 손님이 바로 상품을 보도록 예외로 둡니다.
 // - 검색(구글·네이버·다음·빙 등)이나 AI 검색에서 들어온 사람, 검색 로봇은 찾던 페이지에 그대로 둡니다.
 const KEY = 'alfs_opened'
 // 약관·정책은 사이트 밖 링크(PG 심사·이메일 등)로 바로 열 수 있어야 하므로 홈으로 보내지 않습니다.
-const DIRECT = ['/terms', '/privacy', '/refund-policy']
+const DIRECT = ['/terms', '/privacy', '/refund-policy', '/products/enzyme']
 const BOT = /bot|crawl|spider|slurp|yeti|daum|bingpreview|google|naver|lighthouse|headless/i
 const SEARCH = /(google|naver|daum|bing|yahoo|zum|duckduckgo|chatgpt|openai|perplexity|claude|gemini|copilot)\./i
 const fromSearch = () => {
