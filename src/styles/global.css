@@ -150,6 +150,7 @@ p { margin: 0; }
 .drawer__btns { display: grid; gap: 10px; margin-top: 24px; }
 .drawer__out { width: 100%; }
 .drawer__account { margin-top: 18px; display: grid; gap: 10px; }
+.drawer__email { font-size: var(--t-sm); color: var(--ink-2); word-break: break-all; }
 
 @media (max-width: 1180px) {
   .nav { display: none; }
