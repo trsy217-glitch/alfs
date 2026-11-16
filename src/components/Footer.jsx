@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom'
-import { company, channels, product, shippingSummary } from '../config/site.js'
+import { company, channels, product, won } from '../config/site.js'
+import { enzymeShipping } from '../config/enzyme.js'
 import { navItems } from './Header.jsx'
 import { asset } from '../lib/asset.js'
+
+// 푸터 배송 안내: 오륜미네랄 기본 3,000원 · 효소세상 기본 4,000원 (/refund-policy 1번 표와 동일)
+const footerShipping = `기본 ${won(product.shippingFee)}(효소세상 ${won(enzymeShipping.fee)}) · ${won(product.freeShippingOver)} 이상 무료배송 · ${product.carrier}`
 
 export default function Footer() {
   const social = channels.filter((c) => c.url && ['kakao', 'instagram', 'youtube', 'naver'].includes(c.id))
@@ -48,7 +52,7 @@ export default function Footer() {
           <span>이메일 <a href={`mailto:${company.email}`}>{company.email}</a></span>
         </div>
         <p className="footer__ship mt-s">
-          배송 안내 · {shippingSummary} · 결제 확인 후 2~3영업일 이내 발송 · <a href="/refund-policy">배송·교환·환불 정책 보기</a>
+          배송 안내 · {footerShipping} · 결제 확인 후 2~3영업일 이내 발송 · <a href="/refund-policy">배송·교환·환불 정책 보기</a>
         </p>
         <p className="mt-s" style={{ fontSize: '0.75rem' }}>
           {product.name}은 기타가공품(일반식품)이며 질병의 예방·치료를 위한 의약품이나 건강기능식품이 아닙니다. 수상·특허는 {product.name} 제품이 아닌 제조사 유디아미네랄의 이력입니다.
