@@ -2,7 +2,9 @@ import LogoFilm from '../components/LogoFilm.jsx'
 import { Link } from 'react-router-dom'
 import EngineLoop, { engineSteps } from '../components/EngineLoop.jsx'
 import CtaBand from '../components/CtaBand.jsx'
+import BuyBox from '../components/BuyBox.jsx'
 import { asset } from '../lib/asset.js'
+import { product, won } from '../config/site.js'
 
 const lanes = [
   {
@@ -102,6 +104,8 @@ export default function Home() {
               충북 보은의 어린 뽕잎을 누에가 먹고 빚어낸 50여 종의 바이오 유기이온 미네랄. 물에 타서 하루 한 잔이면 됩니다.
             </p>
             <p className="mt-m">9대 한의 가문의 비방을 이은 제조사 유디아미네랄의 특허 기술로 만들었습니다. 수상·특허는 유디아미네랄의 이력입니다.</p>
+            <p className="hero-price"><span>오륜미네랄 {product.volume}</span> <b>{won(product.price)}</b></p>
+            <BuyBox compact note={false} />
             <div className="btn-row mt-m">
               <Link to="/products" className="btn btn--primary">오륜미네랄 자세히 보기</Link>
             </div>

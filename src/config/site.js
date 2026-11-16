@@ -5,17 +5,43 @@
 
 export const company = {
   nameKo: '알프스',
-  nameEn: 'ALFS',
+  // 사업자등록증상 영문 약칭은 AL.F.S 입니다. 브랜드 워드마크(ALFS)와 구분해 주세요.
+  nameEn: 'AL.F.S',
+  legalName: '알프스(AL.F.S)',
   fullNameEn: 'Alpha Food Store',
   ceo: '이소영',
-  // 전자상거래법상 사이트 하단 표시 정보 — 실제 값으로 바꿔 주세요.
+  // 전자상거래법상 사이트 하단 표시 정보 — 사업자등록증명과 일치해야 합니다.
   bizNumber: '523-70-00224',
   mailOrderNumber: '제 2025-서울마포-1175호',
   address: '서울특별시 마포구 월드컵북로 434, 지하 1층 136호(상암동, 상암 IT Tower)',
   phone: '010-9190-0906',
-  email: 'hello@alfs.kr',
+  // 고객센터 이메일: alfs.kr 도메인에는 메일 서버(MX)가 없어 hello@alfs.kr 로는 받을 수 없습니다.
+  // 도메인 관리(호스팅케이알)에서 메일함이나 포워딩을 열면 이 값을 hello@alfs.kr 로 바꾸면 됩니다.
+  email: 'trsy217@gmail.com',
   hours: '평일 10:00 – 18:00 (주말·공휴일 휴무)',
+  // 정책 문서 시행일
+  policyEffectiveDate: '2026년 11월 16일',
 }
+
+// ── 판매 상품 (PG 심사용 표시 정보) ──
+export const product = {
+  name: '오륜미네랄',
+  volume: '1,000ml',
+  price: 220000,          // 판매가 (원)
+  shippingFee: 3000,      // 기본 배송비 (원)
+  freeShippingOver: 50000, // 이 금액 이상 구매 시 무료배송 (원)
+  carrier: '한진택배',
+  maxQty: 10,
+  url: '/products',
+}
+
+export const won = (n) => `${Number(n).toLocaleString('ko-KR')}원`
+
+// 수량에 따른 배송비 (무료배송 기준 적용)
+export const shippingFor = (amount) => (amount >= product.freeShippingOver ? 0 : product.shippingFee)
+
+// 화면·정책에 공통으로 쓰는 배송비 안내 문구
+export const shippingSummary = `기본 ${won(product.shippingFee)} · ${won(product.freeShippingOver)} 이상 무료배송 · ${product.carrier}`
 
 // 상담 채널. url이 비어 있으면 숨겨집니다.
 export const channels = [
@@ -54,8 +80,8 @@ export const channels = [
   },
   {
     id: 'email',
-    label: '이메일 제안',
-    desc: '제휴·입점 제안서 접수',
+    label: '이메일 문의',
+    desc: '주문·제휴 문의 접수',
     url: `mailto:${company.email}`,
   },
 ]
@@ -66,7 +92,7 @@ export const channels = [
 export const formEndpoint = ''
 
 export const commerce = {
-  // 구매 버튼이 연결될 온라인 스토어 주소
+  // 구매 버튼이 연결될 온라인 스토어 주소 (지금은 사이트 안 주문서로 접수)
   smartstore: '',
   coupang: '',
 }

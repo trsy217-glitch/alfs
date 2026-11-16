@@ -1,5 +1,9 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/shipping", "destination": "/refund-policy", "permanent": true },
+    { "source": "/refund", "destination": "/refund-policy", "permanent": true }
+  ],
   "rewrites": [{ "source": "/((?!api/).*)", "destination": "/app.html" }]
 }

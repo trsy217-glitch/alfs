@@ -18,6 +18,9 @@ import RequireAuth from './components/RequireAuth.jsx'
 import HomeFirst from './components/HomeFirst.jsx'
 import SeoHead from './components/SeoHead.jsx'
 import MineralGuide from './pages/MineralGuide.jsx'
+import Terms from './pages/Terms.jsx'
+import Privacy from './pages/Privacy.jsx'
+import RefundPolicy from './pages/RefundPolicy.jsx'
 
 // 무거운 화면(진단·영상 만들기)은 들어갈 때만 불러옵니다 → 첫 화면이 빨리 뜸
 const Diagnosis = lazy(() => import('./pages/Diagnosis.jsx'))
@@ -27,12 +30,16 @@ const MyDiagnoses = lazy(() => import('./pages/MyDiagnoses.jsx'))
 const VideoMaker = lazy(() => import('./pages/VideoMaker.jsx'))
 import { AuthProvider } from './lib/auth.jsx'
 import { ConsultContext } from './components/consult.js'
+import { BuyContext } from './components/buy.js'
+import BuySheet from './components/BuySheet.jsx'
 
 export default function App() {
   const [open, setOpen] = useState(false)
+  const [buyOpen, setBuyOpen] = useState(false)
   return (
     <AuthProvider>
     <ConsultContext.Provider value={{ open: () => setOpen(true) }}>
+    <BuyContext.Provider value={{ open: () => setBuyOpen(true), close: () => setBuyOpen(false) }}>
       <HomeFirst />
       <SeoHead />
       <ScrollToTop />
@@ -49,6 +56,11 @@ export default function App() {
           <Route path="/products/enzyme" element={<EnzymeTab />} />
           <Route path="/product" element={<Navigate to="/products" replace />} />
           <Route path="/mineral-guide" element={<MineralGuide />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/refund" element={<Navigate to="/refund-policy" replace />} />
+          <Route path="/shipping" element={<Navigate to="/refund-policy" replace />} />
           <Route path="/ai-marketing" element={<AiMarketing />} />
           <Route path="/partner" element={<Partner />} />
           <Route path="/contact" element={<Contact />} />
@@ -64,6 +76,8 @@ export default function App() {
       </main>
       <Footer />
       <ConsultSheet open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)} />
+      <BuySheet open={buyOpen} onClose={() => setBuyOpen(false)} />
+    </BuyContext.Provider>
     </ConsultContext.Provider>
     </AuthProvider>
   )

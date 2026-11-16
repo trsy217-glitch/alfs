@@ -50,6 +50,18 @@ export const ROUTES = {
     title: '무료 우리가게 진단 | 알프스 ALFS',
     description: '업종별 질문에 답하면 우리 가게의 구조 점수와 강점·보완할 점·실행 계획을 무료로 보여 드립니다. 결과는 본인만 볼 수 있습니다.',
   },
+  '/terms': {
+    title: '이용약관 | 알프스(AL.F.S) alfs.kr',
+    description: '알프스(AL.F.S)가 운영하는 alfs.kr의 이용약관입니다. 회원가입, 구매신청, 대금지급, 배송, 청약철회·환불, 분쟁해결 조항을 안내합니다.',
+  },
+  '/privacy': {
+    title: '개인정보처리방침 | 알프스(AL.F.S) alfs.kr',
+    description: '알프스(AL.F.S)가 처리하는 개인정보 항목과 목적, 보유 기간, 제3자 제공·처리 위탁, 정보주체의 권리, 개인정보 보호책임자를 안내합니다.',
+  },
+  '/refund-policy': {
+    title: '배송·교환·환불 정책 | 알프스(AL.F.S) alfs.kr',
+    description: '오륜미네랄 1,000ml의 배송비(기본 3,000원, 5만 원 이상 무료배송, 한진택배)와 출고 일정, 교환·반품·환불 기준을 안내합니다.',
+  },
   '/video-maker': {
     title: '10초 제품 홍보영상 만들기 (체험용) | 알프스 ALFS',
     description: '제품 사진 한 장으로 배경을 지우고 문구를 넣어 10초 홍보영상을 만들어 볼 수 있는 무료 체험 도구입니다.',
@@ -89,7 +101,7 @@ export const FAQ_PRODUCT = [
   },
   {
     q: '오륜미네랄은 어디서 살 수 있나요?',
-    a: '알프스 파트너샵(건강·뷰티·카페·헬스샵 등)과 알프스 카카오톡 채널 상담으로 구매할 수 있습니다. 가까운 매장이나 구매 방법은 카카오톡 채널로 물어보세요.',
+    a: '알프스 파트너샵(건강·뷰티·카페·헬스샵 등)과 alfs.kr 제품 페이지에서 구매할 수 있습니다. 제품 페이지의 구매하기를 누르면 주문서가 열리고, 카드 결제를 준비하는 동안에는 주문서를 카카오톡·전화·이메일로 접수하면 담당자가 결제 방법과 배송 일정을 안내합니다.',
   },
 ]
 
@@ -121,7 +133,7 @@ const org = {
   '@type': 'Organization',
   '@id': `${SITE_URL}/#org`,
   name: '알프스',
-  alternateName: ['ALFS', '알프스 ALFS', 'Alpha Food Store', '알프스 유통'],
+  alternateName: ['ALFS', '알프스 ALFS', '알프스(AL.F.S)', 'Alpha Food Store', '알프스 유통'],
   url: `${SITE_URL}/`,
   logo: `${SITE_URL}/apple-touch-icon.png`,
   description: '오륜미네랄 총판 유통과 샵인샵 파트너샵 공급, 소상공인 SNS·AI 마케팅 컨설팅을 함께 하는 웰니스 유통 회사',
@@ -154,6 +166,15 @@ const product = {
   brand: { '@type': 'Brand', name: '오륜미네랄' },
   manufacturer: { '@type': 'Organization', name: '유디아미네랄', address: { '@type': 'PostalAddress', addressRegion: '충청북도', addressLocality: '보은군', addressCountry: 'KR' } },
   countryOfOrigin: 'KR',
+  offers: {
+    '@type': 'Offer',
+    price: '220000',
+    priceCurrency: 'KRW',
+    availability: 'https://schema.org/InStock',
+    itemCondition: 'https://schema.org/NewCondition',
+    url: `${SITE_URL}/products`,
+    seller: { '@type': 'Organization', name: '알프스(AL.F.S)' },
+  },
   additionalProperty: [
     { '@type': 'PropertyValue', name: '내용량', value: '1,000ml' },
     { '@type': 'PropertyValue', name: '섭취 방법', value: '원액을 물에 10~30배 희석' },

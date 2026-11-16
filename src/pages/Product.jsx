@@ -4,9 +4,9 @@ import ProductTabs from '../components/ProductTabs.jsx'
 import Faq from '../components/Faq.jsx'
 import { Link } from 'react-router-dom'
 import { FAQ_PRODUCT } from '../seo.js'
-import { useConsult } from '../components/consult.js'
+import BuyBox from '../components/BuyBox.jsx'
 import { asset, scrollToId } from '../lib/asset.js'
-import { commerce, channels } from '../config/site.js'
+import { channels, product, won, shippingSummary } from '../config/site.js'
 
 // ⚠️ 식품표시광고법: 오륜미네랄은 기타가공품(일반식품)입니다.
 // 질병 예방·치료, 기능성(뼈·면역·혈액 개선 등), 흡수율 비교 같은 표현은 넣지 마세요.
@@ -51,9 +51,11 @@ const howto = [
 
 // TODO: 원재료명은 실제 제품 라벨과 한 번 더 대조하세요.
 const spec = [
-  ['제품명', '오륜미네랄'],
+  ['판매가', won(product.price)],
+  ['배송비', shippingSummary],
+  ['제품명', product.name],
   ['식품유형', '기타가공품'],
-  ['내용량', '1,000ml'],
+  ['내용량', product.volume],
   ['제조원', '유디아미네랄 (충북 보은)'],
   ['수상·특허 보유', '제조사 유디아미네랄 (발명특허 제1541516호 등)'],
   ['원재료', '정제수, 동·식물성 바이오미네랄, 뽕나무어린가지추출물, 구연산나트륨, 수산화마그네슘, 비타민C, 황산미량원소, 산화아연, 황산망간, 황산동'],
@@ -64,12 +66,7 @@ const spec = [
 ]
 
 export default function Product() {
-  const consult = useConsult()
   const insta = channels.find((c) => c.id === 'instagram' && c.url)
-  const buyLinks = [
-    commerce.smartstore && { label: '스마트스토어에서 구매', url: commerce.smartstore },
-    commerce.coupang && { label: '쿠팡에서 구매', url: commerce.coupang },
-  ].filter(Boolean)
 
   return (
     <>
@@ -86,10 +83,8 @@ export default function Product() {
             </div>
             <p className="credit">수상·특허는 제조사 <b>유디아미네랄</b>의 이력입니다. 오륜미네랄은 유디아미네랄이 이 기술과 원료로 만든 제품입니다.</p>
             <p className="lead muted">충북 보은의 어린 뽕잎을 먹고 자란 누에가 빚은 바이오 유기이온 미네랄. 알약 대신, 하루 한 잔으로 시작하는 미네랄 습관입니다.</p>
+            <BuyBox dark />
             <div className="btn-row mt-m">
-              {buyLinks.length > 0
-                ? buyLinks.map((b) => <a key={b.url} href={b.url} target="_blank" rel="noreferrer" className="btn btn--drop">{b.label}</a>)
-                : <button className="btn btn--drop" onClick={consult.open}>구매 상담하기</button>}
               <button type="button" className="btn btn--ghost" onClick={() => scrollToId('story')}>제품 이야기 보기</button>
             </div>
           </div>
