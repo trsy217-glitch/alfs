@@ -42,7 +42,7 @@ export default function RefundPolicy() {
 
       <h2>4. 고객센터</h2>
       <ul>
-        <li>전화: {company.phone} ({company.hours})</li>
+        <li>전화: {company.phone} · {company.hours}</li>
         <li>이메일: {company.email}</li>
         <li>카카오톡 채널: <a href="https://pf.kakao.com/_JdTPX" target="_blank" rel="noreferrer">알프스 카카오톡 채널</a></li>
       </ul>
