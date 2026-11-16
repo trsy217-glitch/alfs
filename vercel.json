@@ -2,13 +2,33 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/shipping", "destination": "/refund-policy", "permanent": true },
-    { "source": "/refund", "destination": "/refund-policy", "permanent": true }
+    {
+      "source": "/shipping",
+      "destination": "/refund-policy",
+      "permanent": true
+    },
+    {
+      "source": "/refund",
+      "destination": "/refund-policy",
+      "permanent": true
+    }
   ],
   "rewrites": [
-    { "source": "/login", "destination": "/app.html" },
-    { "source": "/my", "destination": "/app.html" },
-    { "source": "/diagnosis/new", "destination": "/app.html" },
-    { "source": "/diagnosis/result/(.*)", "destination": "/app.html" }
+    {
+      "source": "/login",
+      "destination": "/app"
+    },
+    {
+      "source": "/my",
+      "destination": "/app"
+    },
+    {
+      "source": "/diagnosis/new",
+      "destination": "/app"
+    },
+    {
+      "source": "/diagnosis/result/(.*)",
+      "destination": "/app"
+    }
   ]
 }
