@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import CtaBand from '../components/CtaBand.jsx'
 import Faq from '../components/Faq.jsx'
 import { asset } from '../lib/asset.js'
-import { FAQ_PRODUCT } from '../seo.js'
+import { FAQ_GUIDE } from '../seo.js'
 
 // '효과 좋은 미네랄', '미네랄 추천', '오륜미네랄 추천'을 찾는 사람에게 보여 줄 안내 글.
 // ⚠️ 식품표시광고법: 효능·질병·흡수율 비교·후기 표현 없이, 고르는 기준(사실)만 씁니다.
@@ -15,7 +15,7 @@ const points = [
   { t: '매일 챙길 수 있는지', d: '미네랄은 하루 이틀이 아니라 매일 챙기는 습관이 중요합니다. 물에 타서 하루 한 잔 마시는 방식은 따로 시간을 내지 않아도 돼 꾸준히 이어 가기 쉽습니다.' },
 ]
 
-const guideFaq = FAQ_PRODUCT.filter((f) => /효과 좋은|다시 구매|어디서/.test(f.q))
+const guideFaq = FAQ_GUIDE
 
 export default function MineralGuide() {
   return (

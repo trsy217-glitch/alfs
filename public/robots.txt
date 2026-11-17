@@ -1,4 +1,7 @@
 # 알프스 ALFS — https://alfs.kr
+# 검색엔진·AI 검색 모두 공개 상품·회사 정보를 읽고 인용할 수 있게 열어 둡니다.
+# 로그인·마이페이지·진단 결과 같은 개인 화면만 제외합니다.
+
 User-agent: *
 Allow: /
 Disallow: /login
@@ -12,6 +15,55 @@ User-agent: Yeti
 Allow: /
 Disallow: /login
 Disallow: /my
+Disallow: /diagnosis/new
+Disallow: /diagnosis/result/
 Disallow: /api/
+
+# Daum 검색 로봇
+User-agent: Daumoa
+Allow: /
+Disallow: /login
+Disallow: /my
+Disallow: /api/
+
+# AI 검색·답변 엔진 (공개 페이지 인용 허용)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
 
 Sitemap: https://alfs.kr/sitemap.xml

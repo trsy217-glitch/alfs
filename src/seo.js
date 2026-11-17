@@ -4,12 +4,17 @@
 // ⚠️ 식품표시광고법: 오륜미네랄 문구에 질병 예방·치료, 기능성 효능, 흡수율 비교, 효능 후기를 넣지 않습니다.
 // ─────────────────────────────────────────────────────────────
 
-import { enzymeProducts } from './config/enzyme.js'
+import { enzymeProducts, shippingText } from './config/enzyme.js'
 import { cafeRecipes } from './config/cafe.js'
+import { company, product as mineral } from './config/site.js'
 
 export const SITE_URL = 'https://alfs.kr'
 export const SITE_NAME = '알프스 ALFS'
+// 알프스.샵 네이버 스마트스토어 (효소세상 제품을 실제로 판매하는 공식 스토어)
+export const STORE_URL = 'https://smartstore.naver.com/gunban-kimchi'
 const OG_IMAGE = `${SITE_URL}/og-image.jpg`
+// 전화번호는 표시용(010-9190-0906)과 국가번호 형태(+82-10-9190-0906)를 함께 둡니다.
+const TEL = `+82-${company.phone.replace(/^0/, '').replace(/-/g, '-')}`
 
 // 페이지별 제목·설명 (검색 결과에 보이는 문구)
 export const ROUTES = {
@@ -81,6 +86,7 @@ export function metaFor(path) {
 }
 
 // ── 자주 묻는 질문 (화면에도 그대로 보이고, 구조화 데이터로도 들어감) ──
+// AI 검색이 인용하기 좋은 단위로, 구성·용량·가격·음용법·구매처·배송비·교환/반품을 한 질문에 하나씩 둡니다.
 export const FAQ_PRODUCT = [
   {
     q: '오륜미네랄은 어떤 제품인가요?',
@@ -106,7 +112,17 @@ export const FAQ_PRODUCT = [
     q: '오륜미네랄은 어디서 살 수 있나요?',
     a: '알프스 파트너샵(건강·뷰티·카페·헬스샵 등)과 alfs.kr 제품 페이지에서 구매할 수 있습니다. 제품 페이지의 구매하기를 누르면 주문서가 열리고, 카드 결제를 준비하는 동안에는 주문서를 카카오톡·전화·이메일로 접수하면 담당자가 결제 방법과 배송 일정을 안내합니다.',
   },
+  {
+    q: '가격과 배송비는 얼마인가요?',
+    a: `오륜미네랄 ${mineral.volume} 1병 판매가는 ${mineral.price.toLocaleString('ko-KR')}원입니다. 기본 배송비는 ${mineral.shippingFee.toLocaleString('ko-KR')}원이고 ${mineral.freeShippingOver.toLocaleString('ko-KR')}원 이상 구매하면 무료배송이라, 1병만 주문해도 배송비는 들지 않습니다. 택배는 ${mineral.carrier}이며, 제주·도서 산간 지역은 추가 배송비 6,000원이 있습니다. 결제 확인 후 2~3영업일 이내에 발송합니다.`,
+  },
+  {
+    q: '교환·반품은 어떻게 하나요?',
+    a: `상품을 받은 날부터 7일 이내에 전화(${company.phone})나 이메일(${company.email})로 주문 정보와 사유를 알려 주시면 접수합니다. 단순 변심은 반품·교환 배송비를 구매자가 부담하고(반품 편도 3,000원, 무료배송 주문은 왕복 6,000원, 교환 왕복 6,000원), 상품 불량·오배송·배송 중 파손은 판매자 부담입니다. 식품이라 포장을 개봉했거나 섭취한 경우에는 교환·반품이 제한됩니다. 자세한 기준은 배송·교환·환불 정책 페이지에 적혀 있습니다.`,
+  },
 ]
+// '미네랄 고르는 법' 화면에 보이는 질문 (제품 페이지 FAQ 가운데 3개만 골라 씁니다)
+export const FAQ_GUIDE = FAQ_PRODUCT.filter((f) => /효과 좋은|다시 구매|어디서/.test(f.q))
 
 export const FAQ_ENZYME = [
   {
@@ -132,6 +148,14 @@ export const FAQ_ENZYME = [
   {
     q: '네이버 스토어에서도 살 수 있나요?',
     a: '네, 각 상품의 상세 화면에 있는 네이버 스토어 링크로 알프스.샵 스마트스토어 상품 페이지에서 바로 구매하실 수 있습니다. 스토어에서 쓰는 쿠폰과 적립은 스토어 결제 화면 기준입니다.',
+  },
+  {
+    q: '1.3fit·클린바이옴·자이모젠은 무엇이 다른가요?',
+    a: '1.3fit은 엔자임밀 파우치와 클린바이옴 병을 묶어 기간별로 나눠 쓰는 프로그램 상품입니다(30일 프로그램 엔자임밀 200ml 9포 + 클린바이옴 100ml 3병 396,000원, 3일 클렌즈 99,000원). 클린바이옴은 자몽 맛 미생물 발효 음료 100ml 병 상품으로 6병 107,100원, 1병 19,950원입니다. 자이모젠은 효소세상의 미생물 발효 음용 제품으로 100ml 병 10병(1,000ml) 구성 180,000원이고, 바이오에너지는 200ml 파우치 8포 220,000원입니다. 네 제품 모두 의약품·건강기능식품이 아닌 일반식품이며, 섭취 방법은 제품 라벨 안내를 따릅니다.',
+  },
+  {
+    q: '교환·반품은 어떻게 하나요?',
+    a: `상품을 받은 날부터 7일 이내에 전화(${company.phone})나 이메일(${company.email})로 주문 정보와 사유를 알려 주시면 접수합니다. 단순 변심은 반품·교환 배송비를 구매자가 부담하고(반품 편도 3,000원, 무료배송 주문은 왕복 6,000원, 교환 왕복 6,000원), 상품 불량·오배송·배송 중 파손은 판매자 부담입니다. 식품이라 포장을 개봉했거나 섭취한 경우에는 교환·반품이 제한됩니다. 자세한 기준은 배송·교환·환불 정책 페이지에 적혀 있습니다.`,
   },
 ]
 
@@ -186,18 +210,87 @@ export const FAQ_COMPANY = [
 ]
 
 // ── 구조화 데이터 (JSON-LD) ──
+// 공통 조각: 배송·교환/반품 기준 (배송·교환·환불 정책 페이지와 같은 값)
+const deliveryTime = {
+  '@type': 'ShippingDeliveryTime',
+  handlingTime: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 3, unitCode: 'DAY' },
+  transitTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 3, unitCode: 'DAY' },
+}
+const returnPolicyLd = {
+  '@type': 'MerchantReturnPolicy',
+  applicableCountry: 'KR',
+  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+  merchantReturnDays: 7,
+  returnMethod: 'https://schema.org/ReturnByMail',
+  returnFees: 'https://schema.org/ReturnShippingFees',
+  merchantReturnLink: `${SITE_URL}/refund-policy`,
+}
+const shippingLd = (fee) => ({
+  '@type': 'OfferShippingDetails',
+  shippingRate: { '@type': 'MonetaryAmount', value: String(fee), currency: 'KRW' },
+  shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'KR' },
+  deliveryTime,
+})
+
 const org = {
   '@type': 'Organization',
   '@id': `${SITE_URL}/#org`,
   name: '알프스',
-  alternateName: ['ALFS', '알프스 ALFS', '알프스(AL.F.S)', 'Alpha Food Store', '알프스 유통'],
+  legalName: company.legalName,
+  alternateName: ['ALFS', '알프스 ALFS', '알프스(AL.F.S)', '알프스 유통', company.fullNameEn],
   url: `${SITE_URL}/`,
-  logo: `${SITE_URL}/apple-touch-icon.png`,
+  logo: { '@type': 'ImageObject', url: `${SITE_URL}/apple-touch-icon.png` },
+  image: OG_IMAGE,
   description: '오륜미네랄 총판 유통과 샵인샵 파트너샵 공급, 소상공인 SNS·AI 마케팅 컨설팅을 함께 하는 웰니스 유통 회사',
-  founder: { '@type': 'Person', name: '이소영' },
+  founder: { '@type': 'Person', name: company.ceo },
+  // 아래 사업자 정보·연락처는 사업자 정보 표시(전자상거래법)로 이미 사이트 하단에 공개된 값입니다.
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: company.address,
+    addressLocality: '마포구',
+    addressRegion: '서울특별시',
+    addressCountry: 'KR',
+  },
+  telephone: TEL,
+  email: company.email,
+  identifier: [
+    { '@type': 'PropertyValue', name: '사업자등록번호', value: company.bizNumber },
+    { '@type': 'PropertyValue', name: '통신판매업 신고번호', value: company.mailOrderNumber },
+  ],
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      telephone: TEL,
+      email: company.email,
+      areaServed: 'KR',
+      availableLanguage: ['ko'],
+      hoursAvailable: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '10:00', closes: '18:00' },
+    },
+  ],
   areaServed: { '@type': 'Country', name: '대한민국' },
-  knowsAbout: ['미네랄 유통', '오륜미네랄', '샵인샵', '건강식품 총판', '소상공인 마케팅', 'AI 마케팅 자동화'],
-  sameAs: ['https://pf.kakao.com/_JdTPX', 'https://www.instagram.com/mineral_detox_cafe'],
+  knowsAbout: ['오륜미네랄', '유디아미네랄', '효소세상', '1.3fit (일쩜삼)', '클린바이옴', '자이모젠', '바이오에너지', '미네랄 유통', '샵인샵', '건강식품 총판', '소상공인 마케팅', 'AI 마케팅 자동화'],
+  sameAs: ['https://pf.kakao.com/_JdTPX', 'https://www.instagram.com/mineral_detox_cafe', 'https://www.youtube.com/@alfs_official', STORE_URL],
+}
+
+// 판매가 이루어지는 두 곳: alfs.kr 자체 스토어와 알프스.샵 네이버 스마트스토어
+const onlineStore = {
+  '@type': 'OnlineStore',
+  '@id': `${SITE_URL}/#store`,
+  name: '알프스(AL.F.S) alfs.kr 온라인 스토어',
+  url: `${SITE_URL}/products`,
+  parentOrganization: { '@id': `${SITE_URL}/#org` },
+  areaServed: { '@type': 'Country', name: '대한민국' },
+  telephone: TEL,
+  email: company.email,
+}
+const naverStore = {
+  '@type': 'Store',
+  '@id': `${SITE_URL}/#naver-store`,
+  name: '알프스.샵 네이버 스마트스토어',
+  url: STORE_URL,
+  parentOrganization: { '@id': `${SITE_URL}/#org` },
+  areaServed: { '@type': 'Country', name: '대한민국' },
 }
 const website = {
   '@type': 'WebSite',
@@ -215,26 +308,31 @@ const faqLd = (items) => ({
 const product = {
   '@type': 'Product',
   '@id': `${SITE_URL}/products#oryun`,
-  name: '오륜미네랄',
+  name: mineral.name,
   alternateName: ['오륜 미네랄', 'Oryun Mineral'],
-  description: '충북 보은 유디아미네랄이 어린 뽕잎과 누에를 원료로 만든 액상 미네랄. 원액을 물에 10~30배 희석해 마시는 기타가공품(일반식품), 1,000ml.',
-  image: `${SITE_URL}/og-image.jpg`,
+  description: `충북 보은 유디아미네랄이 어린 뽕잎과 누에를 원료로 만든 액상 미네랄. 원액을 물에 10~30배 희석해 마시는 기타가공품(일반식품), ${mineral.volume}.`,
+  image: OG_IMAGE,
   category: '기타가공품',
+  size: mineral.volume,
   brand: { '@type': 'Brand', name: '오륜미네랄' },
   manufacturer: { '@type': 'Organization', name: '유디아미네랄', address: { '@type': 'PostalAddress', addressRegion: '충청북도', addressLocality: '보은군', addressCountry: 'KR' } },
   countryOfOrigin: 'KR',
   offers: {
     '@type': 'Offer',
-    price: '220000',
+    price: String(mineral.price),
     priceCurrency: 'KRW',
     availability: 'https://schema.org/InStock',
     itemCondition: 'https://schema.org/NewCondition',
     url: `${SITE_URL}/products`,
-    seller: { '@type': 'Organization', name: '알프스(AL.F.S)' },
+    seller: { '@id': `${SITE_URL}/#org` },
+    // 1병 판매가가 이미 5만 원을 넘어 단독 주문도 무료배송입니다.
+    shippingDetails: shippingLd(0),
+    hasMerchantReturnPolicy: returnPolicyLd,
   },
   additionalProperty: [
-    { '@type': 'PropertyValue', name: '내용량', value: '1,000ml' },
+    { '@type': 'PropertyValue', name: '내용량', value: mineral.volume },
     { '@type': 'PropertyValue', name: '섭취 방법', value: '원액을 물에 10~30배 희석' },
+    { '@type': 'PropertyValue', name: '배송비', value: `기본 ${mineral.shippingFee.toLocaleString('ko-KR')}원 · ${mineral.freeShippingOver.toLocaleString('ko-KR')}원 이상 무료배송 · ${mineral.carrier}` },
     { '@type': 'PropertyValue', name: '유통', value: '알프스(ALFS) 총판' },
   ],
 }
@@ -253,9 +351,11 @@ const enzymeProductLd = (p) => ({
   name: p.name,
   description: p.summary,
   image: `${SITE_URL}/${p.image}`,
+  size: p.option,
   brand: { '@type': 'Brand', name: p.brand },
   manufacturer: { '@type': 'Organization', name: '효소세상' },
   countryOfOrigin: 'KR',
+  ...(p.storeUrl ? { sameAs: [p.storeUrl] } : {}),
   offers: {
     '@type': 'Offer',
     price: String(p.price),
@@ -263,12 +363,15 @@ const enzymeProductLd = (p) => ({
     availability: 'https://schema.org/InStock',
     itemCondition: 'https://schema.org/NewCondition',
     url: `${SITE_URL}/products/enzyme#p-${p.slug}`,
-    seller: { '@type': 'Organization', name: '알프스(AL.F.S)' },
+    seller: { '@id': `${SITE_URL}/#org` },
+    // 5만 원 미만인 상품(클린바이옴 1병)만 배송비가 붙습니다.
+    shippingDetails: shippingLd(p.shippingFee || 0),
+    hasMerchantReturnPolicy: returnPolicyLd,
   },
   additionalProperty: [
     { '@type': 'PropertyValue', name: '구성', value: p.option },
-    { '@type': 'PropertyValue', name: '배송비', value: '무료배송' },
-    { '@type': 'PropertyValue', name: '판매처', value: '알프스.샵 네이버 스마트스토어' },
+    { '@type': 'PropertyValue', name: '배송비', value: shippingText(p) },
+    { '@type': 'PropertyValue', name: '판매처', value: `알프스.샵 네이버 스마트스토어 (${STORE_URL})` },
   ],
 })
 const enzymeListLd = {
@@ -308,10 +411,10 @@ const cafeListLd = {
 
 export function jsonLdFor(path) {
   const m = metaFor(path)
-  const graph = [org, website]
+  const graph = [org, website, onlineStore, naverStore]
   if (m.path !== '/') graph.push(crumbs(m.path, m.title))
   if (m.path === '/products') graph.push(product, faqLd(FAQ_PRODUCT))
-  if (m.path === '/mineral-guide') graph.push({ '@type': 'Article', headline: m.title, description: m.description, author: { '@id': `${SITE_URL}/#org` }, publisher: { '@id': `${SITE_URL}/#org` }, mainEntityOfPage: m.url, about: { '@id': `${SITE_URL}/products#oryun` }, inLanguage: 'ko-KR' }, product)
+  if (m.path === '/mineral-guide') graph.push({ '@type': 'Article', headline: m.title, description: m.description, author: { '@id': `${SITE_URL}/#org` }, publisher: { '@id': `${SITE_URL}/#org` }, mainEntityOfPage: m.url, about: { '@id': `${SITE_URL}/products#oryun` }, inLanguage: 'ko-KR' }, faqLd(FAQ_GUIDE), product)
   if (m.path === '/company') graph.push(faqLd(FAQ_COMPANY))
   if (m.path === '/products/enzyme') graph.push(enzymeListLd, faqLd(FAQ_ENZYME))
   if (m.path === '/products/cafe') graph.push(cafeListLd, faqLd(FAQ_CAFE))
