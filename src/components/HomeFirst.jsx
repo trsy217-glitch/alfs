@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 // - 검색(구글·네이버·다음·빙 등)이나 AI 검색에서 들어온 사람, 검색 로봇은 찾던 페이지에 그대로 둡니다.
 const KEY = 'alfs_opened'
 // 약관·정책은 사이트 밖 링크(PG 심사·이메일 등)로 바로 열 수 있어야 하므로 홈으로 보내지 않습니다.
+// 결제 결과(/payment/success · /payment/fail)도 토스 결제창에서 돌아오는 주소라 그대로 두어야 합니다.
 const DIRECT = ['/terms', '/privacy', '/refund-policy', '/products/enzyme', '/products/cafe']
 const BOT = /bot|crawl|spider|slurp|yeti|daum|bingpreview|google|naver|lighthouse|headless/i
 const SEARCH = /(google|naver|daum|bing|yahoo|zum|duckduckgo|chatgpt|openai|perplexity|claude|gemini|copilot)\./i
@@ -24,7 +25,7 @@ export default function HomeFirst() {
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
     let first = true
     try { first = !sessionStorage.getItem(KEY); sessionStorage.setItem(KEY, '1') } catch { /* 저장소를 못 쓰는 환경은 매번 처음으로 봄 */ }
-    const direct = DIRECT.includes(pathname.replace(/\/+$/, ''))
+    const direct = DIRECT.includes(pathname.replace(/\/+$/, '')) || pathname.startsWith('/payment')
     if (first && !fromSearch() && !direct && pathname !== '/' && pathname !== '/login' && !new URLSearchParams(search).has('stay')) nav('/', { replace: true })
     window.scrollTo(0, 0)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
