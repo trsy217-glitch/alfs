@@ -5,6 +5,8 @@ import { fileToDataUrl, loadImage, trim } from '../videomaker/image.js'
 import { record, pickMime } from '../videomaker/recorder.js'
 import { generateCopy } from '../videomaker/copywriter.js'
 import { LIMITS } from '../videomaker/copyRules.js'
+import { loadAi, saveAi, aiLabel, aiReady, providerById } from '../videomaker/aiConfig.js'
+import AiSettings from '../videomaker/AiSettings.jsx'
 import CutResult from '../videomaker/CutResult.jsx'
 import { saveBlob, safeFileName, isMobile } from '../videomaker/saveFile.js'
 import { asset } from '../lib/asset.js'
@@ -46,7 +48,9 @@ export default function VideoMaker() {
   const [playing, setPlaying] = useState(true)
   const [rec, setRec] = useState({ state: 'idle', progress: 0, blob: null, ext: '', error: '' })
   const [imgError, setImgError] = useState('')
-  const [gen, setGen] = useState({ state: 'idle', source: '', msg: '', step: '' })
+  const [gen, setGen] = useState({ state: 'idle', source: '', provider: '', msg: '', step: '' })
+  const [ai, setAi] = useState(() => loadAi()) // 문구를 만들 AI 엔진 (내 키 · 로컬 LLM)
+  const [aiOpen, setAiOpen] = useState(false)
   const canvasRef = useRef(null)
   const frameRef = useRef(0)
 
@@ -97,13 +101,14 @@ export default function VideoMaker() {
 
   // 자동 문구: 상품 사진 → 템플릿 칸에 나눠 넣기
   const runGenerate = async (productImage = rawImg) => {
-    setGen({ state: 'loading', source: '', msg: '', step: '' })
+    setGen({ state: 'loading', source: '', provider: '', msg: '', step: '' })
     const out = await generateCopy({
-      description: '', image: productImage, docs: [], productName: form.touched.productName ? form.productName : '',
+      description: '', image: productImage, docs: [],
+      productName: form.touched.productName ? form.productName : '', ai,
       onStep: (step) => setGen((g) => ({ ...g, step })),
     })
     if (!out.copyL && !out.copyR) {
-      setGen({ state: 'idle', source: out.source, msg: '문구를 자동으로 만들지 못했어요. 2번 칸에 직접 적어 주세요.', step: '' })
+      setGen({ state: 'idle', source: out.source, provider: out.provider || '', msg: out.error || '문구를 자동으로 만들지 못했어요. 2번 칸에 직접 적어 주세요.', step: '' })
       return
     }
     frameRef.current = 0
@@ -119,8 +124,14 @@ export default function VideoMaker() {
       touched: {},
       aiApplied: out.source === 'ai',
     }))
-    setGen({ state: 'done', source: out.source, msg: '', step: '' })
+    setGen({ state: 'done', source: out.source, provider: out.provider || '', msg: out.error || '', step: '' })
   }
+
+  // 문구를 만든 엔진 이름 (결과 안내)
+  const genEngine = (g) => (g.source === 'ai' ? providerById(g.provider).name
+    : g.source === 'local' ? '로컬 AI'
+      : g.source === 'server' ? '알프스 AI' : '기본 도우미')
+  const onAiSave = (next) => setAi(saveAi(next))
 
   const onFile = async (e) => {
     const file = e.target.files?.[0]
@@ -231,6 +242,14 @@ export default function VideoMaker() {
           </div>
 
           <form className="vm__form form" onSubmit={(e) => e.preventDefault()}>
+            <div className="vm__ai">
+              <div className="vm__aiNowBox">
+                <span className="vm__aiNowLabel">AI 문구 엔진</span>
+                <b>{aiLabel(ai)}</b>
+                {!aiReady(ai) && <span className="vm__aiWarn">· 키를 넣으면 사진까지 보고 문구를 만듭니다</span>}
+              </div>
+              <button type="button" className="btn btn--line vm__aiOpen" onClick={() => setAiOpen(true)}>AI 설정</button>
+            </div>
             <fieldset className="vm__box">
               <legend>1. 상품 사진</legend>
               <label className="vm__file">
@@ -247,7 +266,16 @@ export default function VideoMaker() {
                 </label>
               )}
 
-              {(gen.state === 'loading' || gen.msg) && <p className="hint" role="status">{gen.msg || gen.step || '사진을 보고 문구를 만드는 중…'}</p>}
+              {(gen.state === 'loading' || gen.msg || gen.state === 'done') && (
+                <p className="hint" role="status">
+                  {gen.msg || (gen.state === 'done'
+                    ? `${genEngine(gen)}로 문구를 채웠어요. 마음에 안 들면 2번 칸에서 직접 고쳐 주세요.`
+                    : gen.step || '사진을 보고 문구를 만드는 중…')}
+                </p>
+              )}
+              {!aiReady(ai) && gen.state === 'done' && (
+                <p className="hint">사진을 읽히려면 위 <b>AI 설정</b>에서 Gemini(무료 등급) 같은 엔진과 내 키를 넣어 주세요.</p>
+              )}
             </fieldset>
 
             <fieldset className="vm__box">
@@ -330,6 +358,7 @@ export default function VideoMaker() {
           <Link to="/ai-marketing" className="btn btn--primary">AI 마케팅 보기</Link>
         </div>
       </div>
+      <AiSettings open={aiOpen} ai={ai} onClose={() => setAiOpen(false)} onSave={onAiSave} />
     </section>
   )
 }

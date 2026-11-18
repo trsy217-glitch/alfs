@@ -1,9 +1,13 @@
 // ─────────────────────────────────────────────────────────────
 // 홍보 문구 자동 만들기
-// 1) 배포 사이트에 AI가 연결돼 있으면(/api/generate-copy) 사진과 설명을 함께 보고 만듭니다.
-// 2) 연결이 없거나 실패하면 브라우저 안의 기본 도우미가 설명 글에서 문구를 뽑아 만듭니다.
+// 1) 방문자가 고른 AI 엔진(내 키 · 무료 로컬 LLM)으로 사진과 설명을 함께 보고 만듭니다.
+//    · Gemini · ChatGPT · Claude → /api/generate-copy 중계 (방문자 본인 키, 서버 저장 없음)
+//    · LM Studio · Ollama → 이 브라우저에서 방문자 PC로 바로 호출 (키 없음)
+// 2) 엔진이 없거나 실패하면 브라우저 안의 기본 도우미가 설명 글에서 문구를 뽑아 만듭니다.
 // ─────────────────────────────────────────────────────────────
 import { sanitizeCopy, clip, isRisky, tidy, LIMITS } from './copyRules.js'
+import { normalizeAi, providerById } from './aiConfig.js'
+import { askCloud, askLocal } from './aiClient.js'
 
 // 사진을 작게 줄여 JPEG 데이터로 (AI 전송용, 긴 변 768px)
 export function imageToJpeg(img, maxSide = 768) {
@@ -19,24 +23,62 @@ export function imageToJpeg(img, maxSide = 768) {
 // 'AI로 홍보 문구 다듬기'
 // 1) AI 연결이 있으면: 설명 + 상품 사진 + 설명서 사진을 함께 보내 템플릿 칸(작은 글자·왼쪽·오른쪽 문구·영문·안내)에 맞춰 받음
 // 2) 없으면: 설명서 사진은 브라우저 OCR로 글자를 읽고, 설명과 합쳐 기본 도우미로 나눠 넣음
-export async function generateCopy({ description = '', image = null, docs = [], productName = '', onStep }) {
-  try {
-    onStep?.('AI에게 보내는 중…')
-    const res = await fetch(apiUrl(), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        description: description.slice(0, 1200), productName,
-        image: image ? imageToJpeg(image, 768) : '',
-        docs: docs.slice(0, 3).map((d) => imageToJpeg(d, 1280)),
-      }),
-      signal: AbortSignal.timeout?.(45000),
-    })
-    if (res.ok) {
-      const data = sanitizeCopy(await res.json())
-      if (data.copyL || data.copyR) return { ...data, source: 'ai', ocrText: '' }
+export async function generateCopy({ description = '', image = null, docs = [], productName = '', onStep, ai = null } = {}) {
+  const cfg = normalizeAi(ai)
+  const provider = providerById(cfg.provider)
+  const fail = (error, code) => ({ ...basicCopy(description, productName), source: 'basic', provider: cfg.provider, ocrText: '', error, code })
+
+  // ── 1) 로컬 LLM (LM Studio · Ollama): 사진을 볼 수 없어 글자만 읽어 넘김
+  if (cfg.provider === 'local') {
+    let ocrText = ''
+    const shots = [image, ...docs].filter(Boolean)
+    if (shots.length) {
+      onStep?.('사진에서 글자를 읽는 중… (처음 한 번은 10초쯤 걸려요)')
+      try {
+        const { readText } = await import('./ocr.js')
+        ocrText = await readText(shots.slice(0, 2))
+      } catch { ocrText = '' }
     }
-  } catch { /* 연결 없음 → 기본 도우미 */ }
+    try {
+      onStep?.('내 PC의 로컬 AI로 문구를 만드는 중…')
+      const raw = await askLocal({
+        baseUrl: cfg.baseUrl, model: cfg.localModel,
+        description, productName, ocrText, photoCount: shots.length,
+      })
+      const data = sanitizeCopy(raw)
+      if (data.copyL || data.copyR) return { ...data, source: 'local', provider: cfg.provider, ocrText }
+      return { ...fail('로컬 AI가 쓸 만한 문구를 만들지 못했어요. 모델을 바꾸거나 2번 칸에 직접 적어 주세요.'), ocrText }
+    } catch (err) {
+      return { ...fail(err?.message || '로컬 AI에 연결하지 못했습니다.'), ocrText }
+    }
+  }
+
+  // ── 2) 클라우드 엔진은 키가 있어야 함 (없으면 알프스 서버 기본 AI를 한 번 시도)
+  if (provider.needsKey && !cfg.apiKey) {
+    return fail(`${provider.name} 키가 아직 없어 기본 문구로 만들었어요. 'AI 설정'에서 키를 넣으면 사진까지 보고 만듭니다.`, 'no_key')
+  }
+  try {
+    onStep?.(cfg.apiKey ? `${provider.name}로 문구를 만드는 중…` : 'AI에게 보내는 중…')
+    const data = sanitizeCopy(await askCloud({
+      provider: cfg.apiKey ? cfg.provider : 'anthropic',
+      apiKey: cfg.apiKey, model: cfg.model,
+      description, productName,
+      image: image ? imageToJpeg(image, 768) : '',
+      docs: docs.slice(0, 3).map((d) => imageToJpeg(d, 1280)),
+    }))
+    if (data.copyL || data.copyR) {
+      return { ...data, source: cfg.apiKey ? 'ai' : 'server', provider: cfg.provider, ocrText: '' }
+    }
+  } catch (err) { /* 연결 없음·키 오류 → 기본 도우미 */ 
+    if (cfg.apiKey) {
+      const hint = err?.status === 401 || err?.status === 403
+        ? `${provider.name} 키가 올바르지 않아 기본 문구로 만들었어요. 'AI 설정'에서 키를 다시 확인해 주세요.`
+        : err?.status === 429
+          ? `${provider.name} 사용 한도에 걸려 기본 문구로 만들었어요. 잠시 뒤 다시 시도해 주세요.`
+          : `${provider.name} 연결에 실패해 기본 문구로 만들었어요. (${err?.message || '연결 오류'})`
+      return fail(hint, err?.code || 'ai_failed')
+    }
+  }
   let ocrText = ''
   if (docs.length) {
     onStep?.('설명서 사진에서 글자를 읽는 중… (처음 한 번은 10초쯤 걸려요)')
@@ -46,12 +88,7 @@ export async function generateCopy({ description = '', image = null, docs = [], 
     } catch { ocrText = '' }
   }
   const text = [description, ocrText].filter((x) => x?.trim()).join('\n')
-  return { ...basicCopy(text, productName), source: 'basic', ocrText }
-}
-
-function apiUrl() {
-  // 해시 라우터 미리보기(파일·임시 주소)에서도 사이트 루트의 /api 를 부르도록
-  return new URL('/api/generate-copy', window.location.origin).toString()
+  return { ...basicCopy(text, productName), source: 'basic', provider: cfg.provider, ocrText }
 }
 
 // ── 기본 도우미 (AI 없이 설명 글로 템플릿 칸 채우기) ─────────────────────
