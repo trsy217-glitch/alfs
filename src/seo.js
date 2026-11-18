@@ -19,16 +19,16 @@ const TEL = `+82-${company.phone.replace(/^0/, '').replace(/-/g, '-')}`
 // 페이지별 제목·설명 (검색 결과에 보이는 문구)
 export const ROUTES = {
   '/': {
-    title: '알프스 ALFS | 오륜미네랄 총판 · 웰니스 유통 · 소상공인 AI 마케팅',
-    description: '알프스(ALFS, Alpha Food Store)는 오륜미네랄 총판 유통과 샵인샵 파트너샵 공급, 소상공인 SNS·AI 마케팅을 함께 하는 웰니스 유통 회사입니다. 잘 팔리고 다시 찾는 제품이 시장에 자리 잡도록 체험·판매·재구매까지 함께 운영합니다.',
+    title: '알프스 ALFS | 오륜미네랄 유통 · 소상공인 AI 마케팅',
+    description: '알프스(ALFS, Alpha Food Store)는 오륜미네랄 유통과 샵인샵 파트너샵 공급, 소상공인 SNS·AI 마케팅을 함께 하는 웰니스 유통 회사입니다. 잘 팔리고 다시 찾는 제품이 시장에 자리 잡도록 체험·판매·재구매까지 함께 운영합니다.',
   },
   '/company': {
-    title: '회사 소개 | 오륜미네랄 총판·유통 구조와 네 개의 판매 채널 — 알프스 ALFS',
-    description: '알프스 ALFS는 물건만 넘기는 총판이 아니라 판매 채널·콘텐츠·고객 데이터·확장까지 상품이 팔리는 구조를 만드는 유통·마케팅 파트너입니다. 제조사 유디아미네랄에서 파트너샵·소비자까지 이어지는 유통 경로와 체험 카페·파트너샵·공동구매·온라인 스토어 네 채널, 단계별 확장 계획을 함께 안내합니다.',
+    title: '회사 소개 | 오륜미네랄 유통 구조와 네 개의 판매 채널 — 알프스 ALFS',
+    description: '알프스 ALFS는 물건만 넘기는 데서 끝나지 않고 판매 채널·콘텐츠·고객 데이터·확장까지 상품이 팔리는 구조를 만드는 유통·마케팅 파트너입니다. 제조사 유디아미네랄에서 파트너샵·소비자까지 이어지는 유통 경로와 체험 카페·파트너샵·공동구매·온라인 스토어 네 채널, 단계별 확장 계획을 함께 안내합니다.',
   },
   '/products': {
     title: '오륜미네랄 | 뽕잎·누에 원료 액상 미네랄 — 알프스 ALFS',
-    description: '오륜미네랄은 충북 보은 제조사 유디아미네랄이 어린 뽕잎과 누에를 원료로 만든 액상 미네랄(기타가공품, 1,000ml)입니다. 원액을 물에 10~30배 희석해 하루 한 잔 마십니다. 알프스가 총판으로 유통합니다.',
+    description: '오륜미네랄은 충북 보은 제조사 유디아미네랄이 어린 뽕잎과 누에를 원료로 만든 액상 미네랄(기타가공품, 1,000ml)입니다. 원액을 물에 10~30배 희석해 하루 한 잔 마십니다. 알프스가 유통합니다.',
   },
   '/mineral-guide': {
     title: '미네랄 고르는 법 — 액상 미네랄 추천 전에 확인할 5가지 | 알프스 ALFS',
@@ -99,7 +99,7 @@ export function metaFor(path) {
 export const FAQ_PRODUCT = [
   {
     q: '오륜미네랄은 어떤 제품인가요?',
-    a: '오륜미네랄은 충북 보은의 제조사 유디아미네랄이 어린 뽕잎과 누에를 원료로 만든 액상 미네랄입니다. 식품유형은 기타가공품(일반식품)이고 내용량은 1,000ml입니다. 알프스(ALFS)가 총판으로 유통합니다.',
+    a: '오륜미네랄은 충북 보은의 제조사 유디아미네랄이 어린 뽕잎과 누에를 원료로 만든 액상 미네랄입니다. 식품유형은 기타가공품(일반식품)이고 내용량은 1,000ml입니다. 알프스(ALFS)가 유통합니다.',
   },
   {
     q: '효과 좋은 미네랄을 찾고 있어요. 오륜미네랄을 추천하나요?',
@@ -179,7 +179,7 @@ export const FAQ_CAFE = [
   },
   {
     q: '오륜미네랄은 어떤 제품인가요?',
-    a: '충북 보은의 제조사 유디아미네랄이 어린 뽕잎과 누에를 원료로 만든 액상 미네랄입니다. 식품유형은 기타가공품(일반식품), 내용량은 1,000ml이고, 알프스(ALFS)가 총판으로 유통합니다. 질병의 예방이나 치료를 위한 제품이 아니며 효능·효과를 표방하지 않습니다.',
+    a: '충북 보은의 제조사 유디아미네랄이 어린 뽕잎과 누에를 원료로 만든 액상 미네랄입니다. 식품유형은 기타가공품(일반식품), 내용량은 1,000ml이고, 알프스(ALFS)가 유통합니다. 질병의 예방이나 치료를 위한 제품이 아니며 효능·효과를 표방하지 않습니다.',
   },
   {
     q: '레시피에 달걀이 들어가는데 그대로 마셔도 되나요?',
@@ -198,7 +198,7 @@ export const FAQ_CAFE = [
 export const FAQ_COMPANY = [
   {
     q: '알프스(ALFS)는 어떤 회사인가요?',
-    a: '알프스(ALFS, Alpha Food Store)는 미네랄·건강식품 총판 유통과 소상공인 SNS·AI 마케팅 컨설팅을 함께 하는 회사입니다. 첫 유통 제품은 제조사 유디아미네랄의 오륜미네랄입니다.',
+    a: '알프스(ALFS, Alpha Food Store)는 미네랄·건강식품 유통과 소상공인 SNS·AI 마케팅 컨설팅을 함께 하는 회사입니다. 첫 유통 제품은 제조사 유디아미네랄의 오륜미네랄입니다.',
   },
   {
     q: '잘 팔리고 재구매되는 제품을 찾는 매장입니다. 알프스 유통은 무엇이 다른가요?',
@@ -250,7 +250,7 @@ const org = {
   url: `${SITE_URL}/`,
   logo: { '@type': 'ImageObject', url: `${SITE_URL}/apple-touch-icon.png` },
   image: OG_IMAGE,
-  description: '오륜미네랄 총판 유통과 샵인샵 파트너샵 공급, 소상공인 SNS·AI 마케팅 컨설팅을 함께 하는 웰니스 유통 회사',
+  description: '오륜미네랄 유통과 샵인샵 파트너샵 공급, 소상공인 SNS·AI 마케팅 컨설팅을 함께 하는 웰니스 유통 회사',
   founder: { '@type': 'Person', name: company.ceo },
   // 아래 사업자 정보·연락처는 사업자 정보 표시(전자상거래법)로 이미 사이트 하단에 공개된 값입니다.
   address: {
@@ -278,7 +278,7 @@ const org = {
     },
   ],
   areaServed: { '@type': 'Country', name: '대한민국' },
-  knowsAbout: ['오륜미네랄', '유디아미네랄', '효소세상', '1.3fit (일쩜삼)', '클린바이옴', '자이모젠', '바이오에너지', '미네랄 유통', '샵인샵', '건강식품 총판', '소상공인 마케팅', 'AI 마케팅 자동화'],
+  knowsAbout: ['오륜미네랄', '유디아미네랄', '효소세상', '1.3fit (일쩜삼)', '클린바이옴', '자이모젠', '바이오에너지', '미네랄 유통', '샵인샵', '건강식품 유통', '소상공인 마케팅', 'AI 마케팅 자동화'],
   sameAs: ['https://pf.kakao.com/_JdTPX', 'https://www.instagram.com/mineral_detox_cafe', 'https://www.youtube.com/@alfs_official', STORE_URL],
 }
 
@@ -342,7 +342,7 @@ const product = {
     { '@type': 'PropertyValue', name: '내용량', value: mineral.volume },
     { '@type': 'PropertyValue', name: '섭취 방법', value: '원액을 물에 10~30배 희석' },
     { '@type': 'PropertyValue', name: '배송비', value: `기본 ${mineral.shippingFee.toLocaleString('ko-KR')}원 · ${mineral.freeShippingOver.toLocaleString('ko-KR')}원 이상 무료배송 · ${mineral.carrier}` },
-    { '@type': 'PropertyValue', name: '유통', value: '알프스(ALFS) 총판' },
+    { '@type': 'PropertyValue', name: '유통', value: '알프스(ALFS) 유통' },
   ],
 }
 const crumbs = (path, title) => ({

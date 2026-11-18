@@ -55,7 +55,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/company" element={<Company />} />
-          {/* 총판·유통 페이지는 회사 소개로 통합 — 예전 주소와 /about 은 회사 소개로 모읍니다 */}
+          {/* 유통 페이지는 회사 소개로 통합 — 예전 주소와 /about 은 회사 소개로 모읍니다 */}
           <Route path="/distribution" element={<Navigate to="/company" replace />} />
           <Route path="/about" element={<Navigate to="/company" replace />} />
           <Route path="/products" element={<Product />} />

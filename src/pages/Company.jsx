@@ -20,11 +20,11 @@ const solution = [
   { img: 'images/loop-scale.webp', alt: '확인 표시와 오르는 그래프를 보여 주는 상담 장면', en: 'Scale', t: '검증 후 확장', d: '숫자로 확인된 모델만 파트너샵·지역·제품군으로 넓힙니다.' },
 ]
 
-// 제품이 지나는 길 — 알프스가 총판으로 서는 자리
+// 제품이 지나는 길 — 알프스가 유통을 맡는 자리
 const chain = [
   { e: '🏭', t: '제조사', s: '유디아미네랄' },
   { e: '📦', t: '총공급업자', s: '공급·물류' },
-  { e: '🌿', t: '알프스', s: '총판 · 판매 시스템', dot: 'dot--leaf' },
+  { e: '🌿', t: '알프스', s: '유통 · 판매 시스템', dot: 'dot--leaf' },
   { e: '🏪', t: '파트너샵·셀러', s: '체험·판매 거점' },
   { e: '🙂', t: '소비자', s: '체험 → 구매 → 재구매', dot: 'dot--drop' },
 ]
@@ -74,7 +74,7 @@ export default function Company() {
         <div className="wrap intro">
           <span className="kicker">ALFS · Alpha Food Store</span>
           <h1>제품은 파트너가 만들고, 시장은 알프스가 만듭니다</h1>
-          <p className="lead">알프스는 물건을 가져다 파는 총판이 아니라, 상품이 팔리는 시스템을 구축하는 유통·마케팅 파트너입니다. 판매업자와 서로 상생하는 구조를 원칙으로 합니다.</p>
+          <p className="lead">알프스는 물건만 넘기는 데서 끝나지 않고, 상품이 팔리는 시스템을 구축하는 유통·마케팅 파트너입니다. 판매업자와 서로 상생하는 구조를 원칙으로 합니다.</p>
         </div>
       </section>
 
@@ -101,7 +101,7 @@ export default function Company() {
       <section className="section--tight">
         <div className="wrap">
           <h2 className="h-section">제품이 소비자에게 닿는 길</h2>
-          <p className="lead muted mt-s">알프스는 제조사와 매장 사이에서 총판으로 섭니다. 오륜미네랄을 공급받아, 파트너샵과 셀러가 실제로 팔 수 있도록 콘텐츠·교육·고객 관리까지 함께 넘깁니다.</p>
+          <p className="lead muted mt-s">알프스는 제조사와 매장 사이에서 유통을 맡습니다. 오륜미네랄을 공급받아, 파트너샵과 셀러가 실제로 팔 수 있도록 콘텐츠·교육·고객 관리까지 함께 넘깁니다.</p>
           <div className="chain" role="list" aria-label="제조사에서 소비자까지 이어지는 유통 경로">
             {chain.map((c, i) => (
               <Fragment key={c.t}>
@@ -120,7 +120,7 @@ export default function Company() {
       <section className="section">
         <div className="wrap">
           <h2 className="h-section">체험·매장·공동구매·온라인, 네 개의 채널</h2>
-          <p className="lead muted mt-s">총판이 직접 여는 채널이 다르기 때문에, 한 번 보고 끝나지 않고 다음 채널로 고객이 이어집니다.</p>
+          <p className="lead muted mt-s">채널마다 여는 방식이 다르기 때문에, 한 번 보고 끝나지 않고 다음 채널로 고객이 이어집니다.</p>
           <div className="channels">
             {channels.map((c) => (
               <div key={c.t} className="channel">

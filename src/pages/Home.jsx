@@ -8,7 +8,7 @@ import { asset } from '../lib/asset.js'
 const lanes = [
   {
     to: '/company',
-    title: '총판·유통',
+    title: '유통',
     text: '제조사에서 매장까지, 제품이 흘러가는 길을 직접 설계하고 운영합니다. 체험 카페·파트너샵·공동구매·온라인 네 채널이 서로 고객을 넘겨줍니다.',
     more: '유통 구조 보기',
     img: 'images/icons/lane-distribution.webp',
@@ -59,7 +59,7 @@ export default function Home() {
       <section className="section">
         <div className="wrap">
           <h2 className="h-section">유통을 하고, 마케팅을 심고, 다시 팔리게 만듭니다</h2>
-          <p className="lead muted mt-s">물건을 가져다 파는 총판이 아니라, 제품이 계속 팔리는 길을 만드는 유통·마케팅 파트너입니다.</p>
+          <p className="lead muted mt-s">물건만 넘기는 데서 끝나지 않고, 제품이 계속 팔리는 길을 만드는 유통·마케팅 파트너입니다.</p>
           <div className="lanes mt-l">
             {lanes.map((l) => (
               <Link key={l.to} to={l.to} className="lane">

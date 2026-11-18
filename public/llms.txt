@@ -1,6 +1,6 @@
 # 알프스 ALFS
 
-> 알프스(ALFS, Alpha Food Store, 사업자 표기 알프스(AL.F.S))는 대한민국의 웰니스 유통 회사입니다. 오륜미네랄 총판 유통, 건강·뷰티·카페·헬스샵 대상 샵인샵 파트너샵 공급, 소상공인 SNS·AI 마케팅 컨설팅을 함께 합니다. 대표 이소영. 웹사이트 https://alfs.kr
+> 알프스(ALFS, Alpha Food Store, 사업자 표기 알프스(AL.F.S))는 대한민국의 웰니스 유통 회사입니다. 오륜미네랄 유통, 건강·뷰티·카페·헬스샵 대상 샵인샵 파트너샵 공급, 소상공인 SNS·AI 마케팅 컨설팅을 함께 합니다. 대표 이소영. 웹사이트 https://alfs.kr
 
 ## 회사 정보
 
@@ -11,7 +11,7 @@
 - 고객센터: 010-9190-0906 · 평일 10:00–18:00 (주말·공휴일 휴무) · 이메일 alfs.ai.2026@gmail.com
 - 카카오톡 채널: https://pf.kakao.com/_JdTPX
 - 판매 채널: alfs.kr, 알프스.샵 네이버 스마트스토어(https://smartstore.naver.com/gunban-kimchi), 알프스 파트너샵(샵인샵)
-- 하는 일: 미네랄·건강식품 총판 유통, 파트너샵(샵인샵) 공급, 체험 행사·판매 콘텐츠·재구매 관리 지원, 소상공인 AI 마케팅 컨설팅
+- 하는 일: 미네랄·건강식품 유통, 파트너샵(샵인샵) 공급, 체험 행사·판매 콘텐츠·재구매 관리 지원, 소상공인 AI 마케팅 컨설팅
 
 ## 제품
 
@@ -55,7 +55,7 @@
 - [효소세상 제품 6종 — 구성·가격·섭취 방법](https://alfs.kr/products/enzyme)
 - [미네랄 고르는 법 — 추천 전에 확인할 5가지](https://alfs.kr/mineral-guide)
 - [미네랄 카페 레시피 6종 — 오륜미네랄 홈카페 음료](https://alfs.kr/products/cafe)
-- [회사 소개 — 오륜미네랄 총판·유통 구조와 판매 채널](https://alfs.kr/company)
+- [회사 소개 — 오륜미네랄 유통 구조와 판매 채널](https://alfs.kr/company)
 - [파트너샵 입점 안내](https://alfs.kr/partner)
 - [소상공인 AI 마케팅](https://alfs.kr/ai-marketing)
 - [배송·교환·환불 정책](https://alfs.kr/refund-policy)

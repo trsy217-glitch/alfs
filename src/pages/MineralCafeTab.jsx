@@ -162,7 +162,7 @@ export default function MineralCafeTab() {
             <span className="kicker">판매 상품 · 오륜미네랄</span>
             <h2 className="h-section">레시피에 쓰는 오륜미네랄 1,000ml</h2>
             <p className="lead muted mt-s">
-              레시피 6종에 60ml씩 들어가는 오륜미네랄은 알프스가 총판으로 유통하는 액상 미네랄입니다.
+              레시피 6종에 60ml씩 들어가는 오륜미네랄은 알프스가 유통하는 액상 미네랄입니다.
               원액을 물에 10~30배 희석해 하루 한 잔 마시고, 음료를 만들 때는 한 잔에 60ml를 넣습니다.
             </p>
             <div className="btn-row mt-m">
