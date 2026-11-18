@@ -16,7 +16,8 @@ const STORE = 'https://smartstore.naver.com/gunban-kimchi/products'
 export const enzymeShipping = {
   fee: 4000,
   freeOver: 50000,
-  carrier: '택배',
+  // 알프스 스마트스토어 출고 택배사와 같이 한진택배로 표기합니다.
+  carrier: '한진택배',
   note: '5만 원 이상 무료배송 · 5만 원 미만 배송비 4,000원 · 제주·도서지역은 추가 6,000원',
 }
 

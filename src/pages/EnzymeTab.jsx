@@ -4,8 +4,9 @@ import Faq from '../components/Faq.jsx'
 import CtaBand from '../components/CtaBand.jsx'
 import { useBuy } from '../components/buy.js'
 import { useConsult } from '../components/consult.js'
+import OrderPolicy from '../components/OrderPolicy.jsx'
 import { enzymeProducts, enzymeShipping, shippingText, toOrderItem, discountRate } from '../config/enzyme.js'
-import { company, won } from '../config/site.js'
+import { company, delivery, deliveryRows, refundSummary, won } from '../config/site.js'
 import { asset, scrollToId } from '../lib/asset.js'
 import { FAQ_ENZYME } from '../seo.js'
 
@@ -31,7 +32,7 @@ export default function EnzymeTab() {
             </p>
             <div className="badges">
               <span className="badge">5만 원 이상 무료배송</span>
-              <span className="badge">카드 결제 준비 중 · 주문서 접수</span>
+              <span className="badge">비회원 카드 결제 가능</span>
               <span className="badge">제조사 효소세상</span>
             </div>
             <div className="btn-row">
@@ -40,6 +41,7 @@ export default function EnzymeTab() {
             </div>
             <p className="muted hero-note">
               표시 가격은 알프스.샵 네이버 스마트스토어의 판매가와 같습니다. 쿠폰·멤버십 적립은 스토어 정책에 따릅니다.
+              배송은 {delivery.carrier} · {delivery.leadTime}({delivery.leadTimeNote}) · {delivery.transit}.
             </p>
           </div>
         </div>
@@ -49,7 +51,8 @@ export default function EnzymeTab() {
         <div className="wrap">
           <h2 className="h-section">효소세상 제품 6종</h2>
           <p className="lead muted mt-s">
-            상품을 누르면 구성과 섭취 방법을 볼 수 있고, 구매하기를 누르면 주문서가 열립니다.
+            상품을 누르면 구성·용량·보관 방법을 볼 수 있고, 구매하기를 누르면 주문서가 열립니다.
+            배송지·연락처를 적고 신용·체크카드로 결제하시면 됩니다(회원가입 없이 가능).
           </p>
 
           <div className="prodgrid">
@@ -116,7 +119,7 @@ export default function EnzymeTab() {
                 </div>
 
                 <table className="spec">
-                  <tbody>{p.spec.map(([k, v]) => <tr key={k}><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody>
+                  <tbody>{[...p.spec, ...deliveryRows].map(([k, v]) => <tr key={k}><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody>
                 </table>
 
                 {p.usage && (
@@ -142,7 +145,8 @@ export default function EnzymeTab() {
           <div>
             <h2 className="h-section">배송·교환·환불 안내</h2>
             <p className="lead muted mt-s">
-              상품 금액 5만 원 이상이면 무료배송이고, 5만 원 미만은 배송비 4,000원입니다. 제주·도서지역은 추가 6,000원이 붙고, 결제와 배송 일정은 주문서를 받은 뒤 담당자가 안내드립니다.
+              상품 금액 5만 원 이상이면 무료배송이고, 5만 원 미만은 배송비 4,000원입니다. 제주·도서지역은 추가 6,000원이 붙습니다.
+              결제가 확인되면 영업일 기준 1~3일 이내에 출고하고, 출고 후 {delivery.carrier}로 1~3영업일 안에 도착합니다(도서·산간은 1~2일 추가).
             </p>
             <div className="btn-row mt-m">
               <Link to="/refund-policy" className="btn btn--ghost">배송·교환·환불 정책</Link>
@@ -153,12 +157,15 @@ export default function EnzymeTab() {
             <table className="spec">
               <tbody>
                 <tr><th scope="row">배송비</th><td>5만 원 이상 무료배송 · 5만 원 미만 4,000원 · 제주·도서지역 추가 6,000원</td></tr>
-                <tr><th scope="row">배송 방법</th><td>택배 발송</td></tr>
-                <tr><th scope="row">출고</th><td>주문서 확인 후 담당자가 일정 안내</td></tr>
-                <tr><th scope="row">결제</th><td>카드 결제 준비 중 · 주문서를 카카오톡·전화·이메일로 접수</td></tr>
+                <tr><th scope="row">배송 방법</th><td>{delivery.carrier} 택배</td></tr>
+                <tr><th scope="row">출고</th><td>{delivery.leadTime} ({delivery.leadTimeNote})</td></tr>
+                <tr><th scope="row">배송 기간</th><td>{delivery.transit}</td></tr>
+                <tr><th scope="row">결제</th><td>토스페이먼츠 신용·체크카드 결제 (비회원 가능)</td></tr>
+                <tr><th scope="row">교환·환불</th><td>{refundSummary.withdraw} · 단순 변심 왕복 배송비 구매자 부담 · 상품 하자 시 무료 반품</td></tr>
                 <tr><th scope="row">판매원</th><td>{company.legalName} · {company.phone}</td></tr>
               </tbody>
             </table>
+            <OrderPolicy fee={enzymeShipping.fee} freeOver={enzymeShipping.freeOver} showLink={false} title="모든 상품 공통" />
             <p className="notice">
               효소세상 제품은 의약품이 아니며, 질병의 예방이나 치료를 위한 제품이 아닙니다. 효능·효과를 표방하지 않습니다.
               섭취 방법과 원재료는 제품 라벨을 확인해 주세요. 섭취 중 이상이 느껴지면 섭취를 중단하고 전문가와 상담하세요.

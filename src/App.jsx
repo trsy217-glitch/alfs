@@ -21,6 +21,8 @@ import MineralGuide from './pages/MineralGuide.jsx'
 import Terms from './pages/Terms.jsx'
 import Privacy from './pages/Privacy.jsx'
 import RefundPolicy from './pages/RefundPolicy.jsx'
+import PaymentSuccess from './pages/PaymentSuccess.jsx'
+import PaymentFail from './pages/PaymentFail.jsx'
 
 // 무거운 화면(진단·영상 만들기)은 들어갈 때만 불러옵니다 → 첫 화면이 빨리 뜸
 const Diagnosis = lazy(() => import('./pages/Diagnosis.jsx'))
@@ -65,6 +67,11 @@ export default function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
+          {/* 토스페이먼츠 결제창 성공·실패 콜백 */}
+          <Route path="/payment/success" element={<PaymentSuccess />} />
+          <Route path="/payment/fail" element={<PaymentFail />} />
+          <Route path="/pay/success" element={<Navigate to="/payment/success" replace />} />
+          <Route path="/pay/fail" element={<Navigate to="/payment/fail" replace />} />
           <Route path="/refund" element={<Navigate to="/refund-policy" replace />} />
           <Route path="/shipping" element={<Navigate to="/refund-policy" replace />} />
           <Route path="/ai-marketing" element={<AiMarketing />} />

@@ -5,8 +5,9 @@ import Faq from '../components/Faq.jsx'
 import { CloseIcon } from '../components/Icons.jsx'
 import { useBuy } from '../components/buy.js'
 import { useConsult } from '../components/consult.js'
+import OrderPolicy from '../components/OrderPolicy.jsx'
 import { CAFE_MINERAL_ML, cafeNotes, cafeRecipes, cafeSteps } from '../config/cafe.js'
-import { company, product, shippingSummary, won } from '../config/site.js'
+import { company, delivery, refundSummary, shippingSummary, product, won } from '../config/site.js'
 import { asset, scrollToId } from '../lib/asset.js'
 import { FAQ_CAFE } from '../seo.js'
 
@@ -169,8 +170,8 @@ export default function MineralCafeTab() {
               <Link to="/products" className="btn btn--ghost">제품 정보 보기</Link>
             </div>
             <p className="muted" style={{ marginTop: 14, fontSize: '0.9rem', lineHeight: 1.7 }}>
-              카드 결제는 준비 중입니다. 주문서를 카카오톡·전화·이메일로 접수하면 담당자가 결제 방법과
-              배송 일정을 안내드립니다. 배송비는 {shippingSummary}입니다.
+              비회원도 신용·체크카드로 바로 결제할 수 있습니다. {delivery.carrier} · {delivery.leadTime}({delivery.leadTimeNote}) · {delivery.transit}.
+              수령 후 7일 이내 청약철회가 가능하고, 단순 변심 반품은 왕복 배송비를 구매자가 부담합니다. 배송비는 {shippingSummary}입니다.
             </p>
           </div>
           <div>
@@ -187,10 +188,15 @@ export default function MineralCafeTab() {
                   <tr><th scope="row">식품유형</th><td>기타가공품(일반식품)</td></tr>
                   <tr><th scope="row">제조원</th><td>유디아미네랄 (충북 보은)</td></tr>
                   <tr><th scope="row">섭취 방법</th><td>원액을 물에 10~30배 희석해 하루 한 잔</td></tr>
-                  <tr><th scope="row">배송비</th><td>{shippingSummary}</td></tr>
+                  <tr><th scope="row">배송비</th><td>{shippingSummary} · 제주·도서산간 추가 6,000원</td></tr>
+                  <tr><th scope="row">배송 방법</th><td>{delivery.carrier} 택배 · {delivery.leadTime}({delivery.leadTimeNote})</td></tr>
+                  <tr><th scope="row">배송 기간</th><td>{delivery.transit}</td></tr>
+                  <tr><th scope="row">교환·환불</th><td>{refundSummary.withdraw} · {refundSummary.changeOfMind} · {refundSummary.defect}</td></tr>
+                  <tr><th scope="row">결제</th><td>토스페이먼츠 신용·체크카드 (비회원 가능)</td></tr>
                   <tr><th scope="row">판매원</th><td>{company.legalName} · {company.phone}</td></tr>
                 </tbody>
               </table>
+              <OrderPolicy showLink={false} />
             </div>
           </div>
         </div>

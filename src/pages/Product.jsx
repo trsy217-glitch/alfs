@@ -5,8 +5,9 @@ import Faq from '../components/Faq.jsx'
 import { Link } from 'react-router-dom'
 import { FAQ_PRODUCT } from '../seo.js'
 import BuyBox from '../components/BuyBox.jsx'
+import OrderPolicy from '../components/OrderPolicy.jsx'
 import { asset, scrollToId } from '../lib/asset.js'
-import { channels, product, won, shippingSummary } from '../config/site.js'
+import { channels, delivery, deliveryRows, product, won, shippingSummary } from '../config/site.js'
 
 // ⚠️ 식품표시광고법: 오륜미네랄은 기타가공품(일반식품)입니다.
 // 질병 예방·치료, 기능성(뼈·면역·혈액 개선 등), 흡수율 비교 같은 표현은 넣지 마세요.
@@ -84,6 +85,9 @@ export default function Product() {
             <p className="credit">수상·특허는 제조사 <b>유디아미네랄</b>의 이력입니다. 오륜미네랄은 유디아미네랄이 이 기술과 원료로 만든 제품입니다.</p>
             <p className="lead muted">충북 보은의 어린 뽕잎을 먹고 자란 누에가 빚은 바이오 유기이온 미네랄. 알약 대신, 하루 한 잔으로 시작하는 미네랄 습관입니다.</p>
             <BuyBox dark />
+            <p className="muted hero-note">
+              {delivery.carrier} · {delivery.leadTime}({delivery.leadTimeNote}) · {delivery.transit} · 수령 후 7일 이내 청약철회
+            </p>
             <div className="btn-row mt-m">
               <button type="button" className="btn btn--ghost" onClick={() => scrollToId('story')}>제품 이야기 보기</button>
             </div>
@@ -178,9 +182,12 @@ export default function Product() {
             <h2 className="h-section">제품 정보</h2>
             <p className="notice">오륜미네랄은 기타가공품(일반식품)이며, 질병의 예방이나 치료를 위한 의약품 또는 건강기능식품이 아닙니다. 섭취 중 이상이 느껴지면 섭취를 중단하고 전문가와 상담하세요.</p>
           </div>
-          <table className="spec">
-            <tbody>{spec.map(([k, v]) => <tr key={k}><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody>
-          </table>
+          <div>
+            <table className="spec">
+              <tbody>{[...spec, ...deliveryRows].map(([k, v]) => <tr key={k}><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody>
+            </table>
+            <OrderPolicy />
+          </div>
         </div>
       </section>
 

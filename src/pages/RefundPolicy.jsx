@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import PolicyPage from '../components/PolicyPage.jsx'
-import { company, product, won } from '../config/site.js'
+import { company, delivery, product, refundSummary, won } from '../config/site.js'
 import { enzymeProducts, enzymeShipping } from '../config/enzyme.js'
 
 // 5만 원 미만이라 배송비가 실제로 붙는 상품 (지금은 클린바이옴 1병)
@@ -65,8 +65,8 @@ export default function RefundPolicy() {
         <li>배송 방법: 택배({product.carrier})</li>
         <li>배송 지역: 대한민국 전국 · 제주·도서 산간 지역은 추가 배송비 6,000원이 발생합니다.</li>
         <li>배송비: 상품별 기본 배송비는 위 1번 표와 같으며, 상품금액 {won(product.freeShippingOver)} 이상이면 무료입니다.</li>
-        <li>출고 소요: 결제 확인 후 2~3영업일 이내 발송 (주말·공휴일 제외)</li>
-        <li>배송 기간: 발송 후 통상 1~3영업일 (택배사 사정에 따라 달라질 수 있습니다)</li>
+        <li>출고 소요: {delivery.leadTime} ({delivery.leadTimeNote})</li>
+        <li>배송 기간: {delivery.transit}</li>
         <li>배송 조회: 주문 접수 시 안내드린 운송장 번호로 {product.carrier} 홈페이지에서 조회할 수 있습니다.</li>
       </ul>
 
@@ -104,7 +104,16 @@ export default function RefundPolicy() {
       </ul>
 
       <h2>6. 결제 안내</h2>
-      <p>현재 신용·체크카드 결제 연동을 준비 중이며, 연동 전까지는 주문서를 접수한 뒤 담당자가 결제 방법과 배송 일정을 안내합니다. 결제가 완료된 주문의 배송·환불은 위 기준을 따릅니다.</p>
+      <p>
+        신용·체크카드 결제는 전자지급결제대행사 토스페이먼츠(주)의 결제창에서 처리됩니다. 회원가입이나 로그인 없이
+        비회원으로도 결제하실 수 있으며, 주문서에서 배송지·연락처를 적고 결제하기를 누르면 결제창이 열립니다.
+        카드 승인이 끝나면 주문이 접수되고, 결제 확인 후 영업일 기준 1~3일 이내에 출고합니다.
+      </p>
+      <ul>
+        <li>{refundSummary.withdraw}. {refundSummary.changeOfMind}. {refundSummary.defect}.</li>
+        <li>{refundSummary.refundTime}. 카드 결제 취소는 카드사 정책에 따라 취소 반영에 3~5영업일이 걸릴 수 있습니다.</li>
+        <li>결제가 끝난 주문의 배송·환불은 위 기준을 그대로 따릅니다.</li>
+      </ul>
     </PolicyPage>
   )
 }

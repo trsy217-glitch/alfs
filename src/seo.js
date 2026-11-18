@@ -36,7 +36,7 @@ export const ROUTES = {
   },
   '/products/enzyme': {
     title: '효소세상 제품 6종 | 1.3fit 클렌즈 · 바이오에너지 · 자이모젠 · 클린바이옴 — 알프스 ALFS',
-    description: '효소세상이 만든 발효 효소·미생물 발효 음료 6종을 알프스가 유통합니다. 1.3fit 30일·3일 클렌즈 프로그램, 바이오에너지 클렌즈 프로그램, 자이모젠 10병, 클린바이옴 6병·1병. 구성과 판매가, 섭취 방법을 확인하고 주문서로 접수할 수 있습니다. 5만 원 이상 무료배송.',
+    description: '효소세상이 만든 발효 효소·미생물 발효 음료 6종을 알프스가 유통합니다. 1.3fit 30일·3일 클렌즈 프로그램, 바이오에너지 클렌즈 프로그램, 자이모젠 10병, 클린바이옴 6병·1병. 구성과 판매가, 섭취 방법을 확인하고 비회원 카드 결제로 주문할 수 있습니다. 5만 원 이상 무료배송.',
   },
   '/products/cafe': {
     title: '미네랄 카페 레시피 6종 | 오륜미네랄 홈카페 음료 — 알프스 ALFS',
@@ -74,9 +74,18 @@ export const ROUTES = {
     title: '10초 제품 홍보영상 만들기 (체험용) | 알프스 ALFS',
     description: '제품 사진 한 장으로 배경을 지우고 문구를 넣어 10초 홍보영상을 만들어 볼 수 있는 무료 체험 도구입니다.',
   },
+  // 토스페이먼츠 결제창이 돌려보내는 화면 — 검색에는 내보내지 않습니다(NOINDEX).
+  '/payment/success': {
+    title: '결제 결과 안내 | 알프스(AL.F.S) alfs.kr',
+    description: '토스페이먼츠 카드 결제의 승인 결과와 주문 내용을 안내합니다.',
+  },
+  '/payment/fail': {
+    title: '결제 결과 안내 | 알프스(AL.F.S) alfs.kr',
+    description: '카드 결제가 완료되지 않았을 때의 안내입니다.',
+  },
 }
 // 검색에 내보내지 않는 화면
-export const NOINDEX = ['/login', '/my', '/diagnosis/new', '/diagnosis/result']
+export const NOINDEX = ['/login', '/my', '/diagnosis/new', '/diagnosis/result', '/payment']
 
 export function metaFor(path) {
   const clean = path.replace(/\/+$/, '') || '/'
@@ -110,11 +119,11 @@ export const FAQ_PRODUCT = [
   },
   {
     q: '오륜미네랄은 어디서 살 수 있나요?',
-    a: '알프스 파트너샵(건강·뷰티·카페·헬스샵 등)과 alfs.kr 제품 페이지에서 구매할 수 있습니다. 제품 페이지의 구매하기를 누르면 주문서가 열리고, 카드 결제를 준비하는 동안에는 주문서를 카카오톡·전화·이메일로 접수하면 담당자가 결제 방법과 배송 일정을 안내합니다.',
+    a: '알프스 파트너샵(건강·뷰티·카페·헬스샵 등)과 alfs.kr 제품 페이지에서 구매할 수 있습니다. 제품 페이지의 구매하기를 누르면 주문서가 열리고, 배송지와 연락처를 적은 뒤 신용·체크카드로 바로 결제하실 수 있습니다(회원가입·로그인 없이 가능). 카드 결제가 어려우면 전화·카카오톡·이메일로 주문할 수도 있습니다.',
   },
   {
     q: '가격과 배송비는 얼마인가요?',
-    a: `오륜미네랄 ${mineral.volume} 1병 판매가는 ${mineral.price.toLocaleString('ko-KR')}원입니다. 기본 배송비는 ${mineral.shippingFee.toLocaleString('ko-KR')}원이고 ${mineral.freeShippingOver.toLocaleString('ko-KR')}원 이상 구매하면 무료배송이라, 1병만 주문해도 배송비는 들지 않습니다. 택배는 ${mineral.carrier}이며, 제주·도서 산간 지역은 추가 배송비 6,000원이 있습니다. 결제 확인 후 2~3영업일 이내에 발송합니다.`,
+    a: `오륜미네랄 ${mineral.volume} 1병 판매가는 ${mineral.price.toLocaleString('ko-KR')}원입니다. 기본 배송비는 ${mineral.shippingFee.toLocaleString('ko-KR')}원이고 ${mineral.freeShippingOver.toLocaleString('ko-KR')}원 이상 구매하면 무료배송이라, 1병만 주문해도 배송비는 들지 않습니다. 택배는 ${mineral.carrier}이며, 제주·도서 산간 지역은 추가 배송비 6,000원이 있습니다. 결제 확인 후 영업일 기준 1~3일 이내에 출고합니다.`,
   },
   {
     q: '교환·반품은 어떻게 하나요?',
@@ -135,7 +144,7 @@ export const FAQ_ENZYME = [
   },
   {
     q: '어떻게 주문하나요? 카드 결제도 되나요?',
-    a: '상품의 구매하기를 누르면 주문서가 열립니다. 배송지와 연락처를 적어 주문서를 확인하면 카카오톡·전화·이메일로 접수할 수 있고, 담당자가 결제 방법과 배송 일정을 안내합니다. alfs.kr 카드 결제는 가맹 심사를 준비 중이며, 그동안 네이버 스마트스토어의 각 상품 페이지에서도 바로 구매하실 수 있습니다.',
+    a: '상품의 구매하기를 누르면 주문서가 열립니다. 배송지와 연락처를 적고 신용·체크카드로 결제하시면 토스페이먼츠 결제창에서 카드 결제가 이루어집니다. 회원가입이나 로그인 없이 비회원으로 결제할 수 있고, 결제가 끝나면 주문이 접수됩니다. 카드 결제가 어려우면 전화·카카오톡·이메일로 주문하실 수도 있습니다.',
   },
   {
     q: '30일 프로그램과 3일 클렌즈는 무엇이 다른가요?',
@@ -213,7 +222,7 @@ export const FAQ_COMPANY = [
 // 공통 조각: 배송·교환/반품 기준 (배송·교환·환불 정책 페이지와 같은 값)
 const deliveryTime = {
   '@type': 'ShippingDeliveryTime',
-  handlingTime: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 3, unitCode: 'DAY' },
+  handlingTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 3, unitCode: 'DAY' },
   transitTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 3, unitCode: 'DAY' },
 }
 const returnPolicyLd = {

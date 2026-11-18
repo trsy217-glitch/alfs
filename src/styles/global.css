@@ -1152,7 +1152,7 @@ ol.howto { padding: 0; }
 .leafbg .pricebox .pricebox__meta { color: var(--ink-2); }
 .leafbg .pricebox s { color: var(--ink-2); }
 
-   레시피 카드는 원본 이미지 비율(1260×891)을 그대로 보여 주고, 누르면 크게 보기 창이 열립니다. */
+/* 레시피 카드는 원본 이미지 비율(1260×891)을 그대로 보여 주고, 누르면 크게 보기 창이 열립니다. */
 .cafegrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(18px, 2.6vw, 30px); margin-top: 44px; }
 @media (max-width: 820px) { .cafegrid { grid-template-columns: 1fr; } }
 .capecard { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-m); overflow: hidden; }
@@ -1190,3 +1190,48 @@ ol.howto { padding: 0; }
 .lightbox__nav .btn { min-height: 40px; font-size: 0.92rem; }
 .lightbox__nav .btn--ghost { color: var(--silk); border-color: var(--line-dark); }
 .lightbox__count { font-size: var(--t-sm); color: rgba(242, 243, 238, 0.72); }
+
+/* ═══════════ 주문서: 배송·교환·환불 안내와 결제 ═══════════ */
+/* 상품 화면·주문서 어디에 붙여도 같은 기준이 보이게 하는 요약 상자 (components/OrderPolicy.jsx) */
+.order-policy { margin-top: 20px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius-s); background: var(--silk-2); }
+.order-policy__title { font-size: var(--t-md); }
+.order-policy__list { margin: 10px 0 0; display: grid; gap: 8px; font-size: var(--t-sm); }
+.order-policy__list > div { display: grid; grid-template-columns: 62px 1fr; gap: 8px; align-items: start; }
+.order-policy dt { font-weight: 700; color: var(--leaf); }
+.order-policy dd { margin: 0; color: var(--ink-2); line-height: 1.65; }
+.order-policy__link { margin-top: 10px; font-size: var(--t-xs); color: var(--ink-2); }
+.order-policy__link a { color: var(--leaf-2); text-decoration: underline; }
+.order-policy--dark { background: rgba(242, 243, 238, 0.06); border-color: var(--line-dark); }
+.order-policy--dark .order-policy__title { color: var(--silk); }
+.order-policy--dark dt { color: var(--drop); }
+.order-policy--dark dd, .order-policy--dark .order-policy__link { color: rgba(242, 243, 238, 0.78); }
+@media (max-width: 560px) {
+  .order-policy { padding: 14px; }
+  .order-policy__list > div { grid-template-columns: 1fr; gap: 2px; }
+}
+
+/* 결제 버튼과 결제 대안(전화·카카오톡) */
+.btn--pay { width: 100%; min-height: 54px; font-size: 1.02rem; }
+.btn--pay:disabled { opacity: 0.72; cursor: progress; }
+.order-alt { border-top: 1px solid var(--line); padding-top: 12px; font-size: var(--t-sm); color: var(--ink-2); }
+.order-alt summary { cursor: pointer; font-weight: 700; color: var(--leaf-2); }
+.order-alt p { margin-top: 10px; }
+.order-alt .btn-row { margin-top: 10px; flex-wrap: wrap; }
+.order-app-note { padding: 10px 12px; border-radius: 10px; background: #FDF3E3; color: #7A4B12; font-size: var(--t-xs); line-height: 1.6; }
+.link-btn { border: 0; padding: 0; background: none; font: inherit; color: var(--leaf-2); text-decoration: underline; cursor: pointer; }
+
+/* ═══════════ 결제 결과 화면 (/payment/success, /payment/fail) ═══════════ */
+.pay-page { max-width: 760px; }
+.pay-result { margin-top: 8px; padding: clamp(20px, 4vw, 36px); border: 1px solid var(--line); border-radius: var(--radius-m); background: #fff; }
+.pay-result__state { font-size: var(--t-xs); font-weight: 800; letter-spacing: 0.04em; color: var(--ink-2); }
+.pay-result h1 { margin-top: 6px; font-size: clamp(1.35rem, 3.2vw, 1.8rem); letter-spacing: -0.02em; }
+.pay-result__info { margin: 18px 0 0; padding: 16px; display: grid; gap: 8px; border-radius: var(--radius-s); background: var(--silk-2); font-size: var(--t-sm); }
+.pay-result__info > div { display: flex; gap: 10px; flex-wrap: wrap; }
+.pay-result__info dt { min-width: 84px; font-weight: 700; color: var(--ink-2); }
+.pay-result__info dd { margin: 0; overflow-wrap: anywhere; }
+.pay-result--ok { border-color: var(--leaf); }
+.pay-result--ok .pay-result__state { color: var(--leaf); }
+.pay-result--err { border-color: #E2B9B1; }
+.pay-result--err .pay-result__state { color: #A33A2B; }
+.pay-result--wait .pay-result__state { color: #8A6A1F; }
+@media (max-width: 560px) { .pay-result { padding: 18px; } }

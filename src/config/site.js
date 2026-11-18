@@ -37,11 +37,43 @@ export const product = {
 
 export const won = (n) => `${Number(n).toLocaleString('ko-KR')}원`
 
+// ── 배송·교환·환불 기준 (상품 화면·주문서·정책 페이지가 같은 문구를 씁니다) ──
+// 토스페이먼츠 가맹 심사 요구 사항: 모든 상품 화면과 주문서에 배송 기간과
+// 교환·환불 기준이 바로 보여야 합니다. 값을 바꾸면 /refund-policy 와 푸터,
+// public/llms.txt 의 같은 문구도 함께 맞춰 주세요.
+export const delivery = {
+  carrier: product.carrier, // 한진택배
+  leadTime: '결제 확인 후 영업일 기준 1~3일 이내 출고',
+  leadTimeNote: '주말·공휴일 제외',
+  transit: '출고 후 1~3영업일 (도서·산간은 1~2일 추가)',
+  islandFee: 6000, // 제주·도서산간 추가 배송비
+}
+
+export const refundSummary = {
+  withdraw: '상품을 받은 날부터 7일 이내 청약철회 가능',
+  changeOfMind: '단순 변심은 왕복 배송비 구매자 부담(편도 3,000원 · 왕복 6,000원)',
+  defect: '상품 하자·오배송·배송 중 파손은 무료 반품(판매자 부담)',
+  refundTime: '반품 상품 확인 후 3영업일 이내 환급',
+  limit: '식품 특성상 포장을 개봉했거나 섭취한 경우 교환·반품이 제한됩니다',
+}
+
+// 상품 정보 표(제품 상세) 아래에 공통으로 붙는 행
+// (오륜미네랄·효소세상 제품 모두 같은 기준을 씁니다)
+export const deliveryRows = [
+  ['배송 방법', `${delivery.carrier} 택배`],
+  ['출고', `${delivery.leadTime} (${delivery.leadTimeNote})`],
+  ['배송 기간', delivery.transit],
+  ['교환·환불', `${refundSummary.withdraw}. ${refundSummary.changeOfMind}. ${refundSummary.defect}`],
+]
+
 // 수량에 따른 배송비 (무료배송 기준 적용)
 export const shippingFor = (amount) => (amount >= product.freeShippingOver ? 0 : product.shippingFee)
 
 // 화면·정책에 공통으로 쓰는 배송비 안내 문구
 export const shippingSummary = `기본 ${won(product.shippingFee)} · ${won(product.freeShippingOver)} 이상 무료배송 · ${product.carrier}`
+
+// 배송 기간을 한 줄로 (상품 카드·주문서 요약용)
+export const deliveryLine = `${delivery.leadTime} (${delivery.leadTimeNote}) · ${delivery.transit}`
 
 // 상담 채널. url이 비어 있으면 숨겨집니다.
 export const channels = [

@@ -31,7 +31,7 @@ for (const route of Object.keys(ROUTES)) {
   html = setMeta(html, 'property', 'og:title', m.title)
   html = setMeta(html, 'property', 'og:description', m.description)
   html = setMeta(html, 'property', 'og:url', m.url)
-  html = setMeta(html, 'name', 'robots', 'index, follow')
+  html = setMeta(html, 'name', 'robots', m.noindex ? 'noindex, follow' : 'index, follow')
   const ld = JSON.stringify(jsonLdFor(route)).replace(/</g, '\\u003c')
   html = html.replace('</head>', `    <link rel="canonical" href="${m.url}" />\n    <script type="application/ld+json" id="ld-json">${ld}</script>\n  </head>`)
   try {
@@ -48,7 +48,7 @@ for (const route of Object.keys(ROUTES)) {
 
 const today = new Date().toISOString().slice(0, 10)
 const prio = { '/': '1.0', '/products': '0.9', '/products/enzyme': '0.9', '/company': '0.9', '/mineral-guide': '0.8', '/partner': '0.8', '/products/cafe': '0.8', '/refund-policy': '0.5' }
-const urls = Object.keys(ROUTES).map((r) => `  <url><loc>${SITE_URL}${r === '/' ? '/' : r}</loc><lastmod>${today}</lastmod><priority>${prio[r] || '0.6'}</priority></url>`)
+const urls = Object.keys(ROUTES).filter((r) => !metaFor(r).noindex).map((r) => `  <url><loc>${SITE_URL}${r === '/' ? '/' : r}</loc><lastmod>${today}</lastmod><priority>${prio[r] || '0.6'}</priority></url>`)
 fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`)
 fs.rmSync(path.join(root, 'dist-ssr'), { recursive: true, force: true })
 console.log(`[prerender] ${Object.keys(ROUTES).length}개 페이지 (본문 포함 ${ok}개) + sitemap.xml 완료`)
