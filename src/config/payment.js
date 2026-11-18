@@ -8,8 +8,10 @@
 //    키를 바꿀 때는 클라이언트 키와 시크릿 키를 같은 상점(테스트/라이브) 것으로 함께 바꿔야 합니다.
 // ─────────────────────────────────────────────────────────────
 
-// 토스페이먼츠 개발자센터 문서에 나오는 API 개별 연동 테스트 클라이언트 키
-export const TOSS_TEST_CLIENT_KEY = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'
+// 토스페이먼츠 개발자센터(trsy217@gmail.com 계정) → API 키 → 테스트 → 'API 개별 연동 키'(기존 결제창) 클라이언트 키.
+// 우리가 쓰는 결제창(구버전) 방식이 이 키를 씁니다. (주문서형·결제창형 키 test_gck_… 는 다른 제품이라 쓰지 않습니다)
+// 상점 고유 MID 키는 전자결제 계약이 끝난 뒤 이 자리에 들어가므로, 그때 Vercel 환경변수 VITE_TOSS_CLIENT_KEY 로 갈아끼우면 됩니다.
+export const TOSS_TEST_CLIENT_KEY = 'test_ck_vZnjEJeQVxJKewQ5jeZ98PmOoBN0'
 
 const fromEnv = (import.meta.env?.VITE_TOSS_CLIENT_KEY || '').trim()
 
