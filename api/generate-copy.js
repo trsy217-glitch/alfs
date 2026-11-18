@@ -91,7 +91,8 @@ export default async function handler(req, res) {
     }
     // 키는 로그·응답 어디에도 남기지 않습니다. 상태 코드만 남깁니다.
     console.error('generate-copy', provider, last.status)
-    return res.status(statusFor(last.status)).json({ error: messageFor(provider, last.status), code: `upstream_${last.status || 'error'}` })
+    const status = keyRejected(last.text) ? 401 : statusFor(last.status)
+    return res.status(status).json({ error: messageFor(provider, status), code: `upstream_${last.status || 'error'}` })
   } catch (err) {
     console.error('generate-copy', provider, 'exception', err?.name || 'error')
     return res.status(502).json({ error: 'AI 연결에 실패했습니다.', code: 'upstream_exception' })
@@ -161,6 +162,11 @@ function statusFor(status) {
   if (status === 401 || status === 403) return 401
   if (status === 429) return 429
   return 502
+}
+
+// Gemini 는 잘못된 키를 400(API_KEY_INVALID)으로 달니다 — 화면에 '키를 확인하세요'로 안내
+function keyRejected(text = '') {
+  return /API[_ ]?key not valid|API_KEY_INVALID|invalid[_ ]api[_ ]key|Incorrect API key|invalid x-api-key|API key expired|invalid authentication credentials/i.test(String(text))
 }
 
 function messageFor(provider, status) {
