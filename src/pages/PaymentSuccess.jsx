@@ -110,8 +110,8 @@ export default function PaymentSuccess() {
               {payment?.orderName || order?.name ? (
                 <div><dt>상품</dt><dd>{payment?.orderName || `${order.name} ${order.volume ? `(${order.volume})` : ''} × ${order.qty}`}</dd></div>
               ) : null}
-              {(payment?.totalAmount || order?.total) ? (
-                <div><dt>결제 금액</dt><dd>{won(payment?.totalAmount ?? order.total)}</dd></div>
+              {(payment?.totalAmount || order?.total || amount) ? (
+                <div><dt>결제 금액</dt><dd>{won(payment?.totalAmount || order?.total || amount)}</dd></div>
               ) : null}
               {method && <div><dt>결제 수단</dt><dd>{method}{payment?.card?.company ? ` · ${payment.card.company}` : ''}</dd></div>}
               {payment?.card?.number && <div><dt>카드번호</dt><dd>{payment.card.number}</dd></div>}

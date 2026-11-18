@@ -7,7 +7,7 @@ import { FAQ_PRODUCT } from '../seo.js'
 import BuyBox from '../components/BuyBox.jsx'
 import OrderPolicy from '../components/OrderPolicy.jsx'
 import { asset, scrollToId } from '../lib/asset.js'
-import { channels, delivery, deliveryRows, product, won, shippingSummary } from '../config/site.js'
+import { channels, deliveryRows, product, won, shippingSummary } from '../config/site.js'
 
 // ⚠️ 식품표시광고법: 오륜미네랄은 기타가공품(일반식품)입니다.
 // 질병 예방·치료, 기능성(뼈·면역·혈액 개선 등), 흡수율 비교 같은 표현은 넣지 마세요.
@@ -85,9 +85,6 @@ export default function Product() {
             <p className="credit">수상·특허는 제조사 <b>유디아미네랄</b>의 이력입니다. 오륜미네랄은 유디아미네랄이 이 기술과 원료로 만든 제품입니다.</p>
             <p className="lead muted">충북 보은의 어린 뽕잎을 먹고 자란 누에가 빚은 바이오 유기이온 미네랄. 알약 대신, 하루 한 잔으로 시작하는 미네랄 습관입니다.</p>
             <BuyBox dark />
-            <p className="muted hero-note">
-              {delivery.carrier} · {delivery.leadTime}({delivery.leadTimeNote}) · {delivery.transit} · 수령 후 7일 이내 청약철회
-            </p>
             <div className="btn-row mt-m">
               <button type="button" className="btn btn--ghost" onClick={() => scrollToId('story')}>제품 이야기 보기</button>
             </div>

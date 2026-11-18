@@ -6,7 +6,7 @@ import { asset } from '../lib/asset.js'
 import { inAppBrowser, openInExternalBrowser } from '../lib/auth.jsx'
 import OrderPolicy from './OrderPolicy.jsx'
 import {
-  TOSS_CLIENT_KEY, TOSS_IS_TEST, loadTossPayments, newOrderId, saveOrder, rememberLastOrder,
+  TOSS_CLIENT_KEY, loadTossPayments, newOrderId, saveOrder, rememberLastOrder,
 } from '../config/payment.js'
 
 // 구매하기 → 주문서 → 토스페이먼츠 카드 결제창.
@@ -128,9 +128,10 @@ export default function BuySheet({ open, item, onClose }) {
       const code = err?.code || ''
       if (code === 'USER_CANCEL' || code === 'PAY_PROCESS_CANCELED') {
         setMsg('결제를 취소하셨습니다. 주문 내용은 그대로 두었으니 다시 결제하실 수 있습니다.')
-      } else if (code === 'INVALID_CLIENT_KEY' || code === 'UNAUTHORIZED_KEY') {
-        setMsg('결제 설정을 확인하고 있습니다. 잠시 후 다시 시도하시거나 전화 주문을 이용해 주세요.')
-        if (TOSS_IS_TEST) console.warn('[alfs] 토스 클라이언트 키를 확인해 주세요:', code, err?.message)
+      } else if (code === 'INVALID_CLIENT_KEY' || code === 'UNAUTHORIZED_KEY' || code === 'UNKNOWN' || !code) {
+        // 키·가맹 설정 문제까지 포함해 사용자에게는 기술 용어를 보이지 않습니다.
+        setMsg(`결제 연결을 확인하고 있습니다. 잠시 후 다시 시도하시거나 전화 주문(${company.phone})을 이용해 주세요.`)
+        console.warn('[alfs] 토스 결제창을 열지 못했습니다:', code || '(코드 없음)', err?.message || '')
       } else {
         setMsg(`결제창을 열지 못했습니다.${err?.message ? ` (${err.message})` : ''} 잠시 후 다시 시도하시거나 전화 주문(${company.phone})을 이용해 주세요.`)
       }
