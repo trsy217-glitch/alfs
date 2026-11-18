@@ -157,7 +157,7 @@ export default function EnzymeTab() {
             <table className="spec">
               <tbody>
                 <tr><th scope="row">배송비</th><td>5만 원 이상 무료배송 · 5만 원 미만 4,000원 · 제주·도서지역 추가 6,000원</td></tr>
-                <tr><th scope="row">배송 방법</th><td>{delivery.carrier} 택배</td></tr>
+                <tr><th scope="row">배송 방법</th><td>{delivery.carrier}</td></tr>
                 <tr><th scope="row">출고</th><td>{delivery.leadTime} ({delivery.leadTimeNote})</td></tr>
                 <tr><th scope="row">배송 기간</th><td>{delivery.transit}</td></tr>
                 <tr><th scope="row">결제</th><td>토스페이먼츠 신용·체크카드 결제 (비회원 가능)</td></tr>

@@ -189,7 +189,7 @@ export default function MineralCafeTab() {
                   <tr><th scope="row">제조원</th><td>유디아미네랄 (충북 보은)</td></tr>
                   <tr><th scope="row">섭취 방법</th><td>원액을 물에 10~30배 희석해 하루 한 잔</td></tr>
                   <tr><th scope="row">배송비</th><td>{shippingSummary} · 제주·도서산간 추가 6,000원</td></tr>
-                  <tr><th scope="row">배송 방법</th><td>{delivery.carrier} 택배 · {delivery.leadTime}({delivery.leadTimeNote})</td></tr>
+                  <tr><th scope="row">배송 방법</th><td>{delivery.carrier} · {delivery.leadTime}({delivery.leadTimeNote})</td></tr>
                   <tr><th scope="row">배송 기간</th><td>{delivery.transit}</td></tr>
                   <tr><th scope="row">교환·환불</th><td>{refundSummary.withdraw} · {refundSummary.changeOfMind} · {refundSummary.defect}</td></tr>
                   <tr><th scope="row">결제</th><td>토스페이먼츠 신용·체크카드 (비회원 가능)</td></tr>

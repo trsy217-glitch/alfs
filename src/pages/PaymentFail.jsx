@@ -58,7 +58,7 @@ export default function PaymentFail() {
           )}
 
           <div className="btn-row mt-m">
-            <Link to={order?.itemId ? '/products/enzyme' : '/products'} className="btn btn--primary">다시 주문하기</Link>
+            <Link to={order?.itemId && order.itemId !== 'oryun' ? '/products/enzyme' : '/products'} className="btn btn--primary">다시 주문하기</Link>
             <a className="btn btn--ghost" href={`tel:${company.phone.replace(/-/g, '')}`}>전화 주문 {company.phone}</a>
             <Link to="/contact" className="btn btn--ghost">상담 신청</Link>
           </div>

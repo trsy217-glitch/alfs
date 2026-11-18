@@ -60,7 +60,7 @@ export const refundSummary = {
 // 상품 정보 표(제품 상세) 아래에 공통으로 붙는 행
 // (오륜미네랄·효소세상 제품 모두 같은 기준을 씁니다)
 export const deliveryRows = [
-  ['배송 방법', `${delivery.carrier} 택배`],
+  ['배송 방법', delivery.carrier],
   ['출고', `${delivery.leadTime} (${delivery.leadTimeNote})`],
   ['배송 기간', delivery.transit],
   ['교환·환불', `${refundSummary.withdraw}. ${refundSummary.changeOfMind}. ${refundSummary.defect}`],
