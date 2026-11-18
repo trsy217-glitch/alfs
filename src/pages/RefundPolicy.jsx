@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import PolicyPage from '../components/PolicyPage.jsx'
-import { company, delivery, product, refundSummary, won } from '../config/site.js'
+import { company, delivery, product, won } from '../config/site.js'
 import { enzymeProducts, enzymeShipping } from '../config/enzyme.js'
 
 // 5만 원 미만이라 배송비가 실제로 붙는 상품 (지금은 클린바이옴 1병)
@@ -110,9 +110,9 @@ export default function RefundPolicy() {
         카드 승인이 끝나면 주문이 접수되고, 결제 확인 후 영업일 기준 1~3일 이내에 출고합니다.
       </p>
       <ul>
-        <li>{refundSummary.withdraw}. {refundSummary.changeOfMind}. {refundSummary.defect}.</li>
-        <li>{refundSummary.refundTime}. 카드 결제 취소는 카드사 정책에 따라 취소 반영에 3~5영업일이 걸릴 수 있습니다.</li>
-        <li>결제가 끝난 주문의 배송·환불은 위 기준을 그대로 따릅니다.</li>
+        <li>결제 수단: 신용·체크카드(토스페이먼츠 결제창) · 회원가입 없이 비회원 결제 가능</li>
+        <li>카드 승인 취소는 카드사 정책에 따라 반영에 3~5영업일이 걸릴 수 있습니다.</li>
+        <li>청약철회·교환·반품·환불 기준은 위 3번·4번 항목을 따릅니다.</li>
       </ul>
     </PolicyPage>
   )
