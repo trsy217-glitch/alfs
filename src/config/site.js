@@ -15,9 +15,10 @@ export const company = {
   mailOrderNumber: '제 2025-서울마포-1175호',
   address: '서울특별시 마포구 월드컵북로 434, 지하 1층 136호(상암동, 상암 IT Tower)',
   phone: '010-9190-0906',
-  // 고객센터 이메일: alfs.kr 도메인에는 메일 서버(MX)가 없어 hello@alfs.kr 로는 받을 수 없습니다.
-  // 도메인 관리(호스팅케이알)에서 메일함이나 포워딩을 열면 이 값을 hello@alfs.kr 로 바꾸면 됩니다.
-  email: 'trsy217@gmail.com',
+  // 고객센터 이메일: 알프스 전용 메일함 alfs.ai.2026@gmail.com 을 씁니다.
+  // (alfs.kr 도메인에는 메일 서버(MX)가 없어 hello@alfs.kr 같은 도메인 주소로는 받을 수 없습니다.
+  //  호스팅케이알에서 메일함이나 포워딩을 열면 이 값을 alfs.kr 주소로 바꿀 수 있습니다.)
+  email: 'alfs.ai.2026@gmail.com',
   hours: '평일 10:00 – 18:00 (주말·공휴일 휴무)',
   // 정책 문서 시행일
   policyEffectiveDate: '2026년 11월 16일',
