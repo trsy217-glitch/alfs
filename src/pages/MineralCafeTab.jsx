@@ -89,6 +89,14 @@ export default function MineralCafeTab() {
             <div className="btn-row">
               <button type="button" className="btn btn--drop" onClick={() => scrollToId('recipes')}>레시피 6종 보기</button>
               <button type="button" className="btn btn--ghost" onClick={() => buy.open()}>오륜미네랄 1,000ml 구매하기</button>
+              <a
+                className="btn btn--ghost"
+                href="https://youtube.com/@youarewhatyoueat88?si=AWz1mbV6sodUBByu"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                미네랄 카페 유튜브 보기
+              </a>
             </div>
             <p className="muted hero-note">
               이 페이지의 레시피는 판매 상품이 아닙니다. 알프스가 판매하는 상품은 오륜미네랄 {product.volume}
