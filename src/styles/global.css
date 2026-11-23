@@ -766,6 +766,16 @@ ol.howto { padding: 0; }
 .pdetail__media img { width: 100%; border-radius: var(--radius-m); background: #fff; border: 1px solid var(--line); }
 .pdetail__media img.pdetail__media-detail { background: transparent; border: 0; }
 .pdetail .spec { margin-top: 24px; }
+
+/* ─── 제품 뒷면 표시사항(성분표) 사진 ─── */
+.labels__title { margin: 52px 0 0; }
+.labels__lead { margin-top: 10px; font-size: var(--t-sm); line-height: 1.65; color: var(--ink-2); max-width: 46em; }
+.labels { display: grid; gap: 18px; margin-top: 20px; max-width: 520px; }
+.label { margin: 0; border: 1px solid var(--line); border-radius: var(--radius-m); overflow: hidden; background: #fff; }
+.label a { display: block; }
+.label img { display: block; width: 100%; height: auto; background: var(--silk); }
+.label figcaption { padding: 12px 16px; border-top: 1px solid var(--line); font-size: var(--t-sm); font-weight: 600; color: var(--ink-2); text-align: center; }
+@media (max-width: 620px) { .labels { max-width: none; } }
 .pdetail__h3 { font-size: var(--t-lg); margin: 34px 0 0; }
 .plist { margin: 18px 0 0; padding-left: 18px; color: var(--ink-2); font-size: var(--t-md); }
 .plist li { margin-bottom: 4px; }

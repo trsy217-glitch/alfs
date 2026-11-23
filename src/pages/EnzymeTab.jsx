@@ -5,7 +5,7 @@ import CtaBand from '../components/CtaBand.jsx'
 import { useBuy } from '../components/buy.js'
 import { useConsult } from '../components/consult.js'
 import OrderPolicy from '../components/OrderPolicy.jsx'
-import { enzymeProducts, enzymeShipping, shippingText, toOrderItem, discountRate } from '../config/enzyme.js'
+import { visibleEnzymeProducts, enzymeShipping, shippingText, toOrderItem, discountRate } from '../config/enzyme.js'
 import { company, delivery, deliveryRows, refundSummary, won } from '../config/site.js'
 import { asset, scrollToId } from '../lib/asset.js'
 import { FAQ_ENZYME } from '../seo.js'
@@ -16,6 +16,7 @@ import { FAQ_ENZYME } from '../seo.js'
 export default function EnzymeTab() {
   const buy = useBuy()
   const consult = useConsult()
+  const products = visibleEnzymeProducts
 
   return (
     <>
@@ -25,9 +26,9 @@ export default function EnzymeTab() {
         <div className="wrap">
           <div className="intro">
             <span className="kicker">알프스 유통 · 효소세상</span>
-            <h1>매일 한 포씩, 발효 음료 여섯 가지</h1>
+            <h1>매일 한 포씩, 효소세상 발효 음료</h1>
             <p className="lead muted">
-              효소세상이 만든 발효 효소·미생물 발효 음료 6종을 알프스가 유통합니다. 30일·3일 프로그램부터
+              효소세상이 만든 발효 효소·미생물 발효 음료 {products.length}종을 알프스가 유통합니다. 30일·3일 프로그램부터
               낱개로 챙기는 병 제품까지, 쓰는 기간과 방식에 맞춰 고르실 수 있습니다.
             </p>
             <div className="badges">
@@ -36,7 +37,7 @@ export default function EnzymeTab() {
               <span className="badge">제조사 효소세상</span>
             </div>
             <div className="btn-row">
-              <button type="button" className="btn btn--drop" onClick={() => scrollToId('products')}>제품 6종 보기</button>
+              <button type="button" className="btn btn--drop" onClick={() => scrollToId('products')}>제품 {products.length}종 보기</button>
               <button type="button" className="btn btn--ghost" onClick={consult.open}>어떤 제품이 맞을지 상담</button>
             </div>
             <p className="muted hero-note">
@@ -49,14 +50,14 @@ export default function EnzymeTab() {
 
       <section className="section" id="products">
         <div className="wrap">
-          <h2 className="h-section">효소세상 제품 6종</h2>
+          <h2 className="h-section">효소세상 제품 {products.length}종</h2>
           <p className="lead muted mt-s">
             상품을 누르면 구성·용량·보관 방법을 볼 수 있고, 구매하기를 누르면 주문서가 열립니다.
             배송지·연락처를 적고 신용·체크카드로 결제하시면 됩니다(회원가입 없이 가능).
           </p>
 
           <div className="prodgrid">
-            {enzymeProducts.map((p) => {
+            {products.map((p) => {
               const rate = discountRate(p)
               return (
                 <article className="pcard" key={p.id}>
@@ -87,7 +88,7 @@ export default function EnzymeTab() {
         </div>
       </section>
 
-      {enzymeProducts.map((p, i) => (
+      {products.map((p, i) => (
         <section key={p.id} id={`p-${p.slug}`} className={`section--tight pdetail ${i % 2 === 0 ? '' : 'pdetail--alt'}`}>
           <div className="wrap">
             <div className={`split split--top ${i % 2 === 0 ? '' : 'split--flip'}`}>
@@ -121,6 +122,23 @@ export default function EnzymeTab() {
                 <table className="spec">
                   <tbody>{[...p.spec, ...deliveryRows].map(([k, v]) => <tr key={k}><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody>
                 </table>
+
+                {p.labels?.length > 0 && (
+                  <>
+                    <h3 className="pdetail__h3">제품 뒷면 표시사항(성분표)</h3>
+                    <p className="labels__lead">제품에 인쇄된 표시사항을 그대로 사진으로 옮겼습니다. 누르면 크게 볼 수 있습니다.</p>
+                    <div className="labels">
+                      {p.labels.map((l) => (
+                        <figure className="label" key={l.src}>
+                          <a href={asset(l.src)} target="_blank" rel="noreferrer">
+                            <img src={asset(l.src)} alt={l.alt} loading="lazy" width="1200" height="1600" />
+                          </a>
+                          <figcaption>{l.caption}</figcaption>
+                        </figure>
+                      ))}
+                    </div>
+                  </>
+                )}
 
                 {p.usage && (
                   <>

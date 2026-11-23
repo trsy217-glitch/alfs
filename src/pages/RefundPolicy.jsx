@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom'
 import PolicyPage from '../components/PolicyPage.jsx'
 import { company, delivery, product, won } from '../config/site.js'
-import { enzymeProducts, enzymeShipping } from '../config/enzyme.js'
+import { visibleEnzymeProducts, enzymeShipping } from '../config/enzyme.js'
 
 // 5만 원 미만이라 배송비가 실제로 붙는 상품 (지금은 클린바이옴 1병)
-const paidShipping = enzymeProducts.filter((p) => p.price < product.freeShippingOver)
+const paidShipping = visibleEnzymeProducts.filter((p) => p.price < product.freeShippingOver)
 
 export default function RefundPolicy() {
   return (
     <PolicyPage
       title="배송·교환·환불 정책"
-      lead={`${product.name} ${product.volume}와 효소세상 제품 ${enzymeProducts.length}종 주문의 배송, 교환·반품, 환불 기준을 안내합니다.`}
+      lead={`${product.name} ${product.volume}와 효소세상 제품 ${visibleEnzymeProducts.length}종 주문의 배송, 교환·반품, 환불 기준을 안내합니다.`}
     >
       <h2 id="products">1. 판매 상품과 배송비</h2>
       <p>알프스(AL.F.S)가 alfs.kr에서 판매하는 상품과 판매가, 기본 배송비입니다. 판매가는 각 상품 페이지에 표시된 가격과 같습니다.</p>
@@ -34,9 +34,9 @@ export default function RefundPolicy() {
             <td>{won(product.shippingFee)}</td>
           </tr>
           <tr className="policy__table-group">
-            <th scope="colgroup" colSpan={3}>효소세상 제품 {enzymeProducts.length}종 · 기본 배송비 {won(enzymeShipping.fee)}</th>
+            <th scope="colgroup" colSpan={3}>효소세상 제품 {visibleEnzymeProducts.length}종 · 기본 배송비 {won(enzymeShipping.fee)}</th>
           </tr>
-          {enzymeProducts.map((p) => (
+          {visibleEnzymeProducts.map((p) => (
             <tr key={p.id}>
               <th scope="row">
                 {p.name}

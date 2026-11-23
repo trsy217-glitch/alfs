@@ -186,6 +186,27 @@ export default function Product() {
             <OrderPolicy />
           </div>
         </div>
+        <div className="wrap">
+          <h2 className="h-section labels__title">제품 뒷면 표시사항(성분표)</h2>
+          <p className="labels__lead">
+            제품에 인쇄된 표시사항을 그대로 사진으로 옮겼습니다. 제품명·식품유형·제조원·원재료명·내용량 등
+            실제 라벨 기재 내용이며, 사진을 누르면 크게 볼 수 있습니다.
+          </p>
+          <div className="labels">
+            <figure className="label">
+              <a href={asset('images/labels/oryun-mineral-label.jpg')} target="_blank" rel="noreferrer">
+                <img
+                  src={asset('images/labels/oryun-mineral-label.jpg')}
+                  alt="오륜미네랄 1,000ml 제품 뒷면 라벨 표시사항 — 제품명, 식품유형, 제조원, 소비기한, 내용량, 원재료명"
+                  loading="lazy"
+                  width="1200"
+                  height="1600"
+                />
+              </a>
+              <figcaption>오륜미네랄 1,000ml 뒷면 표시사항</figcaption>
+            </figure>
+          </div>
+        </div>
       </section>
 
       <Faq title="오륜미네랄 자주 묻는 질문" items={FAQ_PRODUCT} lead={<>미네랄 제품을 고르는 기준이 궁금하다면 <Link to="/mineral-guide">미네랄 고르는 법</Link>도 읽어 보세요.</>} />

@@ -63,6 +63,10 @@ export const enzymeProducts = [
       { t: '물과 함께', d: '파우치는 물에 풀어 마시고, 클린바이옴은 물에 희석해 마시는 제품입니다. 비율은 제품 라벨 안내를 따르세요.' },
       { t: '실온보관', d: '직사광선을 피해 서늘한 곳에 두고, 개봉한 뒤에는 안내된 방법대로 보관합니다.' },
     ],
+    labels: [
+      { src: 'images/labels/enzymemeal-label.jpg', caption: '엔자임밀 200ml 파우치 뒷면 표시사항', alt: '엔자임밀 200ml 파우치 뒷면 — 제품명, 품목보고번호, 원재료 및 함량, 섭취방법, 제조원 표시사항' },
+      { src: 'images/labels/cleanbiome-label.jpg', caption: '클린바이옴 100ml 병 뒷면 표시사항', alt: '클린바이옴 100ml 병 뒷면 — 제품명, 품목보고번호, 원재료 및 함량, 섭취방법, 제조원 표시사항' },
+    ],
     storeUrl: `${STORE}/11894887217`,
     storeId: '11894887217',
   },
@@ -88,6 +92,10 @@ export const enzymeProducts = [
       ['배송비', '무료배송'],
     ],
     usage: [{ t: '라벨 안내대로', d: '섭취 방법과 보관 방법은 제품 라벨의 안내를 따라 주세요.' }],
+    labels: [
+      { src: 'images/labels/enzymemeal-label.jpg', caption: '엔자임밀 200ml 파우치 뒷면 표시사항', alt: '엔자임밀 200ml 파우치 뒷면 — 제품명, 품목보고번호, 원재료 및 함량, 섭취방법, 제조원 표시사항' },
+      { src: 'images/labels/cleanbiome-label.jpg', caption: '클린바이옴 100ml 병 뒷면 표시사항', alt: '클린바이옴 100ml 병 뒷면 — 제품명, 품목보고번호, 원재료 및 함량, 섭취방법, 제조원 표시사항' },
+    ],
     storeUrl: `${STORE}/11790100246`,
     storeId: '11790100246',
     note: '세부 원재료·원산지 등 상품 고시 정보는 스토어 상품 페이지와 제품 라벨에서 확인하실 수 있습니다.',
@@ -95,6 +103,9 @@ export const enzymeProducts = [
   {
     id: 'bioenergy',
     slug: 'bioenergy',
+    // 2026-11-23 임시 숨김: 제품 뒷면 표시사항(성분표) 사진이 아직 없어 사이트에 노출하지 않습니다.
+    // 사진을 받으면 이 줄만 지우면 다시 목록·상세에 나타납니다. (데이터는 그대로 둡니다)
+    hidden: true,
     name: '바이오에너지 클렌즈 프로그램',
     brand: '바이오에너지',
     tag: '8포',
@@ -124,6 +135,9 @@ export const enzymeProducts = [
   {
     id: 'zymogen',
     slug: 'zymogen',
+    // 2026-11-23 임시 숨김: 제품 뒷면 표시사항(성분표) 사진이 아직 없어 사이트에 노출하지 않습니다.
+    // 사진을 받으면 이 줄만 지우면 다시 목록·상세에 나타납니다. (데이터는 그대로 둡니다)
+    hidden: true,
     name: '자이모젠',
     brand: '자이모젠 (Zymogen)',
     tag: '10병',
@@ -177,6 +191,9 @@ export const enzymeProducts = [
       { t: '5분 안에', d: '희석한 뒤 5분 안에 마시도록 안내하고 있습니다.' },
       { t: '마시는 때', d: '식후 2시간 이후나 공복에 마시는 것을 권하고 있습니다.' },
     ],
+    labels: [
+      { src: 'images/labels/cleanbiome-label.jpg', caption: '클린바이옴 100ml 병 뒷면 표시사항', alt: '클린바이옴 100ml 병 뒷면 — 제품명, 품목보고번호, 원재료 및 함량, 섭취방법, 제조원 표시사항' },
+    ],
     storeUrl: `${STORE}/11901292751`,
     storeId: '11901292751',
   },
@@ -207,6 +224,9 @@ export const enzymeProducts = [
       { t: '5분 안에', d: '희석한 뒤 5분 안에 마시도록 안내하고 있습니다.' },
       { t: '마시는 때', d: '식후 2시간 이후나 공복에 마시는 것을 권하고 있습니다.' },
     ],
+    labels: [
+      { src: 'images/labels/cleanbiome-label.jpg', caption: '클린바이옴 100ml 병 뒷면 표시사항', alt: '클린바이옴 100ml 병 뒷면 — 제품명, 품목보고번호, 원재료 및 함량, 섭취방법, 제조원 표시사항' },
+    ],
     shippingFee: 4000,
     freeShippingOver: 50000,
     storeUrl: `${STORE}/11803613417`,
@@ -215,7 +235,10 @@ export const enzymeProducts = [
   },
 ]
 
-export const enzymeBySlug = (slug) => enzymeProducts.find((p) => p.slug === slug)
+// 화면에 노출하는 제품 — hidden: true 인 제품은 목록·상세에서 빠집니다.
+export const visibleEnzymeProducts = enzymeProducts.filter((p) => !p.hidden)
+
+export const enzymeBySlug = (slug) => visibleEnzymeProducts.find((p) => p.slug === slug)
 
 // 주문서(BuySheet)에 넘기는 형태로 바꿔 줍니다.
 export const toOrderItem = (p) => ({
