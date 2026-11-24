@@ -25,6 +25,10 @@
   ],
   "rewrites": [
     {
+      "source": "/stock",
+      "destination": "/app"
+    },
+    {
       "source": "/login",
       "destination": "/app"
     },
@@ -39,6 +43,23 @@
     {
       "source": "/diagnosis/result/(.*)",
       "destination": "/app"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/stock-sw.js",
+      "headers": [
+        { "key": "Service-Worker-Allowed", "value": "/stock" },
+        { "key": "Cache-Control", "value": "no-cache" }
+      ]
+    },
+    {
+      "source": "/stock-manifest.json",
+      "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
+    },
+    {
+      "source": "/stock",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
     }
   ]
 }

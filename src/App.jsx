@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import ConsultSheet from './components/ConsultSheet.jsx'
@@ -30,12 +30,17 @@ const DiagnosisNew = lazy(() => import('./pages/DiagnosisNew.jsx'))
 const DiagnosisResult = lazy(() => import('./pages/DiagnosisResult.jsx'))
 const MyDiagnoses = lazy(() => import('./pages/MyDiagnoses.jsx'))
 const VideoMaker = lazy(() => import('./pages/VideoMaker.jsx'))
+// 비공개 재고관리 앱(alfs.kr/stock) — 들어갈 때만 불러옵니다.
+const StockApp = lazy(() => import('./pages/StockApp.jsx'))
 import { AuthProvider } from './lib/auth.jsx'
 import { ConsultContext } from './components/consult.js'
 import { BuyContext } from './components/buy.js'
 import BuySheet from './components/BuySheet.jsx'
 
 export default function App() {
+  // /stock 은 공개 사이트와 완전히 분리된 앱 화면으로 그립니다(헤더·푸터·상담창 없음).
+  const { pathname } = useLocation()
+  const isStock = pathname.replace(/\/+$/, '') === '/stock'
   const [open, setOpen] = useState(false)
   const [buyOpen, setBuyOpen] = useState(false)
   // 주문서에 담을 상품. null 이면 기본 상품(오륜미네랄)으로 열립니다.
@@ -45,14 +50,15 @@ export default function App() {
     <AuthProvider>
     <ConsultContext.Provider value={{ open: () => setOpen(true) }}>
     <BuyContext.Provider value={{ open: openBuy, close: () => setBuyOpen(false) }}>
-      <HomeFirst />
-      <SeoHead />
+      {!isStock && <HomeFirst />}
+      {!isStock && <SeoHead />}
       <ScrollToTop />
-      <a href="#main" className="sr-only">본문으로 건너뛰기</a>
-      <Header />
+      {!isStock && <a href="#main" className="sr-only">본문으로 건너뛰기</a>}
+      {!isStock && <Header />}
       <main id="main">
         <Suspense fallback={<div className="page-loading" role="status">불러오는 중…</div>}>
         <Routes>
+          <Route path="/stock" element={<StockApp />} />
           <Route path="/" element={<Home />} />
           <Route path="/company" element={<Company />} />
           {/* 유통 페이지는 회사 소개로 통합 — 예전 주소와 /about 은 회사 소개로 모읍니다 */}
@@ -87,9 +93,9 @@ export default function App() {
         </Routes>
         </Suspense>
       </main>
-      <Footer />
-      <ConsultSheet open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)} />
-      <BuySheet open={buyOpen} item={buyItem} onClose={() => setBuyOpen(false)} />
+      {!isStock && <Footer />}
+      {!isStock && <ConsultSheet open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)} />}
+      {!isStock && <BuySheet open={buyOpen} item={buyItem} onClose={() => setBuyOpen(false)} />}
     </BuyContext.Provider>
     </ConsultContext.Provider>
     </AuthProvider>

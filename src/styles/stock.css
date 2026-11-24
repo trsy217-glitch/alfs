@@ -1,0 +1,316 @@
+/* ─────────────────────────────────────────────────────────────
+   알프스 재고관리 앱 (alfs.kr/stock) — 이 화면에서만 쓰는 스타일
+   모든 선택자를 .stk 아래로 두어 공개 사이트 디자인에는 영향이 없습니다.
+   ───────────────────────────────────────────────────────────── */
+.stk {
+  --g: #2f5d4a;
+  --g-d: #23483a;
+  --bg: #f2f5f3;
+  --line: #dbe4df;
+  --ink: #15231c;
+  --ink2: #5b6f65;
+  --red: #b3452f;
+  --amber: #a97611;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.45;
+  -webkit-text-size-adjust: 100%;
+}
+.stk * { box-sizing: border-box; }
+.stk button { font-family: inherit; cursor: pointer; color: inherit; }
+.stk input, .stk textarea { font-family: inherit; color: inherit; }
+
+/* 상단 바 */
+.stk-top {
+  flex: 0 0 auto;
+  background: var(--g);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  padding-top: calc(10px + env(safe-area-inset-top));
+}
+.stk-top__t { font-size: 19px; font-weight: 800; letter-spacing: -.3px; }
+.stk-top__s { font-size: 13px; opacity: .85; margin-top: 1px; }
+.stk-top__btn {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+.stk-top__btn button {
+  min-width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .35);
+  background: rgba(255, 255, 255, .12);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* 본문 */
+.stk-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 12px 12px calc(96px + env(safe-area-inset-bottom));
+}
+.stk-sec {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.stk-sec.plain { background: transparent; border: 0; padding: 0; }
+.stk-h {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--g-d);
+  margin-bottom: 10px;
+}
+.stk-h em { font-style: normal; font-size: 14px; font-weight: 600; color: var(--ink2); }
+
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+.stack { display: grid; gap: 10px; }
+.stack-sm { display: grid; gap: 8px; }
+
+/* 버튼 */
+.stk-btn {
+  min-height: 56px;
+  border-radius: 14px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  padding: 0 12px;
+}
+.stk-btn.on { background: var(--g); border-color: var(--g); color: #fff; }
+.stk-chip {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+.stk-chip.on { background: #e6f0e9; border-color: var(--g); color: var(--g-d); }
+
+/* 제품 */
+.stk-prod {
+  width: 100%;
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+}
+.stk-prod.on { border-color: var(--g); background: #eff6f1; }
+.stk-prod b { font-size: 17px; font-weight: 800; display: block; }
+.stk-prod small { font-size: 13px; color: var(--ink2); }
+.stk-prod__p { text-align: right; font-size: 15px; font-weight: 800; color: var(--g-d); white-space: nowrap; }
+.stk-prod__p span { display: block; font-size: 13px; font-weight: 600; color: var(--ink2); }
+
+/* 수량 스테퍼 */
+.stk-step { display: grid; grid-template-columns: 66px 1fr 66px; gap: 8px; align-items: center; }
+.stk-step button {
+  height: 60px;
+  border-radius: 14px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+}
+.stk-step input {
+  height: 60px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 800;
+  border-radius: 14px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  width: 100%;
+}
+
+/* 입력 */
+.stk-field label { display: block; font-size: 15px; font-weight: 700; color: var(--ink2); margin-bottom: 6px; }
+.stk-field input, .stk-field select, .stk-field textarea {
+  width: 100%;
+  min-height: 56px;
+  border-radius: 12px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  font-size: 19px;
+  padding: 0 12px;
+}
+.stk-field textarea { padding: 12px; min-height: 64px; resize: vertical; font-size: 17px; }
+.stk-field input:focus, .stk-field textarea:focus, .stk-field select:focus { outline: 2px solid #b9d6c6; border-color: var(--g); }
+
+/* 금액 */
+.stk-amount {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #eff6f1;
+  margin-top: 10px;
+}
+.stk-amount span { font-size: 15px; font-weight: 700; color: var(--ink2); }
+.stk-amount b { font-size: 27px; font-weight: 800; color: var(--g-d); letter-spacing: -.5px; }
+.stk-amount b.ret { color: var(--red); }
+
+/* 저장 */
+.stk-save {
+  width: 100%;
+  min-height: 62px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--g);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  margin-top: 4px;
+}
+.stk-save:disabled { opacity: .55; }
+.stk-save.ghost { background: #fff; color: var(--g-d); border: 1.5px solid var(--g); }
+
+/* 요약 */
+.stk-sum { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stk-sum div {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+.stk-sum span { display: block; font-size: 14px; font-weight: 700; color: var(--ink2); }
+.stk-sum b { display: block; font-size: 22px; font-weight: 800; margin-top: 4px; letter-spacing: -.4px; }
+.stk-sum b.warn { color: var(--red); }
+.stk-sum small { font-size: 12px; color: var(--ink2); }
+
+/* 품목 카드 */
+.stk-item { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; background: #fff; }
+.stk-item__top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.stk-item__top b { font-size: 17px; font-weight: 800; }
+.stk-item__top i { font-style: normal; font-size: 13px; font-weight: 700; color: var(--ink2); }
+.stk-item__row { display: flex; gap: 12px; margin-top: 6px; font-size: 15px; color: var(--ink2); flex-wrap: wrap; }
+.stk-item__row b { color: var(--ink); font-weight: 800; }
+.stk-tag { font-size: 12px; font-weight: 800; padding: 2px 8px; border-radius: 999px; background: #eef2ef; color: var(--ink2); }
+.stk-tag.low { background: #fbece8; color: var(--red); }
+
+/* 최근 기록 */
+.stk-log { display: grid; gap: 8px; }
+.stk-log__r { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.stk-log__t { font-size: 13px; font-weight: 800; padding: 3px 8px; border-radius: 8px; background: #eef2ef; color: var(--ink2); white-space: nowrap; }
+.stk-log__t.out { background: #e8f1ea; color: var(--g-d); }
+.stk-log__t.ret { background: #fbece8; color: var(--red); }
+.stk-log__b { flex: 1; min-width: 0; }
+.stk-log__b b { font-size: 16px; font-weight: 700; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stk-log__b small { font-size: 13px; color: var(--ink2); }
+.stk-log__a { font-size: 15px; font-weight: 800; white-space: nowrap; }
+
+/* 탭바 */
+.stk-tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: #fff;
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 2;
+}
+.stk-tab {
+  border: 0;
+  background: none;
+  min-height: 62px;
+  padding: 8px 2px 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #82958a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.stk-tab i { font-style: normal; font-size: 20px; line-height: 1; }
+.stk-tab.on { color: var(--g-d); }
+
+/* 잠금 화면 */
+.stk-lock {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 22px calc(28px + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, #2f5d4a 0%, #24483a 100%);
+  color: #fff;
+}
+.stk-lock h1 { font-size: 24px; font-weight: 800; letter-spacing: -.5px; }
+.stk-lock p { font-size: 15px; opacity: .85; margin-top: 6px; }
+.stk-lock__dots { display: flex; gap: 12px; justify-content: center; margin: 26px 0 8px; }
+.stk-lock__dots i { width: 16px; height: 16px; border-radius: 50%; background: rgba(255, 255, 255, .28); }
+.stk-lock__dots i.on { background: #fff; }
+.stk-lock__pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+.stk-lock__pad button {
+  height: 62px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, .28);
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+}
+.stk-lock__pad button.act { background: #fff; color: #24483a; font-size: 18px; }
+.stk-lock__err { text-align: center; font-size: 15px; font-weight: 700; color: #ffd9cf; min-height: 22px; margin-top: 10px; }
+
+/* 알림 */
+.stk-toast {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  top: calc(64px + env(safe-area-inset-top));
+  z-index: 5;
+  background: #1d3529;
+  color: #fff;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+}
+.stk-toast.bad { background: #8e3524; }
+.stk-empty { text-align: center; color: var(--ink2); font-size: 15px; padding: 18px 0; }
+.stk-loading { text-align: center; color: var(--ink2); font-size: 15px; padding: 40px 0; }
+
+/* PC에서 열면 폰 폭으로 가운데 (앱 화면 그대로) */
+@media (min-width: 620px) {
+  .stk { align-items: center; background: #e7ece9; }
+  .stk-top, .stk-body, .stk-tabbar, .stk-lock { width: 390px; max-width: 100%; }
+  .stk-top { margin-top: 12px; border-radius: 16px 16px 0 0; }
+  .stk-body { background: var(--bg); }
+  .stk-tabbar { left: 50%; transform: translateX(-50%); width: 390px; }
+}
