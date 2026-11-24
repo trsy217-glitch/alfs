@@ -61,8 +61,10 @@
   flex: 1 1 auto;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 12px 12px calc(96px + env(safe-area-inset-bottom));
+  padding: 12px 12px calc(104px + env(safe-area-inset-bottom));
+  scrollbar-width: none;
 }
+.stk-body::-webkit-scrollbar { width: 0; height: 0; }
 .stk-sec {
   background: #fff;
   border: 1px solid var(--line);
@@ -192,6 +194,7 @@
   font-size: 20px;
   font-weight: 800;
   margin-top: 4px;
+  margin-bottom: 10px;
 }
 .stk-save:disabled { opacity: .55; }
 .stk-save.ghost { background: #fff; color: var(--g-d); border: 1.5px solid var(--g); }
