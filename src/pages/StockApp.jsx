@@ -176,12 +176,8 @@ export default function StockApp() {
           <RecordForm data={data} say={say} onSaved={() => load(true)} />
         )}
         {data && tab === 'board' && <Board data={data} />}
-        {data && tab === 'add' && (
-          <ItemForm
-            cats={data.cats || []}
-            say={say}
-            onSaved={() => { setTab('record'); load(true) }}
-          />
+        {data && tab === 'manage' && (
+          <MasterTab data={data} say={say} onChanged={() => load(true)} />
         )}
       </div>
 
@@ -192,8 +188,8 @@ export default function StockApp() {
         <button type="button" className={'stk-tab' + (tab === 'board' ? ' on' : '')} onClick={() => setTab('board')}>
           <i>📊</i>재고·정산
         </button>
-        <button type="button" className={'stk-tab' + (tab === 'add' ? ' on' : '')} onClick={() => setTab('add')}>
-          <i>⚙️</i>품목추가
+        <button type="button" className={'stk-tab' + (tab === 'manage' ? ' on' : '')} onClick={() => setTab('manage')}>
+          <i>⚙️</i>품목관리
         </button>
       </nav>
     </div>
@@ -397,7 +393,7 @@ function RecordForm({ data, say, onSaved }) {
               </span>
             </button>
           ))}
-          {!shown.length && <div className="stk-empty">품목이 없습니다. ⚙️ 품목추가에서 먼저 등록해 주세요.</div>}
+          {!shown.length && <div className="stk-empty">품목이 없습니다. ⚙️ 품목관리에서 먼저 등록해 주세요.</div>}
         </div>
       </section>
 
@@ -586,8 +582,218 @@ function Board({ data }) {
   )
 }
 
-/* ── 품목추가 ─────────────────────────────────────────────── */
-function ItemForm({ cats, say, onSaved }) {
+/* ── 품목관리 (목록 · 수정 · 삭제 · 새 품목) ─────────────────── */
+
+function MasterTab({ data, say, onChanged }) {
+  const items = data.items || []
+  const cats = data.cats || []
+  const [mode, setMode] = useState('list') // list | edit | new
+  const [editing, setEditing] = useState(null) // 수정 중인 품목
+  const [confirm, setConfirm] = useState(null) // 삭제 확인 중인 품목
+  const [busy, setBusy] = useState(false)
+
+  const stockQty = useMemo(() => {
+    const map = {}
+    ;(data.stock || []).forEach((s) => { map[s.name] = num(s.qty) })
+    return map
+  }, [data])
+
+  const toTop = () => {
+    const body = document.querySelector('.stk-body')
+    if (body) body.scrollTop = 0
+  }
+
+  const startEdit = (it) => { setEditing(it); setMode('edit'); toTop() }
+  const startNew = () => { setMode('new'); toTop() }
+  const backToList = () => { setMode('list'); setEditing(null); toTop() }
+
+  const doDelete = async () => {
+    if (!confirm || busy) return
+    setBusy(true)
+    try {
+      const r = await apiPost('deleteMaster', { row: confirm.row, name: confirm.name })
+      if (!r || !r.ok) throw new Error((r && (r.msg || r.error)) || '삭제하지 못했습니다.')
+      say(`✅ ${r.msg}`)
+      setConfirm(null)
+      onChanged()
+    } catch (e) {
+      say(e.message || '삭제하지 못했습니다.', true)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  if (mode === 'edit' && editing) {
+    return (
+      <MasterEditForm
+        item={editing}
+        cats={cats}
+        say={say}
+        onCancel={backToList}
+        onSaved={() => { backToList(); onChanged() }}
+      />
+    )
+  }
+
+  if (mode === 'new') {
+    return (
+      <ItemForm
+        cats={cats}
+        say={say}
+        onCancel={backToList}
+        onSaved={() => { backToList(); onChanged() }}
+      />
+    )
+  }
+
+  return (
+    <>
+      <section className="stk-sec">
+        <div className="stk-h">등록된 품목 <em>{items.length}개</em></div>
+        <div className="stack-sm">
+          {items.map((it) => (
+            <div className="stk-mst" key={it.row}>
+              <div className="stk-mst__top">
+                <span className="stk-tag">{it.cat || '기타'}</span>
+                <b>{it.name}</b>
+              </div>
+              <div className="stk-mst__row">
+                <span>현재고 <b>{num(stockQty[it.name]).toLocaleString('ko-KR')}개</b></span>
+                <span>안전 <b>{num(it.safety).toLocaleString('ko-KR')}</b></span>
+              </div>
+              <div className="stk-mst__row">
+                <span>매입 <b>{won(it.buy)}</b></span>
+                <span>판매 <b>{won(it.sell)}</b></span>
+              </div>
+              <div className="stk-mst__btns">
+                <button type="button" className="stk-mini" onClick={() => startEdit(it)}>✏️ 수정</button>
+                <button type="button" className="stk-mini del" onClick={() => setConfirm(it)}>🗑️ 삭제</button>
+              </div>
+            </div>
+          ))}
+          {!items.length && <div className="stk-empty">아직 등록된 품목이 없습니다. 아래 버튼으로 추가해 주세요.</div>}
+        </div>
+      </section>
+
+      <button type="button" className="stk-save ghost" onClick={startNew}>➕ 새 품목 추가</button>
+
+      {confirm && (
+        <div className="stk-modal" role="dialog" aria-modal="true" aria-label="품목 삭제 확인">
+          <div className="stk-modal__box">
+            <div className="stk-modal__t">정말 삭제할까요?</div>
+            <div className="stk-modal__n">{confirm.cat ? `${confirm.cat} · ` : ''}{confirm.name}</div>
+            <p className="stk-modal__w">
+              이 품목은 품목 목록·재고 현황·기록 화면에서 사라집니다. 이미 기록된 입출고 내역은 시트에 그대로 남고,
+              되돌리려면 다시 등록해야 합니다.
+            </p>
+            <div className="stk-modal__btns">
+              <button type="button" onClick={() => setConfirm(null)} disabled={busy}>취소</button>
+              <button type="button" className="del" onClick={doDelete} disabled={busy}>
+                {busy ? '삭제 중…' : '🗑️ 삭제'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+/* ── 품목 수정 폼 ─────────────────────────────────────────── */
+function MasterEditForm({ item, cats, say, onCancel, onSaved }) {
+  const fill = (v) => (num(v) ? String(num(v)) : '')
+  const [cat, setCat] = useState(item.cat || '')
+  const [name, setName] = useState(item.name || '')
+  const [spec, setSpec] = useState(item.spec || '')
+  const [base, setBase] = useState(fill(item.base))
+  const [safety, setSafety] = useState(fill(item.safety))
+  const [buy, setBuy] = useState(fill(item.buy))
+  const [sell, setSell] = useState(fill(item.sell))
+  const [memo, setMemo] = useState(item.memo || '')
+  const [busy, setBusy] = useState(false)
+
+  const save = async () => {
+    if (busy) return
+    if (!String(cat).trim()) { say('카테고리를 입력해 주세요.', true); return }
+    if (!String(name).trim()) { say('품목명을 입력해 주세요.', true); return }
+    setBusy(true)
+    try {
+      const r = await apiPost('updateMaster', {
+        row: item.row,
+        cat: String(cat).trim(),
+        name: String(name).trim(),
+        spec,
+        base: num(base),
+        safety: num(safety),
+        buy: num(buy),
+        sell: num(sell),
+        memo,
+      })
+      if (!r || !r.ok) throw new Error((r && (r.msg || r.error)) || '수정하지 못했습니다.')
+      say(`✅ ${r.msg}`)
+      onSaved()
+    } catch (e) {
+      say(e.message || '수정하지 못했습니다.', true)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <>
+      <section className="stk-sec">
+        <div className="stk-h">✏️ 품목 수정 <em>{item.row}행</em></div>
+        <div className="stack-sm">
+          <div className="stk-field">
+            <label htmlFor="ed-cat">카테고리</label>
+            <input id="ed-cat" type="text" value={cat} onChange={(e) => setCat(e.target.value)} placeholder="예: 미네랄" list="stk-cats-edit" />
+            <datalist id="stk-cats-edit">{cats.map((c) => <option key={c} value={c} />)}</datalist>
+          </div>
+          <div className="stk-field">
+            <label htmlFor="ed-name">품목명 *</label>
+            <input id="ed-name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="예: 오륜미네랄 500ml" />
+          </div>
+          <div className="stk-field">
+            <label htmlFor="ed-spec">규격 / 단위</label>
+            <input id="ed-spec" type="text" value={spec} onChange={(e) => setSpec(e.target.value)} placeholder="예: 1병" />
+          </div>
+          <div className="two">
+            <div className="stk-field">
+              <label htmlFor="ed-base">기초재고</label>
+              <input id="ed-base" type="number" inputMode="numeric" value={base} onChange={(e) => setBase(e.target.value)} placeholder="0" />
+            </div>
+            <div className="stk-field">
+              <label htmlFor="ed-safety">안전재고</label>
+              <input id="ed-safety" type="number" inputMode="numeric" value={safety} onChange={(e) => setSafety(e.target.value)} placeholder="0" />
+            </div>
+          </div>
+          <div className="two">
+            <div className="stk-field">
+              <label htmlFor="ed-buy">기본매입가 (원)</label>
+              <input id="ed-buy" type="number" inputMode="numeric" value={buy} onChange={(e) => setBuy(e.target.value)} placeholder="0" />
+            </div>
+            <div className="stk-field">
+              <label htmlFor="ed-sell">기본판매가 (원)</label>
+              <input id="ed-sell" type="number" inputMode="numeric" value={sell} onChange={(e) => setSell(e.target.value)} placeholder="0" />
+            </div>
+          </div>
+          <div className="stk-field">
+            <label htmlFor="ed-memo">비고</label>
+            <input id="ed-memo" type="text" value={memo} onChange={(e) => setMemo(e.target.value)} placeholder="예: alfs.kr 판매가 396,000원" />
+          </div>
+          <div className="stk-note">품목명을 바꾸면 이미 기록된 입출고 내역은 예전 이름으로 남습니다(합계는 예전 이름 기준).</div>
+        </div>
+      </section>
+      <button type="button" className="stk-save" onClick={save} disabled={busy}>
+        {busy ? '저장 중…' : '✅ 수정 저장'}
+      </button>
+      <button type="button" className="stk-save ghost" onClick={onCancel} disabled={busy}>취소</button>
+    </>
+  )
+}
+
+/* ── 새 품목 추가 ─────────────────────────────────────────── */
+function ItemForm({ cats, say, onCancel, onSaved }) {
   const [cat, setCat] = useState(cats[0] || '')
   const [name, setName] = useState('')
   const [spec, setSpec] = useState('')
@@ -628,7 +834,7 @@ function ItemForm({ cats, say, onSaved }) {
   return (
     <>
       <section className="stk-sec">
-        <div className="stk-h">새 품목 등록</div>
+        <div className="stk-h">➕ 새 품목 등록</div>
         <div className="stack-sm">
           <div className="stk-field">
             <label htmlFor="it-cat">카테고리</label>
@@ -646,7 +852,7 @@ function ItemForm({ cats, say, onSaved }) {
             </div>
             <div className="stk-field">
               <label htmlFor="it-code">품목코드</label>
-              <input id="it-code" type="text" value={code} onChange={(e) => setCode(e.target.value)} placeholder="비우면 자동" />
+              <input id="it-code" type="text" value={code} onChange={(e) => setCode(e.target.value)} placeholder="예: ML-004" />
             </div>
           </div>
           <div className="two">
@@ -678,6 +884,7 @@ function ItemForm({ cats, say, onSaved }) {
       <button type="button" className="stk-save" onClick={save} disabled={busy}>
         {busy ? '등록 중…' : '➕ 품목 등록'}
       </button>
+      <button type="button" className="stk-save ghost" onClick={onCancel} disabled={busy}>취소</button>
     </>
   )
 }

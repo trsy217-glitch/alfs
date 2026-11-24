@@ -233,6 +233,59 @@
 .stk-log__b small { font-size: 13px; color: var(--ink2); }
 .stk-log__a { font-size: 15px; font-weight: 800; white-space: nowrap; }
 
+/* 품목관리 카드 */
+.stk-mst { border: 1.5px solid var(--line); border-radius: 14px; padding: 12px 14px; background: #fff; }
+.stk-mst__top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.stk-mst__top b { font-size: 18px; font-weight: 800; }
+.stk-mst__row { display: flex; gap: 14px; margin-top: 6px; font-size: 15px; color: var(--ink2); flex-wrap: wrap; }
+.stk-mst__row b { color: var(--ink); font-weight: 800; }
+.stk-mst__btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.stk-mini {
+  min-height: 50px;
+  border-radius: 12px;
+  border: 1.5px solid var(--g);
+  background: #eff6f1;
+  color: var(--g-d);
+  font-size: 17px;
+  font-weight: 800;
+}
+.stk-mini.del { border-color: #e3c8c1; background: #fbeeea; color: var(--red); }
+.stk-note { font-size: 14px; line-height: 1.5; color: var(--ink2); background: #f4f7f5; border-radius: 10px; padding: 10px 12px; }
+
+/* 삭제 확인 모달 */
+.stk-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(21, 35, 28, .48);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.stk-modal__box {
+  width: 100%;
+  max-width: 340px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 20px 18px 16px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .25);
+}
+.stk-modal__t { font-size: 20px; font-weight: 800; color: var(--ink); }
+.stk-modal__n { margin-top: 8px; font-size: 17px; font-weight: 800; color: var(--g-d); background: #eff6f1; border-radius: 10px; padding: 10px 12px; word-break: break-all; }
+.stk-modal__w { margin-top: 10px; font-size: 14px; line-height: 1.55; color: var(--ink2); }
+.stk-modal__btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.stk-modal__btns button {
+  min-height: 54px;
+  border-radius: 14px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  font-size: 17px;
+  font-weight: 800;
+}
+.stk-modal__btns button.del { border: 0; background: var(--red); color: #fff; }
+.stk-modal__btns button:disabled { opacity: .55; }
+
 /* 탭바 */
 .stk-tabbar {
   position: fixed;
