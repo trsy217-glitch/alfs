@@ -19,13 +19,12 @@ fs.writeFileSync(path.join(dist, 'app.html'), template)
 // 홈 화면 설치가 확실히 되도록 매니페스트 링크를 HTML 에 직접 넣어 둡니다.
 const stockHtml = template
   .replace(/<title>[^<]*<\/title>/, '<title>알프스 재고관리</title>')
-  .replace('</head>', [
+  .replace('<meta name="theme-color" content="#1F4D34" />', [
+    '<meta name="theme-color" content="#2f5d4a" />',
     '    <link rel="manifest" href="/stock-manifest.json" />',
     '    <link rel="apple-touch-icon" href="/stock-icon-192.png" />',
     '    <meta name="robots" content="noindex, nofollow" />',
-    '    <meta name="theme-color" content="#2f5d4a" />',
-    '  </head>',
-  ].join('\n'))
+  ].join('\n    '))
 fs.writeFileSync(path.join(dist, 'stock.html'), stockHtml)
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
