@@ -76,6 +76,15 @@ export const shippingSummary = `기본 ${won(product.shippingFee)} · ${won(prod
 // 배송 기간을 한 줄로 (상품 카드·주문서 요약용)
 export const deliveryLine = `${delivery.leadTime} (${delivery.leadTimeNote}) · ${delivery.transit}`
 
+// ── 결제 서비스 미제공 카테고리 고지 ──
+// 토스페이먼츠 가맹 심사 요청(2026-11-24): AI 마케팅·체험단·파트너 입점 같은 서비스는
+// 온라인 카드결제(PG) 제공 대상이 아니며, 사이트 안에서 결제가 이루어지지 않는다는 점을 함께 기재.
+// 문구를 바꾸면 /ai-marketing · /partner · 홈 · 푸터 · public/llms.txt 를 함께 맞춰 주세요.
+export const servicePaymentNotice =
+  '※ 본 페이지에서 안내하는 AI 마케팅·체험단·파트너십 프로그램은 온라인 카드결제 서비스 제공 대상이 아니며, 본 사이트에서 해당 서비스의 온라인 결제가 이루어지지 않습니다. 진행 여부와 비용은 상담과 별도 계약으로 정합니다.'
+export const servicePaymentNoticeFooter =
+  'AI 마케팅·체험단·파트너 입점 등 서비스는 온라인 카드결제 서비스 제공 대상이 아니며, 본 사이트에서 온라인 결제를 받지 않습니다. 카드결제는 일반식품(오륜미네랄·효소세상) 구매에만 적용됩니다.'
+
 // 상담 채널. url이 비어 있으면 숨겨집니다.
 export const channels = [
   {

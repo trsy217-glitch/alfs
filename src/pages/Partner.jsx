@@ -1,5 +1,6 @@
 import ConsultForm from '../components/ConsultForm.jsx'
 import { asset, scrollToId } from '../lib/asset.js'
+import { servicePaymentNotice } from '../config/site.js'
 
 const fits = ['건강식품·웰니스샵', '카페·홈카페', '피부샵·뷰티샵', '필라테스·요가 스튜디오', '세미나·커뮤니티 호스트']
 
@@ -37,6 +38,7 @@ export default function Partner() {
             <h1>우리 매장 한편이, 웰니스 체험 거점이 됩니다</h1>
             <p className="lead">제품만 들이는 입점이 아닙니다. 체험·교육·마케팅·재구매 관리까지 알프스가 함께 붙어 매장이 스스로 팔 수 있게 만듭니다.</p>
             <div className="btn-row mt-m"><button type="button" className="btn btn--primary" onClick={() => scrollToId('apply')}>입점 상담 신청하기</button></div>
+            <p className="notice">{servicePaymentNotice}</p>
           </div>
           <div className="cocoon cocoon--wide intro-img">
             <img src={asset('images/lifestyle-park.webp')} alt="공원 벤치에서 오륜미네랄을 탄 물을 마시는 사람" width="1100" height="1099" fetchPriority="high" />
@@ -87,7 +89,7 @@ export default function Partner() {
           </div>
           <div className="panel" id="apply">
             <h2 style={{ fontSize: 'var(--t-xl)', marginBottom: 6 }}>입점 상담 신청</h2>
-            <p className="muted" style={{ marginBottom: 22 }}>영업일 하루 안에 담당자가 연락드립니다.</p>
+            <p className="muted" style={{ marginBottom: 22 }}>영업일 하루 안에 담당자가 연락드립니다. 온라인 결제 없이 상담과 공급계약으로 진행됩니다.</p>
             <ConsultForm defaultTopic="파트너샵 입점" />
           </div>
         </div>

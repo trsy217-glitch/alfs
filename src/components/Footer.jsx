@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { company, channels, product, won, delivery } from '../config/site.js'
+import { company, channels, product, won, delivery, servicePaymentNoticeFooter } from '../config/site.js'
 import { enzymeShipping } from '../config/enzyme.js'
 import { navItems } from './Header.jsx'
 import { asset } from '../lib/asset.js'
@@ -57,6 +57,7 @@ export default function Footer() {
         <p className="mt-s" style={{ fontSize: '0.75rem' }}>
           {product.name}은 기타가공품(일반식품)이며 질병의 예방·치료를 위한 의약품이나 건강기능식품이 아닙니다. 수상·특허는 {product.name} 제품이 아닌 제조사 유디아미네랄의 이력입니다.
         </p>
+        <p className="mt-s" style={{ fontSize: '0.75rem' }}>{servicePaymentNoticeFooter}</p>
         <p className="mt-s" style={{ fontSize: '0.75rem' }}>© {new Date().getFullYear()} {company.legalName}. All rights reserved.</p>
       </div>
     </footer>

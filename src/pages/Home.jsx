@@ -4,6 +4,7 @@ import EngineLoop, { engineSteps } from '../components/EngineLoop.jsx'
 import CtaBand from '../components/CtaBand.jsx'
 import BuyBox from '../components/BuyBox.jsx'
 import { asset } from '../lib/asset.js'
+import { servicePaymentNoticeFooter } from '../config/site.js'
 
 const lanes = [
   {
@@ -139,6 +140,7 @@ export default function Home() {
             <div className="btn-row mt-m">
               <Link to="/ai-marketing" className="btn btn--drop">AI 마케팅 컨설팅 보기</Link>
             </div>
+            <p className="notice">{servicePaymentNoticeFooter}</p>
           </div>
           <ChatPreview />
         </div>

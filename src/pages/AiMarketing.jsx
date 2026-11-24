@@ -2,6 +2,7 @@ import CtaBand from '../components/CtaBand.jsx'
 import { useConsult } from '../components/consult.js'
 import { Link } from 'react-router-dom'
 import { asset } from '../lib/asset.js'
+import { servicePaymentNotice } from '../config/site.js'
 
 const pains = [
   { img: 'images/pain-nothing.webp', alt: '빈 게시물 화면을 띄운 휴대폰과 "뭘 올리지?" 말풍선', t: '올릴 게 없어요', d: '매일 무엇을 찍고 뭐라고 써야 할지 몰라 계정이 멈춥니다.' },
@@ -43,6 +44,7 @@ export default function AiMarketing() {
             <Link to="/diagnosis" className="btn btn--drop">우리 매장 무료 진단 받기</Link>
             <button className="btn btn--ghost" onClick={consult.open}>상담하기</button>
           </div>
+          <p className="notice">{servicePaymentNotice}</p>
         </div>
       </section>
 
@@ -109,6 +111,7 @@ export default function AiMarketing() {
               </div>
             ))}
           </div>
+          <p className="notice">요금과 계약은 상담으로 정하며, AI 마케팅·체험단 서비스는 본 사이트에서 온라인 결제를 받지 않습니다.</p>
         </div>
       </section>
 
