@@ -1,4 +1,5 @@
 import ConsultForm from '../components/ConsultForm.jsx'
+import DistForm from '../components/DistForm.jsx'
 import { asset, scrollToId } from '../lib/asset.js'
 import { servicePaymentNotice } from '../config/site.js'
 
@@ -37,7 +38,10 @@ export default function Partner() {
             <span className="kicker">파트너샵 입점</span>
             <h1>우리 매장 한편이, 웰니스 체험 거점이 됩니다</h1>
             <p className="lead">제품만 들이는 입점이 아닙니다. 체험·교육·마케팅·재구매 관리까지 알프스가 함께 붙어 매장이 스스로 팔 수 있게 만듭니다.</p>
-            <div className="btn-row mt-m"><button type="button" className="btn btn--primary" onClick={() => scrollToId('apply')}>입점 상담 신청하기</button></div>
+            <div className="btn-row mt-m">
+              <button type="button" className="btn btn--primary" onClick={() => scrollToId('apply')}>입점 상담 신청하기</button>
+              <button type="button" className="btn btn--ghost" onClick={() => scrollToId('apply-dist')}>대리점·총판 상담</button>
+            </div>
             <p className="notice">{servicePaymentNotice}</p>
           </div>
           <div className="cocoon cocoon--wide intro-img">
@@ -71,6 +75,28 @@ export default function Partner() {
           <ol className="howto" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))' }}>
             {steps.map((s, i) => <li key={s.t}><span className="n">{i + 1}</span><h3>{s.t}</h3><p>{s.d}</p></li>)}
           </ol>
+        </div>
+      </section>
+
+      <section className="section leafbg" id="apply-dist">
+        <div className="wrap split" style={{ alignItems: 'start' }}>
+          <div>
+            <span className="kicker">대리점 · 총판</span>
+            <h2 className="h-section">지역을 맡아 유통하시는 분</h2>
+            <p className="lead">매장 하나가 아니라 지역 단위로 공급하시는 대리점·총판, 그리고 매장 한편에 판매 공간을 두는 샵인샵까지 같은 창구에서 상담합니다.</p>
+            <div className="rows" style={{ marginTop: 24 }}>
+              <div className="row"><h3>대리점</h3><p className="muted">시·군·구 단위로 매장에 공급하고 재발주·진열·판매 교육을 함께 관리합니다.</p></div>
+              <div className="row"><h3>총판</h3><p className="muted">광역 단위로 대리점과 판매처를 관리하고, 물류·정산 조건을 계약서로 정합니다.</p></div>
+              <div className="row"><h3>샵인샵</h3><p className="muted">지금 운영하는 매장 안에 오륜미네랄 체험·판매 공간을 들입니다.</p></div>
+            </div>
+            <p className="muted mt-m" style={{ fontSize: '0.85rem' }}>공급가·마진·지원 기간은 상담 후 공급계약서로 정하며, 효능이나 수익을 보장하지 않습니다.</p>
+            <p className="notice">{servicePaymentNotice}</p>
+          </div>
+          <div className="panel">
+            <h2 style={{ fontSize: 'var(--t-xl)', marginBottom: 6 }}>대리점·총판 입점 상담</h2>
+            <p className="muted" style={{ marginBottom: 22 }}>아래에 남겨 주시면 담당자가 확인해 영업일 하루 안에 연락드립니다. 접수 내용은 알프스 상담 시트에 바로 기록됩니다.</p>
+            <DistForm />
+          </div>
         </div>
       </section>
 
