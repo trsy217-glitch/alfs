@@ -53,7 +53,7 @@ export default function DiagnosisResult() {
   // 같은 이메일로 남긴 지난 진단과 총점을 비교합니다.
   useEffect(() => {
     if (!row?.email) { setDelta(null); return }
-    const older = listResults(row.email)
+    const older = listResults(row.email).data
       .filter((x) => x.id !== row.id && new Date(x.created_at) < new Date(row.created_at))
     setDelta(older[0]?.total != null ? Number(row.result.total) - Number(older[0].total) : null)
   }, [row])

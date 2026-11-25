@@ -22,6 +22,7 @@ import Privacy from './pages/Privacy.jsx'
 import RefundPolicy from './pages/RefundPolicy.jsx'
 import PaymentSuccess from './pages/PaymentSuccess.jsx'
 import PaymentFail from './pages/PaymentFail.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 // 무거운 화면(진단·영상 만들기)은 들어갈 때만 불러옵니다 → 첫 화면이 빨리 뜸
 const Diagnosis = lazy(() => import('./pages/Diagnosis.jsx'))
@@ -55,6 +56,7 @@ export default function App() {
       {!isStock && <a href="#main" className="sr-only">본문으로 건너뛰기</a>}
       {!isStock && <Header />}
       <main id="main">
+        <ErrorBoundary>
         <Suspense fallback={<div className="page-loading" role="status">불러오는 중…</div>}>
         <Routes>
           <Route path="/stock" element={<StockApp />} />
@@ -91,6 +93,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
         </Suspense>
+        </ErrorBoundary>
       </main>
       {!isStock && <Footer />}
       {!isStock && <ConsultSheet open={open} onOpen={() => setOpen(true)} onClose={() => setOpen(false)} />}
