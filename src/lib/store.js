@@ -1,86 +1,116 @@
-// 진단 결과 저장소 — 로그인한 본인 것만 읽고 쓸 수 있습니다.
-// Firebase 모드: Firestore  users/{uid}/diagnoses/{id}  에 저장하고, firestore.rules 로 본인만 접근하도록 서버에서 막습니다.
-// 체험 모드: 사용자별 localStorage 키에 저장합니다.
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, serverTimestamp } from 'firebase/firestore'
-import { app, isDemoMode } from './firebase.js'
-
-const db = app ? getFirestore(app) : null
+// 진단 결과 저장소 — 결과는 이 브라우저(기기)에 저장하고, 이메일을 입력한 뒤에만 열립니다.
+// 회사 쪽(알프스)에는 이메일 주소와 진단 결과 목록만 구글 시트로 보냅니다 (이름·전화번호 등은 받지 않습니다).
+// 로그인 계정·서버 저장소 없이 동작하도록 Firebase 를 쓰지 않습니다.
+import { useSyncExternalStore } from 'react'
 import { ls } from './safeStorage.js'
 import { sendToSheet } from './sheet.js'
 
-const key = (uid) => `alfs_demo_diag_${uid}`
-const col = (uid) => collection(db, 'users', uid, 'diagnoses')
-const iso = (t) => (t?.toDate ? t.toDate().toISOString() : t || new Date().toISOString())
-const clean = (o) => JSON.parse(JSON.stringify(o)) // Firestore 는 undefined 를 저장하지 못함
+const INDEX_KEY = 'alfs_diag_index_v1' // 결과 목록(요약) — 이메일별로 골라 봅니다
+const ROW_KEY = (id) => `alfs_diag_row_v1_${id}` // 결과 본문
+const EMAIL_KEY = 'alfs_diag_email'
+const DRAFT_KEY = 'alfs_diag_draft_v1'
+const EVENT = 'alfs:diag-email'
+const MAX_LIST = 30
 
-export async function saveDiagnosis(user, { shopName, category, answers, result }) {
-  if (isDemoMode) {
-    const list = ls.get(key(user.id), [])
-    const row = { id: `d${Date.now().toString(36)}`, created_at: new Date().toISOString(), shop_name: shopName, category, answers, result }
-    list.unshift(row)
-    ls.set(key(user.id), list.slice(0, 30))
-    return { data: row }
-  }
-  try {
-    const ref = await addDoc(col(user.id), { shop_name: shopName || '', category: category || '', answers: clean(answers), result: clean(result), created_at: serverTimestamp() })
-    // 회사 측(구글 시트) 기록도 남깁니다. 화면 이동으로 요청이 끊기지 않도록 최대 4초까지만 기다리고,
-    // 느리거나 실패해도 고객 화면은 그대로 진행합니다(sendToSheet 안에서 실패를 삼킴).
-    await Promise.race([
-      sendToSheet(ref.id, answers, result),
-      new Promise((done) => setTimeout(done, 4000)),
-    ])
-    return { data: { id: ref.id, created_at: new Date().toISOString(), shop_name: shopName, category, answers, result } }
-  } catch {
-    return { error: '진단 결과를 저장하지 못했습니다. 네트워크를 확인하고 다시 시도해 주세요.' }
-  }
+export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/
+export const emailOk = (v) => EMAIL_RE.test(String(v || '').trim())
+export const normEmail = (v) => String(v || '').trim().toLowerCase()
+
+const emit = (email) => {
+  try { window.dispatchEvent(new CustomEvent(EVENT, { detail: email })) } catch { /* 서버 렌더링 등 */ }
 }
 
-export async function listDiagnoses(user) {
-  if (isDemoMode) return { data: ls.get(key(user.id), []) }
-  try {
-    const snap = await getDocs(query(col(user.id), orderBy('created_at', 'desc')))
-    return {
-      data: snap.docs.map((d) => {
-        const r = d.data()
-        return { id: d.id, created_at: iso(r.created_at), shop_name: r.shop_name, category: r.category, result: { total: r.result?.total, grade: r.result?.grade } }
-      }),
-    }
-  } catch {
-    return { error: '진단 목록을 불러오지 못했습니다.' }
-  }
+// 지금 이 브라우저에서 결과를 볼 때 쓰는 이메일
+export const emailSession = {
+  get: () => String(ls.get(EMAIL_KEY, '') || ''),
+  set(email) {
+    const e = String(email || '').trim()
+    if (e) ls.set(EMAIL_KEY, e)
+    else ls.remove(EMAIL_KEY)
+    emit(e)
+  },
+  clear() { ls.remove(EMAIL_KEY); emit('') },
 }
 
-export async function getDiagnosis(user, id) {
-  if (isDemoMode) {
-    const row = ls.get(key(user.id), []).find((r) => r.id === id)
-    return row ? { data: row } : { error: 'notfound' }
-  }
-  try {
-    const d = await getDoc(doc(db, 'users', user.id, 'diagnoses', id))
-    if (!d.exists()) return { error: 'notfound' }
-    const r = d.data()
-    return { data: { id: d.id, ...r, created_at: iso(r.created_at) } }
-  } catch {
-    return { error: '진단 결과를 불러오지 못했습니다.' }
-  }
+// 헤더·페이지가 이메일 입력 상태를 따라 그리도록 (서버 렌더링에서는 빈 값)
+const subscribe = (cb) => {
+  window.addEventListener(EVENT, cb)
+  return () => window.removeEventListener(EVENT, cb)
+}
+export function useDiagEmail() {
+  return useSyncExternalStore(subscribe, () => emailSession.get(), () => '')
 }
 
-export async function deleteDiagnosis(user, id) {
-  if (isDemoMode) {
-    ls.set(key(user.id), ls.get(key(user.id), []).filter((r) => r.id !== id))
-    return { ok: true }
+const newId = () => `d${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`
+
+// 진단을 마치면 결과를 이 기기에 저장합니다. 아직 이메일을 받기 전이므로 잠긴 상태(email: '')입니다.
+export function saveResult({ shopName, category, answers, result }) {
+  const id = newId()
+  const row = {
+    id,
+    created_at: new Date().toISOString(),
+    shop_name: shopName || '',
+    category: category || '',
+    answers: answers || {},
+    result,
+    email: '',
   }
-  try {
-    await deleteDoc(doc(db, 'users', user.id, 'diagnoses', id))
-    return { ok: true }
-  } catch {
-    return { error: '삭제하지 못했습니다.' }
+  if (!ls.set(ROW_KEY(id), row)) {
+    return { error: '이 브라우저에 진단 결과를 저장하지 못했습니다. 저장 공간을 확인한 뒤 다시 시도해 주세요.' }
   }
+  const index = ls.get(INDEX_KEY, [])
+  const summary = {
+    id,
+    created_at: row.created_at,
+    shop_name: row.shop_name,
+    category: row.category,
+    total: result?.total,
+    grade: result?.grade,
+    email: '',
+  }
+  const next = [summary, ...index.filter((x) => x.id !== id)].slice(0, MAX_LIST)
+  ls.set(INDEX_KEY, next)
+  return { data: row }
+}
+
+export function getResult(id) {
+  const row = ls.get(ROW_KEY(id))
+  return row ? { data: row } : { error: 'notfound' }
+}
+
+// 이메일을 입력하면 결과를 열고, 이메일 + 진단 결과 목록을 알프스 시트로 보냅니다.
+export async function unlockResult(id, email) {
+  const found = ls.get(ROW_KEY(id))
+  if (!found) return { error: 'notfound' }
+  const e = String(email || '').trim()
+  const row = { ...found, email: e }
+  ls.set(ROW_KEY(id), row)
+  const next = ls.get(INDEX_KEY, []).map((x) => (x.id === id ? { ...x, email: e } : x))
+  ls.set(INDEX_KEY, next)
+  emailSession.set(e)
+
+  // 화면은 바로 열고, 시트 기록은 뒤에서 조용히 진행합니다 (실패해도 화면은 그대로).
+  sendToSheet({ id, email: e, result: row.result })
+
+  return { data: row }
+}
+
+// 같은 이메일로 남긴 진단 기록 (이 기기에 저장된 것)
+export function listResults(email) {
+  const e = normEmail(email)
+  if (!e) return { data: [] }
+  return { data: ls.get(INDEX_KEY, []).filter((x) => normEmail(x.email) === e) }
+}
+
+export function deleteResult(id) {
+  ls.remove(ROW_KEY(id))
+  ls.set(INDEX_KEY, ls.get(INDEX_KEY, []).filter((x) => x.id !== id))
+  return { ok: true }
 }
 
 // 작성 중인 진단 임시 저장 (이 기기에만)
 export const draft = {
-  load: (user) => ls.get(`alfs_draft_${user.id}`),
-  save: (user, v) => ls.set(`alfs_draft_${user.id}`, v),
-  clear: (user) => ls.remove(`alfs_draft_${user.id}`),
+  load: () => ls.get(DRAFT_KEY),
+  save: (v) => ls.set(DRAFT_KEY, v),
+  clear: () => ls.remove(DRAFT_KEY),
 }

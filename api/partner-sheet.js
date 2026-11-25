@@ -46,6 +46,7 @@ export default async function handler(req, res) {
     secret: process.env.PARTNER_SHEET_SECRET || DEFAULT_SHEET_SECRET,
     id: S(b.id, 60) || randomId(),
     kind: KINDS.includes(S(b.kind, 10)) ? S(b.kind, 10) : '기타',
+    product: S(Array.isArray(b.product) ? b.product.join(', ') : b.product, 120),
     name,
     phone,
     region: S(b.region, 80),

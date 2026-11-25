@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { MenuIcon, CloseIcon } from './Icons.jsx'
 import { useConsult } from './consult.js'
-import { useAuth } from '../lib/auth.jsx'
+import { useDiagEmail, emailSession } from '../lib/store.js'
 import { asset } from '../lib/asset.js'
 
 export const navItems = [
@@ -16,24 +16,10 @@ export const navItems = [
 
 export default function Header() {
   const [menu, setMenu] = useState(false)
-  const [signingOut, setSigningOut] = useState(false)
   const { pathname } = useLocation()
-  const nav = useNavigate()
   const consult = useConsult()
-  const { user, signOut } = useAuth()
-
-  // 로그아웃: 세션을 지운 뒤 홈으로 보냅니다. (헤더 PC·모바일 공통)
-  const logout = async () => {
-    if (signingOut) return
-    setSigningOut(true)
-    setMenu(false)
-    try {
-      await signOut()
-    } finally {
-      setSigningOut(false)
-      nav('/', { replace: true })
-    }
-  }
+  // 진단 결과를 볼 때 쓰는 이메일 (로그인 대신 이메일 주소 하나만 씁니다)
+  const email = useDiagEmail()
 
   useEffect(() => setMenu(false), [pathname])
   useEffect(() => {
@@ -55,20 +41,9 @@ export default function Header() {
             ))}
           </nav>
           <div className="header__actions">
-            {user ? (
-              <>
-                <Link to="/my" className="header__me">내 진단</Link>
-                <button
-                  type="button"
-                  className="header__out"
-                  onClick={logout}
-                  disabled={signingOut}
-                  title={user.email ? `${user.email} 계정에서 로그아웃` : '로그아웃'}
-                >
-                  {signingOut ? '로그아웃 중…' : '로그아웃'}
-                </button>
-              </>
-            ) : <Link to="/login" className="header__me">로그인</Link>}
+            {email
+              ? <Link to="/my" className="header__me" title={`${email} 로 저장된 진단 기록`}>내 진단</Link>
+              : <Link to="/login" className="header__me">로그인</Link>}
             <Link to="/diagnosis" className="btn btn--line header__cta">우리가게 진단하기</Link>
             <button className="btn btn--primary header__cta" onClick={consult.open}>상담하기</button>
           </div>
@@ -82,18 +57,18 @@ export default function Header() {
           <NavLink key={n.to} to={n.to} end={n.to === '/diagnosis'} className="navlink" tabIndex={t}>{n.label}</NavLink>
         ))}
         <NavLink to="/contact" className="navlink" tabIndex={t}>상담 신청</NavLink>
-        {user
+        {email
           ? <NavLink to="/my" className="navlink" tabIndex={t}>내 진단 기록</NavLink>
-          : <NavLink to="/login" className="navlink" tabIndex={t}>로그인 · 회원가입</NavLink>}
+          : <NavLink to="/login" className="navlink" tabIndex={t}>이메일 로그인</NavLink>}
         <div className="drawer__btns">
           <Link to="/diagnosis" className="btn btn--line" tabIndex={t}>우리가게 진단하기</Link>
           <button className="btn btn--primary" tabIndex={t} onClick={() => { setMenu(false); consult.open() }}>상담하기</button>
         </div>
-        {user && (
+        {email && (
           <div className="drawer__account">
-            <span className="drawer__email">{user.email}</span>
-            <button type="button" className="btn btn--line drawer__out" tabIndex={t} onClick={logout} disabled={signingOut}>
-              {signingOut ? '로그아웃 중…' : '로그아웃'}
+            <span className="drawer__email">{email}</span>
+            <button type="button" className="btn btn--line drawer__out" tabIndex={t} onClick={() => emailSession.clear()}>
+              이메일 변경
             </button>
           </div>
         )}

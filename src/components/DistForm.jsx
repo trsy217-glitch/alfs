@@ -5,12 +5,16 @@ const KAKAO_CHAT = 'https://pf.kakao.com/_JdTPX/chat'
 
 const KINDS = ['대리점', '총판', '샵인샵', '기타']
 
-const empty = () => ({ kind: '대리점', name: '', phone: '', region: '', message: '', agree: false, company: '' })
+// 관심 상품 — 대리점·총판 상담에서 먼저 확인하는 항목입니다.
+const PRODUCTS = ['오륜미네랄', '1.3fit 30일', '1.3fit 3일', '클린바이옴', '전체·기타']
+
+const empty = () => ({ kind: '대리점', product: [], name: '', phone: '', region: '', message: '', agree: false, company: '' })
 
 const summaryOf = (v) =>
   [
     '[알프스 대리점·총판 입점 상담]',
     `구분: ${v.kind}`,
+    `관심 상품: ${v.product.length ? v.product.join(', ') : '-'}`,
     `성함/상호: ${v.name}`,
     `연락처: ${v.phone}`,
     `지역/업종: ${v.region || '-'}`,
@@ -52,6 +56,12 @@ export default function DistForm() {
     const val = e.target.type === 'checkbox' ? e.target.checked : e.target.value
     setV((s) => ({ ...s, [k]: val }))
   }
+
+  // 관심 상품은 여러 개 고를 수 있습니다.
+  const toggleProduct = (p) => setV((s) => ({
+    ...s,
+    product: s.product.includes(p) ? s.product.filter((x) => x !== p) : [...s.product, p],
+  }))
 
   const validate = () => {
     const e = {}
@@ -142,7 +152,19 @@ export default function DistForm() {
             </label>
           ))}
         </div>
-        <p className="hint">대리점·총판은 지역 단위 공급, 샵인샵은 매장 안 판매 공간 입점입니다.</p>
+      </div>
+
+      <div className="field">
+        <label id="product-l">관심 상품 특별히 관심 있는 상품이 있으신가요?</label>
+        <div className="chips" role="group" aria-labelledby="product-l">
+          {PRODUCTS.map((p) => (
+            <label key={p}>
+              <input type="checkbox" checked={v.product.includes(p)} onChange={() => toggleProduct(p)} />
+              <span>{p}</span>
+            </label>
+          ))}
+        </div>
+        <p className="hint">여러 개 고르셔도 됩니다. 비워 두셔도 상담은 가능합니다.</p>
       </div>
 
       <div className="two">
@@ -169,7 +191,7 @@ export default function DistForm() {
           id="d-msg"
           value={v.message}
           onChange={set('message')}
-          placeholder="지금 하고 계신 일, 판매하려는 지역이나 채널, 궁금한 점(공급 조건·교육·지원)을 적어 주시면 상담이 빠릅니다."
+          placeholder="지금 하고 계신 일, 판매 채널, 궁금한 점(공급 조건·교육·지원)을 적어 주시면 상담이 빠릅니다."
         />
       </div>
 

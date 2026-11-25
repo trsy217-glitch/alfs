@@ -2,16 +2,14 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { STEPS, CATEGORIES, questionsOf } from '../diagnosis/questions.js'
 import { diagnose } from '../diagnosis/engine.js'
-import { useAuth } from '../lib/auth.jsx'
-import { saveDiagnosis, draft } from '../lib/store.js'
+import { saveResult, draft } from '../lib/store.js'
 
 const isEmpty = (v) => v == null || v === '' || (Array.isArray(v) && v.length === 0)
 const needsAnswer = (q) => q.required || ['single', 'multi', 'scale', 'category'].includes(q.type)
 
 export default function DiagnosisNew() {
-  const { user } = useAuth()
   const nav = useNavigate()
-  const saved = useMemo(() => draft.load(user), [user])
+  const saved = useMemo(() => draft.load(), [])
   const [answers, setAnswers] = useState(saved?.answers || {})
   const [step, setStep] = useState(saved?.step || 0)
   const [resumed, setResumed] = useState(Boolean(saved && Object.keys(saved.answers || {}).length))
@@ -24,7 +22,7 @@ export default function DiagnosisNew() {
   const questions = questionsOf(current, answers.category)
   const last = step === STEPS.length - 1
 
-  useEffect(() => { draft.save(user, { answers, step }) }, [answers, step, user])
+  useEffect(() => { draft.save({ answers, step }) }, [answers, step])
   useEffect(() => { headRef.current?.focus({ preventScroll: true }); window.scrollTo(0, 0) }, [step])
 
   const setAnswer = (id, v) => {
@@ -44,14 +42,15 @@ export default function DiagnosisNew() {
     if (!last) { setStep((s) => s + 1); return }
     setSaving(true); setError('')
     const result = diagnose(answers)
-    const r = await saveDiagnosis(user, { shopName: answers.shopName, category: answers.category, answers, result })
+    // 결과는 이 기기에 먼저 저장하고, 이메일을 입력하면 화면이 열립니다.
+    const r = saveResult({ shopName: answers.shopName, category: answers.category, answers, result })
     setSaving(false)
     if (r.error) { setError(r.error); return }
-    draft.clear(user)
+    draft.clear()
     nav(`/diagnosis/result/${r.data.id}`, { replace: true })
   }
 
-  const restart = () => { setAnswers({}); setStep(0); setResumed(false); draft.clear(user) }
+  const restart = () => { setAnswers({}); setStep(0); setResumed(false); draft.clear() }
 
   const answeredCount = Object.values(answers).filter((v) => !isEmpty(v)).length
 

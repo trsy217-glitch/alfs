@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { CATEGORIES, STEPS } from '../diagnosis/questions.js'
-import { useAuth } from '../lib/auth.jsx'
+import { useDiagEmail } from '../lib/store.js'
 
 const outputs = [
   { t: '구조 점수', d: '품질향상·재구매율·확장성을 원가·재고·유통비·시장성(경쟁 부담)으로 나눠, 팔수록 남는 사업인지 숫자 하나로 보여 줍니다.' },
@@ -11,21 +11,20 @@ const outputs = [
 ]
 
 export default function Diagnosis() {
-  const { user } = useAuth()
-  const start = user ? '/diagnosis/new' : '/login'
+  const email = useDiagEmail()
   return (
     <>
       <section className="page-hero diag-hero">
         <div className="wrap diag-hero__grid">
           <div className="intro">
-            <span className="kicker">무료 · 회원 전용</span>
-            <h1>우리 가게, 팔수록 남는 구조인지 5분이면 보입니다</h1>
-            <p className="lead">업종을 고르고 질문 {STEPS.length}묶음에 짧게 답하면, 강점과 없는 것, 보완할 것, 이번 주에 할 일까지 정리된 진단표가 나옵니다.</p>
+            <span className="kicker">무료 가게 진단</span>
+            <h1>우리 가게에 잘 하고 있는지 무료로 진단해 보세요</h1>
+            <p className="lead">업종을 고르고 질문 {STEPS.length}묶음에 짧게 답하면, 강점과 없는 것, 보완할 것, 이번 주에 할 일까지 정리된 진단표가 나옵니다. 결과는 이메일 주소를 입력하면 바로 볼 수 있습니다.</p>
             <div className="btn-row mt-m">
-              <Link to={start} state={{ from: '/diagnosis/new' }} className="btn btn--primary">{user ? '진단 시작하기' : '로그인하고 무료 진단하기'}</Link>
-              {user && <Link to="/my" className="btn btn--ghost">내 진단 기록</Link>}
+              <Link to="/diagnosis/new" className="btn btn--primary">무료 진단 시작하기</Link>
+              {email && <Link to="/my" className="btn btn--ghost">내 진단 기록</Link>}
             </div>
-            <p className="muted mt-s" style={{ fontSize: '0.88rem' }}>결과는 진단한 본인만 볼 수 있고, PDF로 내려받을 수 있어요.</p>
+            <p className="muted mt-s" style={{ fontSize: '0.88rem' }}>가입 없이 시작하고, 결과를 볼 때만 이메일 주소를 받습니다. 이름·전화번호는 받지 않습니다.</p>
           </div>
           <SamplePreview />
         </div>
@@ -66,10 +65,10 @@ export default function Diagnosis() {
           <div className="hooks" style={{ marginTop: 28 }}>
             {outputs.slice(3).map((o) => <div className="hook" key={o.t}><h3>{o.t}</h3><p>{o.d}</p></div>)}
             <div className="hook"><h3>업종별 상품 아이디어</h3><p>우리 업종에 미네랄 같은 새 상품을 더한다면 어떤 방식이 맞는지 참고 의견을 드립니다.</p></div>
-            <div className="hook"><h3>지난 진단과 비교</h3><p>진단은 계정에 쌓입니다. 석 달 뒤 다시 진단해 점수 변화를 확인하세요.</p></div>
+            <div className="hook"><h3>지난 진단과 비교</h3><p>같은 이메일로 다시 진단하면 이 브라우저에서 지난 결과와 점수 변화를 함께 볼 수 있습니다.</p></div>
           </div>
           <div className="btn-row mt-l">
-            <Link to={start} state={{ from: '/diagnosis/new' }} className="btn btn--primary">{user ? '진단 시작하기' : '로그인하고 무료 진단하기'}</Link>
+            <Link to="/diagnosis/new" className="btn btn--primary">무료 진단 시작하기</Link>
           </div>
           <p className="notice">이 진단은 사장님 응답을 바탕으로 한 자가진단이며 참고용입니다. 매출이나 성과를 보장하지 않습니다.</p>
         </div>
@@ -104,4 +103,3 @@ function SamplePreview() {
     </div>
   )
 }
-

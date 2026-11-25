@@ -14,7 +14,6 @@ import Partner from './pages/Partner.jsx'
 import Contact from './pages/Contact.jsx'
 import NotFound from './pages/NotFound.jsx'
 import Login from './pages/Login.jsx'
-import RequireAuth from './components/RequireAuth.jsx'
 import HomeFirst from './components/HomeFirst.jsx'
 import SeoHead from './components/SeoHead.jsx'
 import MineralGuide from './pages/MineralGuide.jsx'
@@ -86,9 +85,9 @@ export default function App() {
           <Route path="/diagnosis" element={<Diagnosis />} />
           <Route path="/login" element={<Login />} />
           <Route path="/video-maker" element={<VideoMaker />} />
-          <Route path="/diagnosis/new" element={<RequireAuth><DiagnosisNew /></RequireAuth>} />
-          <Route path="/diagnosis/result/:id" element={<RequireAuth><DiagnosisResult /></RequireAuth>} />
-          <Route path="/my" element={<RequireAuth><MyDiagnoses /></RequireAuth>} />
+          <Route path="/diagnosis/new" element={<DiagnosisNew />} />
+          <Route path="/diagnosis/result/:id" element={<DiagnosisResult />} />
+          <Route path="/my" element={<MyDiagnoses />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         </Suspense>

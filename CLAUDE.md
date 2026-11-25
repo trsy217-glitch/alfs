@@ -14,11 +14,11 @@
 - `src/lib/asset.js` — public 파일 경로는 반드시 `asset('images/x.webp')`로 (미리보기 빌드의 상대 경로 대응)
 - 이미지: `public/images/*.webp`
 - 우리가게 진단: `src/diagnosis/questions.js`(24문항 · 구조 점수 7요소 `VALUE_FACTORS` · 업종별 맞춤 1문항), `src/diagnosis/engine.js`(구조 점수 `valueScore` = (품질향상×2.5+재구매율×4.5+확장성×3.5)÷(원가×2.5+재고×1+유통비×2+(6−시장성)×4), 영역 점수·강점·없는 것·보완·실행 계획·상품군·미네랄 적합도)
-- 로그인·저장: Firebase. `src/lib/firebase.js`(설정, `VITE_FIREBASE_*`), `src/lib/auth.jsx`(Google 로그인 · 값이 없으면 체험 모드), `src/lib/store.js`(Firestore `users/{uid}/diagnoses`), `firestore.rules`(본인만 접근)
+- 로그인·저장: 계정 로그인 없이 **이메일 주소 하나**로 결과를 엽니다. `src/lib/store.js`(이 기기 localStorage `alfs_diag_*`, 이메일별 목록), `src/pages/Login.jsx`(이메일 로그인). 진단 항목을 다 채운 뒤 결과 화면에서 이메일을 입력해야 상세 결과가 열리고, 그때 이메일 + 진단 결과 목록이 시트로 갑니다. 이름·전화번호는 받지 않습니다
 - 첫 화면: 새로 열면 항상 홈(`src/components/HomeFirst.jsx`, `?stay`로 예외)
-- 진단 → 구글 시트(알프스 내부 보관): 저장 성공 후 `src/lib/sheet.js` → `api/diagnosis-sheet.js`(Firebase 토큰 확인, 이메일은 토큰에서) → Apps Script `docs/diagnosis-sheet.gs` → 시트 '진단리포트'. 환경 변수 `DIAG_SHEET_URL`, `DIAG_SHEET_SECRET`. 고객 화면에는 표시하지 않음
-- 배포 사이트는 체험 모드 없음: Firebase 값이 없으면 로그인 '준비 중' (체험 모드는 `npm run dev`에서만)
-- 보호 화면: `RequireAuth`로 감싼 `/diagnosis/new`, `/diagnosis/result/:id`, `/my`. 나머지 페이지는 공개
+- 진단 → 구글 시트(알프스 내부 보관): 이메일 입력으로 결과를 열 때 `src/lib/sheet.js` → `api/diagnosis-sheet.js` → Apps Script `docs/diagnosis-sheet.gs` → 시트 '진단리포트'(드라이브 '알프스' 폴더, `182p1xVn…`). **이메일 + 진단 결과 목록만** 남기고 이름·전화·가게 이름·지역·전체 응답은 보내지 않습니다. 환경 변수 `DIAG_SHEET_URL`, `DIAG_SHEET_SECRET`. 고객 화면에는 표시하지 않음
+- 배포 사이트도 이메일 게이트 하나로 동작합니다: 이메일을 입력하기 전에는 결과 본문을 그리지 않습니다
+- 보호 화면: `/diagnosis/new`·`/diagnosis/result/:id`·`/my`는 누구나 열 수 있고, 결과 상세만 이메일 입력 뒤에 열립니다 (`RequireAuth`는 더 이상 라우트에 쓰지 않음). 나머지 페이지는 공개
 - 제품: `/products`(오륜미네랄) · `/products/enzyme`(효소세상) · `/products/cafe`(미네랄 카페 레시피 6종, 판매 상품 없음). 탭 목록은 `src/components/ProductTabs.jsx`, 레시피 내용은 `src/config/cafe.js`
 - 첫 화면 3D 'ALFS': `src/components/Alfs3D.jsx` (@remotion/svg-3d-engine 으로 글자에 두께를 주고 회전, 브라우저 애니메이션·동작 줄이기 설정 시 정지)
 - 로고·OG: `public/brand/*`, `public/og-image.jpg`, 주소는 `vite.config.js`의 `__SITE_URL__` 치환
@@ -32,7 +32,7 @@
 - 새 색을 만들지 말고 :root 토큰을 쓴다. 사진은 `.cocoon` 프레임 안에 넣는다
 - 대문자 영문 라벨, 문장마다 붙는 화살표, 모든 섹션 페이드인 같은 장식은 넣지 않는다
 - 모바일(390px)과 키보드 포커스를 항상 확인한다
-- 진단 결과는 본인만 본다. 관리자 열람 기능을 만들 때는 별도 동의와 정책이 먼저 필요하다
+- 진단 결과는 본인만 본다. 관리자 열람 기능을 만들 때는 별도 동의와 정책이 먼저 필요하다. 2026-11-25 대표 지시로 알프스 내부 시트에 이메일 + 진단 결과 목록만 기록하며, 이름·연락처는 받지 않는다
 - 영상 문구도 같은 광고 기준을 따른다. 영상을 바꾸면 webm·mp4·poster 세 파일을 모두 다시 만든다
 - 진단 문구에도 미네랄 효능 표현 금지. 점수는 '참고용 자가진단'이라는 안내를 유지한다
 
