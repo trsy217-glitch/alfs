@@ -13,7 +13,11 @@ const ssr = await import(pathToFileURL(path.join(root, 'dist-ssr', 'entry-server
 const { ROUTES, metaFor, jsonLdFor, SITE_URL } = ssr
 
 const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
-fs.writeFileSync(path.join(dist, 'app.html'), template)
+// 나머지 주소가 쓰는 빈 껍데기 — 개인 화면이라 검색에 내보내지 않습니다.
+const appHtml = template
+  .replace(/<meta name="description"[^>]*>/, '<meta name="description" content="알프스 ALFS 계정·진단 화면입니다." />')
+  .replace('</head>', '    <meta name="robots" content="noindex, nofollow" />\n  </head>')
+fs.writeFileSync(path.join(dist, 'app.html'), appHtml)
 
 // 비공개 재고관리 앱(/stock) 껍데기: 화면은 브라우저에서 그리지만(검색 노출 없음),
 // 홈 화면 설치가 확실히 되도록 매니페스트 링크를 HTML 에 직접 넣어 둡니다.
@@ -43,6 +47,8 @@ for (const route of Object.keys(ROUTES)) {
   html = setMeta(html, 'property', 'og:title', m.title)
   html = setMeta(html, 'property', 'og:description', m.description)
   html = setMeta(html, 'property', 'og:url', m.url)
+  html = setMeta(html, 'name', 'twitter:title', m.title)
+  html = setMeta(html, 'name', 'twitter:description', m.description)
   html = setMeta(html, 'name', 'robots', m.noindex ? 'noindex, follow' : 'index, follow')
   const ld = JSON.stringify(jsonLdFor(route)).replace(/</g, '\\u003c')
   html = html.replace('</head>', `    <link rel="canonical" href="${m.url}" />\n    <script type="application/ld+json" id="ld-json">${ld}</script>\n  </head>`)
@@ -59,7 +65,7 @@ for (const route of Object.keys(ROUTES)) {
 }
 
 const today = new Date().toISOString().slice(0, 10)
-const prio = { '/': '1.0', '/products': '0.9', '/products/enzyme': '0.9', '/company': '0.9', '/mineral-guide': '0.8', '/partner': '0.8', '/products/cafe': '0.8', '/refund-policy': '0.5' }
+const prio = { '/': '1.0', '/products': '0.9', '/products/enzyme': '0.9', '/diagnosis': '0.9', '/company': '0.9', '/mineral-guide': '0.8', '/partner': '0.8', '/products/cafe': '0.8', '/ai-marketing': '0.7', '/contact': '0.7', '/refund-policy': '0.5', '/terms': '0.3', '/privacy': '0.3', '/video-maker': '0.3' }
 const urls = Object.keys(ROUTES).filter((r) => !metaFor(r).noindex).map((r) => `  <url><loc>${SITE_URL}${r === '/' ? '/' : r}</loc><lastmod>${today}</lastmod><priority>${prio[r] || '0.6'}</priority></url>`)
 fs.writeFileSync(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`)
 fs.rmSync(path.join(root, 'dist-ssr'), { recursive: true, force: true })

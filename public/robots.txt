@@ -1,69 +1,83 @@
 # 알프스 ALFS — https://alfs.kr
 # 검색엔진·AI 검색 모두 공개 상품·회사 정보를 읽고 인용할 수 있게 열어 둡니다.
-# 로그인·마이페이지·진단 결과 같은 개인 화면만 제외합니다.
+# 개인 화면(로그인·내 진단·진단 작성/결과), 내부 API, 비공개 재고관리 앱만 막습니다.
+# 가격·구성·배송비 등 사실 정보는 https://alfs.kr/llms.txt 에 정리해 두었습니다.
 
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /stock
 Disallow: /login
 Disallow: /my
 Disallow: /diagnosis/new
 Disallow: /diagnosis/result/
-Disallow: /api/
+Disallow: /payment/
 
-# 네이버 검색 로봇
+# 검색엔진 (네이버 Yeti · 다음 Daumoa · 구글 · 빙)
 User-agent: Yeti
 Allow: /
+Disallow: /api/
+Disallow: /stock
 Disallow: /login
 Disallow: /my
 Disallow: /diagnosis/new
 Disallow: /diagnosis/result/
-Disallow: /api/
+Disallow: /payment/
 
-# Daum 검색 로봇
 User-agent: Daumoa
 Allow: /
+Disallow: /api/
+Disallow: /stock
 Disallow: /login
 Disallow: /my
+Disallow: /diagnosis/new
+Disallow: /diagnosis/result/
+Disallow: /payment/
+
+User-agent: Googlebot
+Allow: /
 Disallow: /api/
-
-# AI 검색·답변 엔진 (공개 페이지 인용 허용)
-User-agent: GPTBot
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Perplexity-User
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: Applebot
-Allow: /
-
-User-agent: Applebot-Extended
-Allow: /
+Disallow: /stock
+Disallow: /login
+Disallow: /my
+Disallow: /diagnosis/new
+Disallow: /diagnosis/result/
+Disallow: /payment/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /api/
+Disallow: /stock
+Disallow: /login
+Disallow: /my
+Disallow: /diagnosis/new
+Disallow: /diagnosis/result/
+Disallow: /payment/
 
+# AI 검색·답변 엔진 (공개 페이지 인용 허용 · 개인 화면은 제외)
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-Web
+User-agent: anthropic-ai
+User-agent: Google-Extended
+User-agent: Applebot
+User-agent: Applebot-Extended
 User-agent: cohere-ai
+User-agent: Meta-ExternalAgent
+User-agent: Amazonbot
+User-agent: DuckAssistBot
 Allow: /
+Disallow: /api/
+Disallow: /stock
+Disallow: /login
+Disallow: /my
+Disallow: /diagnosis/new
+Disallow: /diagnosis/result/
+Disallow: /payment/
 
 Sitemap: https://alfs.kr/sitemap.xml

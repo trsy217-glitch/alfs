@@ -19,44 +19,44 @@ const TEL = `+82-${company.phone.replace(/^0/, '').replace(/-/g, '-')}`
 // 페이지별 제목·설명 (검색 결과에 보이는 문구)
 export const ROUTES = {
   '/': {
-    title: '알프스 ALFS | 오륜미네랄 유통 · 소상공인 AI 마케팅',
-    description: '알프스(ALFS, Alpha Food Store)는 오륜미네랄 유통과 샵인샵 파트너샵 공급, 소상공인 SNS·AI 마케팅을 함께 하는 웰니스 유통 회사입니다. 잘 팔리고 다시 찾는 제품이 시장에 자리 잡도록 체험·판매·재구매까지 함께 운영합니다.',
+    title: '알프스 ALFS | 오륜미네랄·1.3fit 유통, 무료 가게 진단',
+    description: '오륜미네랄(220,000원)·1.3fit·클린바이옴을 유통하는 알프스. 파트너샵 입점 상담, 소상공인 AI 마케팅, 무료 가게 진단을 한곳에서. 확정 판매가와 배송비를 확인하세요.',
   },
   '/company': {
-    title: '회사 소개 | 오륜미네랄 유통 구조와 네 개의 판매 채널 — 알프스 ALFS',
-    description: '알프스 ALFS는 물건만 넘기는 데서 끝나지 않고 판매 채널·콘텐츠·고객 데이터·확장까지 상품이 팔리는 구조를 만드는 유통·마케팅 파트너입니다. 제조사 유디아미네랄에서 파트너샵·소비자까지 이어지는 유통 경로와 체험 카페·파트너샵·공동구매·온라인 스토어 네 채널, 단계별 확장 계획을 함께 안내합니다.',
+    title: '회사 소개 | 오륜미네랄 유통 구조와 판매 채널 — 알프스',
+    description: '제조사 유디아미네랄에서 파트너샵·소비자까지 이어지는 오륜미네랄 유통 경로와 체험 카페·파트너샵·공동구매·온라인 스토어 네 채널을 소개합니다.',
   },
   '/products': {
-    title: '오륜미네랄 | 뽕잎·누에 원료 액상 미네랄 — 알프스 ALFS',
-    description: '오륜미네랄은 충북 보은 제조사 유디아미네랄이 어린 뽕잎과 누에를 원료로 만든 액상 미네랄(기타가공품, 1,000ml)입니다. 원액을 물에 10~30배 희석해 하루 한 잔 마십니다. 알프스가 유통합니다.',
+    title: '오륜미네랄 1,000ml 220,000원 | 뽕잎·누에 액상 미네랄 — 알프스',
+    description: '충북 보은 유디아미네랄이 어린 뽕잎과 누에로 만든 액상 미네랄(기타가공품, 1,000ml). 220,000원, 1병도 무료배송. 원액을 물에 10~30배 희석해 하루 한 잔.',
   },
   '/mineral-guide': {
-    title: '미네랄 고르는 법 — 액상 미네랄 추천 전에 확인할 5가지 | 알프스 ALFS',
+    title: '미네랄 고르는 법 — 액상 미네랄 추천 전에 확인할 5가지 | 알프스',
     description: '미네랄 제품을 고를 때는 원료 출처, 제조사, 식품 유형, 먹는 방법, 꾸준히 챙길 수 있는지를 봅니다. 오륜미네랄을 예로 다섯 가지 기준을 정리했습니다.',
   },
   '/products/enzyme': {
-    title: '효소세상 발효 음료 · 1.3fit 클렌즈 · 클린바이옴 | 알프스 ALFS',
-    description: '효소세상이 만든 발효 효소·미생물 발효 음료를 알프스가 유통합니다. 1.3fit 30일·3일 클렌즈 프로그램, 클린바이옴 자몽 6병·1병. 구성과 판매가, 제품 뒷면 표시사항(성분표) 사진, 섭취 방법을 확인하고 비회원 카드 결제로 주문할 수 있습니다. 5만 원 이상 무료배송.',
+    title: '1.3fit 30일 396,000원 · 클린바이옴 107,100원 | 효소세상 — 알프스',
+    description: '1.3fit 30일 프로그램 396,000원, 3일 클렌즈 99,000원, 클린바이옴 6병 107,100원·1병 19,950원. 제품 뒷면 표시사항과 섭취 방법을 보고 비회원 카드 결제로 주문하세요.',
   },
   '/products/cafe': {
-    title: '미네랄 카페 레시피 6종 | 오륜미네랄 홈카페 음료 — 알프스 ALFS',
-    description: '오륜미네랄 60ml를 넣어 만드는 홈카페 음료 6종입니다. 키위벨벳·토마선셋·아보바나스무디·블루바나넛츠·키위브리츠·아보베리요거의 재료와 만드는 순서를 카드 이미지와 함께 안내합니다. 레시피는 무료 음용·활용 가이드이고, 판매 상품은 오륜미네랄 1,000ml(220,000원)입니다.',
+    title: '미네랄 카페 레시피 6종 | 오륜미네랄 홈카페 음료 — 알프스',
+    description: '오륜미네랄 60ml를 넣어 만드는 홈카페 음료 6종. 키위벨벳·토마선셋·아보바나스무디·블루바나넛츠·키위브리츠·아보베리요거의 재료와 만드는 순서를 카드로 안내합니다.',
   },
   '/ai-marketing': {
-    title: '소상공인 AI 마케팅 컨설팅 | 알프스 ALFS',
-    description: '식당·카페·건강샵·피부샵·1인 브랜드를 위해 SNS 콘텐츠, 고객 응대, 재구매 관리를 AI 에이전트로 자동화하고 혼자서도 운영할 수 있게 알려드립니다.',
+    title: '소상공인 AI 마케팅 | SNS 자동화 상담 — 알프스',
+    description: '식당·카페·건강샵·피부샵·1인 브랜드의 SNS 콘텐츠, 고객 응대, 재구매 관리를 AI 에이전트로 자동화하고 혼자서도 운영할 수 있게 알려드립니다.',
   },
   '/partner': {
-    title: '파트너·대리점·총판 입점 안내 | 알프스 ALFS 샵인샵 파트너샵',
-    description: '건강·웰니스샵, 뷰티·피부샵, 카페, 헬스·PT샵의 파트너샵 입점과 대리점·총판 공급 상담을 한곳에서 받습니다. 오륜미네랄 판매 방법과 지원 내용, 공급 조건을 안내합니다.',
+    title: '파트너샵·대리점·총판 입점 상담 | 오륜미네랄 공급 — 알프스',
+    description: '건강·뷰티·카페·헬스 매장의 샵인샵 입점과 대리점·총판 공급 상담. 관심 상품(오륜미네랄·1.3fit·클린바이옴)을 고르면 담당자가 영업일 하루 안에 연락드립니다.',
   },
   '/contact': {
-    title: '상담 신청 | 알프스 ALFS',
-    description: '알프스 ALFS 유통·입점·마케팅 상담은 카카오톡 채널과 상담 신청서로 받습니다.',
+    title: '상담 신청 | 카카오톡·전화·상담서 — 알프스',
+    description: '알프스 유통·파트너샵 입점·AI 마케팅 상담은 카카오톡 채널, 전화(010-9190-0906), 상담 신청서로 받습니다. 영업일 하루 안에 답변드립니다.',
   },
   '/diagnosis': {
-    title: '무료 우리가게 진단 | 알프스 ALFS',
-    description: '업종별 질문에 답하면 우리 가게의 구조 점수와 강점·보완할 점·실행 계획을 무료로 보여 드립니다. 결과는 본인만 볼 수 있습니다.',
+    title: '무료 가게 진단 | 우리 가게에 잘 하고 있는지 5분 진단 — 알프스',
+    description: '우리 가게에 잘 하고 있는지 무료로 진단해 보세요. 업종별 질문에 답하면 구조 점수·영역별 점수·강점·보완점·이번 주 할 일을 정리해 드립니다. 결과는 이메일만 입력하면 열립니다.',
   },
   '/terms': {
     title: '이용약관 | 알프스(AL.F.S) alfs.kr',
@@ -218,6 +218,25 @@ export const FAQ_COMPANY = [
   },
 ]
 
+export const FAQ_PARTNER = [
+  {
+    q: '재고 부담이 크지 않을까요?',
+    a: '입점 수량과 지원 조건은 상담 때 매장 규모에 맞춰 안내드립니다. 정착 지원금과 체험 카페 운영으로 초기 판매를 함께 만듭니다.',
+  },
+  {
+    q: '소비자가는 얼마인가요?',
+    a: '권장 소비자가는 병당 10~12만 원이며, 판매 가격은 매장이 정합니다. 공급가와 마진 구조는 상담 시 계약서 기준으로 안내합니다.',
+  },
+  {
+    q: '건강 효능을 말하며 팔아도 되나요?',
+    a: '안 됩니다. 오륜미네랄은 일반식품이라 질병 예방·치료 표현을 쓸 수 없습니다. 쓸 수 있는 설명법은 교육에서 알려드립니다.',
+  },
+  {
+    q: '마케팅을 해 본 적이 없어도 괜찮나요?',
+    a: '괜찮습니다. 입점 파트너샵은 SNS 계정 정비부터 AI 자동화까지 단계별로 배웁니다.',
+  },
+]
+
 // ── 구조화 데이터 (JSON-LD) ──
 // 공통 조각: 배송·교환/반품 기준 (배송·교환·환불 정책 페이지와 같은 값)
 const deliveryTime = {
@@ -266,6 +285,7 @@ const org = {
     { '@type': 'PropertyValue', name: '사업자등록번호', value: company.bizNumber },
     { '@type': 'PropertyValue', name: '통신판매업 신고번호', value: company.mailOrderNumber },
   ],
+  location: { '@id': `${SITE_URL}/#localbusiness` },
   contactPoint: [
     {
       '@type': 'ContactPoint',
@@ -309,6 +329,83 @@ const website = {
   alternateName: ['알프스', 'ALFS'],
   inLanguage: 'ko-KR',
   publisher: { '@id': `${SITE_URL}/#org` },
+  about: { '@id': `${SITE_URL}/#org` },
+}
+
+// 상암 사무실 — 상담·물류를 하는 사업장 (방문 판매 매장은 아닙니다)
+const localBusiness = {
+  '@type': 'LocalBusiness',
+  '@id': `${SITE_URL}/#localbusiness`,
+  name: '알프스(AL.F.S) 상암 사무실',
+  image: OG_IMAGE,
+  url: `${SITE_URL}/contact`,
+  telephone: TEL,
+  email: company.email,
+  description: '오륜미네랄·효소세상 제품 유통과 파트너샵 공급 상담을 하는 알프스 사무실입니다. 방문 판매 매장이 아니며 상담은 카카오톡·전화·상담서로 받습니다.',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: company.address,
+    addressLocality: '마포구',
+    addressRegion: '서울특별시',
+    addressCountry: 'KR',
+  },
+  openingHoursSpecification: [{
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '10:00',
+    closes: '18:00',
+  }],
+  parentOrganization: { '@id': `${SITE_URL}/#org` },
+  areaServed: { '@type': 'Country', name: '대한민국' },
+}
+
+// 페이지 하나하나를 엔터티로 묶습니다 (AI 답변엔진이 인용할 때 근거 페이지를 알 수 있게)
+const webPageLd = (m) => ({
+  '@type': 'WebPage',
+  '@id': `${m.url}#webpage`,
+  url: m.url,
+  name: m.title,
+  description: m.description,
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  about: { '@id': `${SITE_URL}/#org` },
+  inLanguage: 'ko-KR',
+})
+
+// 대리점·총판·샵인샵 상담 (서비스는 온라인 결제 대상이 아니며 상담·계약으로 진행)
+const partnerService = {
+  '@type': 'Service',
+  '@id': `${SITE_URL}/partner#service`,
+  name: '파트너샵·대리점·총판 입점 상담',
+  serviceType: '오륜미네랄 샵인샵 파트너샵 입점 및 대리점·총판 공급 상담',
+  description: '건강·웰니스샵, 뷰티·피부샵, 카페, 헬스·PT샵, 약국의 샵인샵 입점과 대리점·총판 공급을 상담합니다. 관심 상품을 골라 상담서를 남기면 영업일 하루 안에 연락드립니다. 공급가·마진·지원 조건은 상담과 공급계약서로 정합니다.',
+  provider: { '@id': `${SITE_URL}/#org` },
+  areaServed: { '@type': 'Country', name: '대한민국' },
+  url: `${SITE_URL}/partner`,
+  availableChannel: [
+    { '@type': 'ServiceChannel', serviceUrl: `${SITE_URL}/partner`, servicePhone: TEL },
+    { '@type': 'ServiceChannel', serviceUrl: 'https://pf.kakao.com/_JdTPX' },
+  ],
+  audience: { '@type': 'BusinessAudience', name: '건강·뷰티·카페·헬스 매장, 대리점·총판 사업자' },
+}
+
+// 무료 가게 진단 (무료 · 이메일 입력 후 결과 열람)
+const diagnosisService = {
+  '@type': 'Service',
+  '@id': `${SITE_URL}/diagnosis#service`,
+  name: '무료 우리가게 진단',
+  serviceType: '소상공인 가게 자가진단',
+  description: '업종별 질문에 답하면 구조 점수, 영역별 점수 7개, 강점·없는 것·보완할 것, 이번 주·한 달 안·석 달 실행 계획을 무료로 정리합니다. 결과는 이메일 주소를 입력하면 열립니다. 참고용 자가진단이며 매출이나 성과를 보장하지 않습니다.',
+  provider: { '@id': `${SITE_URL}/#org` },
+  areaServed: { '@type': 'Country', name: '대한민국' },
+  url: `${SITE_URL}/diagnosis`,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'KRW',
+    availability: 'https://schema.org/InStock',
+    url: `${SITE_URL}/diagnosis`,
+  },
+  audience: { '@type': 'BusinessAudience', name: '소상공인·자영업자' },
 }
 const faqLd = (items) => ({
   '@type': 'FAQPage',
@@ -420,13 +517,16 @@ const cafeListLd = {
 
 export function jsonLdFor(path) {
   const m = metaFor(path)
-  const graph = [org, website, onlineStore, naverStore]
+  const graph = [org, localBusiness, website, onlineStore, naverStore, webPageLd(m)]
   if (m.path !== '/') graph.push(crumbs(m.path, m.title))
   if (m.path === '/products') graph.push(product, faqLd(FAQ_PRODUCT))
   if (m.path === '/mineral-guide') graph.push({ '@type': 'Article', headline: m.title, description: m.description, author: { '@id': `${SITE_URL}/#org` }, publisher: { '@id': `${SITE_URL}/#org` }, mainEntityOfPage: m.url, about: { '@id': `${SITE_URL}/products#oryun` }, inLanguage: 'ko-KR' }, faqLd(FAQ_GUIDE), product)
   if (m.path === '/company') graph.push(faqLd(FAQ_COMPANY))
   if (m.path === '/products/enzyme') graph.push(enzymeListLd, faqLd(FAQ_ENZYME))
   if (m.path === '/products/cafe') graph.push(cafeListLd, faqLd(FAQ_CAFE))
+  if (m.path === '/partner') graph.push(partnerService, faqLd(FAQ_PARTNER))
+  if (m.path === '/diagnosis') graph.push(diagnosisService)
+  if (m.path === '/contact') graph.push(partnerService)
   return { '@context': 'https://schema.org', '@graph': graph }
 }
 

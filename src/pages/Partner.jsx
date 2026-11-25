@@ -2,6 +2,7 @@ import ConsultForm from '../components/ConsultForm.jsx'
 import DistForm from '../components/DistForm.jsx'
 import { asset, scrollToId } from '../lib/asset.js'
 import { servicePaymentNotice } from '../config/site.js'
+import { FAQ_PARTNER } from '../seo.js'
 
 const fits = ['건강식품·웰니스샵', '카페·홈카페', '피부샵·뷰티샵', '필라테스·요가 스튜디오', '세미나·커뮤니티 호스트']
 
@@ -13,12 +14,7 @@ const steps = [
   { when: 'Step 5', t: '정착과 재발주', d: '판매 데이터를 함께 보며 재발주와 확장을 결정합니다.' },
 ]
 
-const faq = [
-  { q: '재고 부담이 크지 않을까요?', a: '입점 수량과 지원 조건은 상담 때 매장 규모에 맞춰 안내드립니다. 정착 지원금과 체험 카페 운영으로 초기 판매를 함께 만듭니다.' },
-  { q: '소비자가는 얼마인가요?', a: '권장 소비자가는 병당 10~12만 원이며, 판매 가격은 매장이 정합니다. 공급가와 마진 구조는 상담 시 계약서 기준으로 안내합니다.' },
-  { q: '건강 효능을 말하며 팔아도 되나요?', a: '안 됩니다. 오륜미네랄은 일반식품이라 질병 예방·치료 표현을 쓸 수 없습니다. 쓸 수 있는 설명법은 교육에서 알려드립니다.' },
-  { q: '마케팅을 해 본 적이 없어도 괜찮나요?', a: '괜찮습니다. 입점 파트너샵은 SNS 계정 정비부터 AI 자동화까지 단계별로 배웁니다.' },
-]
+const faq = FAQ_PARTNER
 
 export default function Partner() {
   return (

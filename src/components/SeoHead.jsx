@@ -19,6 +19,8 @@ export default function SeoHead() {
     setMeta('property', 'og:title', m.title)
     setMeta('property', 'og:description', m.description)
     setMeta('property', 'og:url', m.url)
+    setMeta('name', 'twitter:title', m.title)
+    setMeta('name', 'twitter:description', m.description)
     setMeta('name', 'robots', m.noindex ? 'noindex, follow' : 'index, follow')
     let link = document.head.querySelector('link[rel="canonical"]')
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link) }
