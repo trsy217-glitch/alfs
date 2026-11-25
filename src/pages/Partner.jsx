@@ -90,7 +90,6 @@ export default function Partner() {
               <div className="row"><h3>샵인샵</h3><p className="muted">지금 운영하는 매장 안에 오륜미네랄 체험·판매 공간을 들입니다.</p></div>
             </div>
             <p className="muted mt-m" style={{ fontSize: '0.85rem' }}>공급가·마진·지원 기간은 상담 후 공급계약서로 정하며, 효능이나 수익을 보장하지 않습니다.</p>
-            <p className="notice">{servicePaymentNotice}</p>
           </div>
           <div className="panel">
             <h2 style={{ fontSize: 'var(--t-xl)', marginBottom: 6 }}>대리점·총판 입점 상담</h2>
